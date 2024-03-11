@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ltd_ts_analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="ts_analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ts_analysis_files/libs/quarto-html/quarto.js"></script>
+<script src="ts_analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="ts_analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ts_analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ts_analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ts_analysis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ts_analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ts_analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ts_analysis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ltd_ts_analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="convert-both-data-into-time-series-cross-sectional-hierarchical-time-series" class="level1">
+<h1>Convert both data into time series (cross-sectional hierarchical time series)</h1>
+</section>
+<section id="analysing-trend-seasonal-pattern" class="level1">
+<h1>Analysing trend, seasonal pattern</h1>
+<section id="ltd-aggregate-data" class="level2">
+<h2 class="anchored" data-anchor-id="ltd-aggregate-data">ltd aggregate data</h2>
+<section id="trend" class="level3">
+<h3 class="anchored" data-anchor-id="trend">Trend</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-trendagg" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-trendagg-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Trend of Land Transfer Duty in Victoria over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As spotted by <a href="#fig-trendagg">Figure&nbsp;1</a>, the <code>ltd</code> increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal or cyclic pattern.</p>
+</section>
+<section id="seasonal-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="seasonal-pattern">Seasonal Pattern</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ssagg" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-ssagg-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Seasonal trend of Land Transfer Duty in Victoria</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Apart from there is a small hint of drop at the start of each quarter, <a href="#fig-ssagg">Figure&nbsp;2</a> shows that there is no clear sign for seasonal pattern</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-subagg" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-subagg-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Subseries plot of Land Transfer Duty in Victoria over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>However, in the <a href="#fig-subagg">Figure&nbsp;3</a>, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from <a href="#fig-trendagg">Figure&nbsp;1</a>.</p>
+</section>
+<section id="decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="decomposition">Decomposition</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-dcmp" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-dcmp-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Decomposition of Land Transfer Duty in Victoria</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ssadj" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-ssadj-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Seasonal adjusted Land Transfer Duty in Victoria</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-dcmp">Figure&nbsp;4</a> shows that there is no seasonal pattern for <code>ltd</code> and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.</p>
+<p>Moreover, <a href="#fig-dcmp">Figure&nbsp;4</a> also shows that there is a sign of heterogeneity in <code>ltd</code> and thus transformation may needed before model fitting.</p>
+<p>Also the <a href="#fig-ssadj">Figure&nbsp;5</a> shows that there is not much difference between seasonally adjusted <code>ltd</code> and the original <code>ltd</code>, which confirms the lack of seasonal pattern.</p>
+</section>
+<section id="box-cox-transformation" class="level3">
+<h3 class="anchored" data-anchor-id="box-cox-transformation">Box-Cox transformation</h3>
+</section>
+</section>
+<section id="ltd-unit-data" class="level2">
+<h2 class="anchored" data-anchor-id="ltd-unit-data">ltd unit data</h2>
+<section id="loan-to-deposit" class="level3">
+<h3 class="anchored" data-anchor-id="loan-to-deposit">Loan to Deposit</h3>
+<section id="trend-1" class="level4">
+<h4 class="anchored" data-anchor-id="trend-1">Trend</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-trendut" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-trendut-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: Trend of Land Transfer Duty in Victoria among category over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-trendut">Figure&nbsp;6</a> shows the fairly same pattern for both categories and to the total of <code>ltd</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ssut" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-ssut-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Seasonal trend of Land Transfer Duty among category in Victoria</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-ssut">Figure&nbsp;7</a> shows that for residential property, there is a fluctuation during the year and reach its peak at the June and December, while for non-residential property, <code>ltd</code> has a high peak in March only.</p>
+<p>This pattern shows there is a difference in consumer behaviour for each category of property</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-catnsub" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-catnsub-1.png" class="img-fluid figure-img" width="1056"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: Land Transfer Duty by category and sub-category</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-catnsub">Figure&nbsp;8</a></p>
+</section>
+</section>
+</section>
+<section id="forecasting" class="level2">
+<h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Model     mase      sspc
+1    base 1.127837 21.759480
+2      bu 1.439886  9.640909
+3    mint 1.384555 12.723077
+4 wls_var 1.386028  8.089547</code></pre>
+</div>
+</div>
+<section id="volume" class="level3">
+<h3 class="anchored" data-anchor-id="volume">Volume</h3>
+<section id="trend-2" class="level4">
+<h4 class="anchored" data-anchor-id="trend-2">Trend</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-trendut1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-trendut1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: Trend of Land Transfer Duty volume in Victoria among category over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-trendut1">Figure&nbsp;9</a> shows the fairly same pattern for both categories and to the total of <code>volume</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ssut1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-ssut1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10: Seasonal trend of Land Transfer Duty volume among category in Victoria</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-ssut1">Figure&nbsp;10</a></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-catnsub1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/fig-catnsub1-1.png" class="img-fluid figure-img" width="1056"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: Land Transfer Duty volume by category and sub-category</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-catnsub1">Figure&nbsp;11</a></p>
+</section>
+</section>
+</section>
+<section id="forecasting-1" class="level2">
+<h2 class="anchored" data-anchor-id="forecasting-1">Forecasting</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Model     mase     sspc
+1    base 1.179217 25.19968
+2      bu 1.289211 19.22221
+3    mint 1.264364 20.48836
+4 wls_var 1.246513 14.16869</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="convert-data-into-time-series-temporal-hierarchical-time-series" class="level1">
+<h1>Convert data into time series (temporal hierarchical time series)</h1>
+<section id="create-temporal-hierarchical-time-series" class="level2">
+<h2 class="anchored" data-anchor-id="create-temporal-hierarchical-time-series">Create temporal hierarchical time series</h2>
+<section id="ltd" class="level3">
+<h3 class="anchored" data-anchor-id="ltd">ltd</h3>
+<section id="trend-3" class="level4">
+<h4 class="anchored" data-anchor-id="trend-3">Trend</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="forecasting-2" class="level2">
+<h2 class="anchored" data-anchor-id="forecasting-2">Forecasting</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Model     mase      rmse      sspc
+1 arima 2.614068 162750754 -78.34921
+2  base 1.493855  72610269  12.22364</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
