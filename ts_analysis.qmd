@@ -40,7 +40,6 @@ ltd_clean <- ltd_unit %>%
   select(dd, category, sub_category, ltd)
 ```
 
-
 ```{r}
 volume_clean <- ltd_unit %>%
     select(dd, volume_res, volume_comm, volume_ind, volume_other) %>%
@@ -80,7 +79,6 @@ ltd_unit_ts <- final_join %>%
   relocate(month)
 ```
 
-
 # Analysing trend, seasonal pattern
 
 ## ltd aggregate data
@@ -108,7 +106,6 @@ ltd_agg_ts %>%
 ```
 
 Apart from there is a small hint of drop at the start of each quarter, @fig-ssagg shows that there is no clear sign for seasonal pattern
-
 
 ```{r}
 #| label: fig-subagg
@@ -164,15 +161,42 @@ ltd_agg_ts |>
          round(lambda,2))))
 ```
 
-
 ## ltd unit data
 
 ### Loan to Deposit
 
 ```{r}
+# Unit root test for stationary
+ltd_unit_ts %>%
+  features(box_cox(ltd, lambda), unitroot_kpss)
+```
+
+Value of 0.01 indicates the `ltd` from this data is stationary and thus require differencing the data.
+
+```{r}
+#  KPSS tests to determine the appropriate number of first differences
+ltd_unit_ts |>
+  features(box_cox(ltd, lambda), unitroot_ndiffs)
+```
+
+```{r}
+ltd_unit_ts |>
+  mutate(log_ltd = box_cox(ltd, lambda)) |>
+  features(log_ltd, unitroot_nsdiffs)
+```
+
+KPSS tests results determine one difference required
+
+```{r}
+ltd_unit_ts <- ltd_unit_ts %>%
+  mutate(bc_ltd = difference(box_cox(ltd, lambda),1))
+```
+
+
+```{r}
 # Create hierarchical time series
 ltd_hts <- ltd_unit_ts %>%
-  aggregate_key(category / sub_category, ltd = sum(ltd))
+  aggregate_key(category / sub_category, bc_ltd = sum(bc_ltd))
 ```
 
 #### Trend
@@ -182,7 +206,7 @@ ltd_hts <- ltd_unit_ts %>%
 #| fig-cap: "Trend of Land Transfer Duty in Victoria among category over time"
 ltd_hts |>
   filter(is_aggregated(sub_category)) |>
-  autoplot(ltd) +
+  autoplot(bc_ltd) +
   labs(y = "Land Transfer Duty",
        title = "Land Transfer Duty in Victoria: total, category") +
   facet_wrap(vars(category), scales = "free_y", ncol = 3) +
@@ -200,7 +224,7 @@ ltd_hts |>
          is_aggregated(sub_category)) |>
   select(-sub_category) |>
   mutate(category = factor(category, levels=c("res","nonres"))) |>
-  gg_season(ltd) +
+  gg_season(bc_ltd) +
   facet_wrap(vars(category), nrow = 2, scales = "free_y")+
   labs(y = "Land Transfer Duty")
 ```
@@ -217,7 +241,7 @@ This pattern shows there is a difference in consumer behaviour for each category
 ltd_hts |>
   filter(!is_aggregated(sub_category)) |>
   mutate(sub_category = as.character(sub_category)) |>
-  ggplot(aes(x = month, y = ltd
+  ggplot(aes(x = month, y = bc_ltd
              ,group = sub_category, colour = sub_category
              )) +
   stat_summary(fun = sum, geom = "line") +
@@ -229,22 +253,27 @@ ltd_hts |>
 
 @fig-catnsub
 
-## Forecasting
+#### Forecasting
 
 ```{r}
 # Model fitting on filtered data
 fit <- ltd_hts |>
+  na.omit() |>
   filter(year(month) <= 2021) |>
-  model(base = ETS(ltd)) |>
+  model(arima = ARIMA(bc_ltd),
+        ets = ETS(bc_ltd)) |>
   reconcile(
-    bu = bottom_up(base),
-    wls_var = min_trace(base, method = "wls_var"),
-    mint = min_trace(base, method = "mint_shrink")
+    bu_arima = bottom_up(arima),
+    bu_ets = bottom_up(ets),
+    wls_var_arima = min_trace(arima, method = "wls_var"),
+    wls_var_ets = min_trace(ets, method = "wls_var"),
+    mint_arima = min_trace(arima, method = "mint_shrink"),
+    mint_ets = min_trace(ets, method = "mint_shrink")
   )
 ```
 
 ```{r}
-#Forecasting2 years
+#Forecasting 2 years
 fc <- fit |> forecast(h = "2 years")
 ```
 
@@ -293,13 +322,29 @@ data.frame(
     rename("Model" = .model)
 ```
 
+### Average LTD per transaction
 
-### Volume
+```{r}
+# Unit root test for stationary
+ltd_unit_ts %>%
+  features(log(ltd/volume), unitroot_kpss)
+```
+
+Value of 0.01 indicates the `ltd` from this data is stationary and thus require differencing the data.
+
+```{r}
+#  KPSS tests to determine the appropriate number of first differences
+ltd_unit_ts |>
+  features(log(ltd/volume), unitroot_ndiffs)
+```
+
 
 ```{r}
 # Create hierarchical time series
 ltd_hts1 <- ltd_unit_ts %>%
-  aggregate_key(category / sub_category, volume = sum(volume))
+  mutate(log_avg_ltd = log(ltd/volume)) %>%
+  aggregate_key(category / sub_category, log_avg_ltd = sum(log_avg_ltd)) %>%
+  na.omit()
 ```
 
 #### Trend
@@ -309,7 +354,7 @@ ltd_hts1 <- ltd_unit_ts %>%
 #| fig-cap: "Trend of Land Transfer Duty volume in Victoria among category over time"
 ltd_hts1 |>
   filter(is_aggregated(sub_category)) |>
-  autoplot(volume) +
+  autoplot(log_avg_ltd) +
   labs(x = "Month",
        y = "Land Transfer Duty Volume",
        title = "Land Transfer Duty in Victoria: total, category") +
@@ -328,13 +373,13 @@ ltd_hts1 |>
          is_aggregated(sub_category)) |>
   select(-sub_category) |>
   mutate(category = factor(category, levels=c("res","nonres"))) |>
-  gg_season(volume) +
+  gg_season(log_avg_ltd) +
   facet_wrap(vars(category), nrow = 2, scales = "free_y")+
   labs(x = "Month",
        y = "Land Transfer Duty volume")
 ```
 
-@fig-ssut1 
+@fig-ssut1
 
 ```{r}
 #| label: fig-catnsub1
@@ -344,7 +389,7 @@ ltd_hts1 |>
 ltd_hts1 |>
   filter(!is_aggregated(sub_category)) |>
   mutate(sub_category = as.character(sub_category)) |>
-  ggplot(aes(x = month, y = volume
+  ggplot(aes(x = month, y = log_avg_ltd
              ,group = sub_category, colour = sub_category
              )) +
   stat_summary(fun = sum, geom = "line") +
@@ -354,15 +399,15 @@ ltd_hts1 |>
   facet_wrap(~as.character(category), scales = "free_y", ncol = 2) 
 ```
 
-@fig-catnsub1 
+@fig-catnsub1
 
-## Forecasting
+#### Forecasting
 
 ```{r}
 # Model fitting on filtered data
 fit <- ltd_hts1 |>
   filter(year(month) <= 2021) |>
-  model(base = ETS(volume)) |>
+  model(base = ETS(log_avg_ltd)) |>
   reconcile(
     bu = bottom_up(base),
     wls_var = min_trace(base, method = "wls_var"),
@@ -465,7 +510,6 @@ ltd_tem %>%
   theme(legend.position = "none")
 ```
 
-
 ```{r}
 #| fig-width: 11
 #| fig-height: 6
@@ -498,7 +542,6 @@ ltd_tem |>
   facet_wrap(~as.character(Quarter), scales = "free_y", ncol = 2) 
 ```
 
-
 ```{r}
 #| fig-width: 11
 #| fig-height: 6
@@ -514,7 +557,6 @@ ltd_tem |>
        title = "Land Transfer Duty in Victoria: Semi-annually, monthly") +
   facet_wrap(~as.character(Semi_annual), scales = "free_y", ncol = 2) 
 ```
-
 
 ## Forecasting
 
@@ -538,4 +580,3 @@ data.frame(fc |>
   summarise(mase = mean(mase),rmse = mean(rmse), sspc = mean(ss) * 100)) %>%
   rename("Model" = .model)
 ```
-
