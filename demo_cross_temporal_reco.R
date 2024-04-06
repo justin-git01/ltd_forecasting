@@ -56,7 +56,7 @@ base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1))
 residuals_fc$k1 <- matrix(NA, nrow = 108, ncol = ncol(data$k1))
 for (i in 1:ncol(data$k1)) {
   train <- data$k1[1:108, i]
-  forecast_arima <- forecast(auto.arima(train), h = 12)
+  forecast_arima <- forecast(ets(train), h = 12)
   base_fc$k1[, i] <- forecast_arima$mean
   residuals_fc$k1[, i] <- forecast_arima$residuals
 }
@@ -72,7 +72,7 @@ base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2))
 residuals_fc$k2 <- matrix(NA, nrow = 54, ncol = ncol(data$k2))
 for (i in 1:ncol(data$k2)) {
   train <- data$k2[1:54, i]
-  forecast_arima <- forecast(auto.arima(train), h = 6)
+  forecast_arima <- forecast(ets(train), h = 6)
   base_fc$k2[, i] <- forecast_arima$mean
   residuals_fc$k2[, i] <- forecast_arima$residuals
 }
@@ -87,7 +87,7 @@ base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3))
 residuals_fc$k3 <- matrix(NA, nrow = 36, ncol = ncol(data$k3))
 for (i in 1:ncol(data$k3)) {
   train <- data$k3[1:36, i]
-  forecast_arima <- forecast(auto.arima(train), h = 4)
+  forecast_arima <- forecast(ets(train), h = 4)
   base_fc$k3[,i] <- forecast_arima$mean
   residuals_fc$k3[,i] <- forecast_arima$residuals
 }
@@ -102,7 +102,7 @@ base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4))
 residuals_fc$k4 <- matrix(NA, nrow = 27, ncol = ncol(data$k4))
 for (i in 1:ncol(data$k4)) {
   train <- data$k4[1:27, i]
-  forecast_arima <- forecast(auto.arima(train), h = 3)
+  forecast_arima <- forecast(ets(train), h = 3)
   base_fc$k4[,i] <- forecast_arima$mean
   residuals_fc$k4[,i] <- forecast_arima$residuals
 }
@@ -118,7 +118,7 @@ base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6))
 residuals_fc$k6 <- matrix(NA, nrow = 18, ncol = ncol(data$k6))
 for (i in 1:ncol(data$k6)) {
   train <- data$k6[1:18, i]
-  forecast_arima <- forecast(auto.arima(train), h = 2)
+  forecast_arima <- forecast(ets(train), h = 2)
   base_fc$k6[,i] <- forecast_arima$mean
   residuals_fc$k6[,i] <- forecast_arima$residuals
 }
@@ -134,7 +134,7 @@ base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12))
 residuals_fc$k12 <- matrix(NA, nrow = 9, ncol = ncol(data$k12))
 for (i in 1:ncol(data$k12)) {
   train <- data$k12[1:9, i]
-  forecast_arima <- forecast(auto.arima(train), h = 1)
+  forecast_arima <- forecast(ets(train), h = 1)
   base_fc$k12[,i] <- forecast_arima$mean
   residuals_fc$k12[,i] <- forecast_arima$residuals
 }
@@ -182,6 +182,20 @@ FoReco_data <- list(base = base,
                     C = C,
                     obs = obs)
 
+
 # Reconciliation
-oct_recf <- octrec(FoReco_data$base, m = 12, C = FoReco_data$ ,
+oct_recf <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                    comb = "bdshr", res = FoReco_data$res, keep = "recf")
+
+starting_time <- as.POSIXct("2001-01-01 00:00:00", tz="UTC")
+
+data_ct <- tibble(oct = as.numeric(oct_recf[1, -c(1:16)]),
+                  base = as.numeric(base[1, -c(1:16)]),
+                  obs = as.numeric(obs$k1[c(109:120), 1]),
+                  time = seq(from=starting_time, by="month", length.out = 12))
+
+score_ct <- data_ct |>
+  pivot_longer(-c(time, obs), names_to = "Approach") |>
+  group_by(Approach) |>
+  summarise(RMSE = sqrt(mean((value-obs)^2)))
+score_ct
