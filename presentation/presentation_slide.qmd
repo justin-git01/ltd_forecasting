@@ -14,64 +14,66 @@ resources:
 
 ## Goals
 
-Produce *short-term* (a year forward) and *long-term* (several years later) forecasts for **land transfer duty** (LTD). 
+Produce *short-term* (a year forward) and *long-term* (several years later) forecasts for **land transfer duty** (LTD).
 
-::: {.callout-note}
-- Data is from several resources (ABS, etc.):
-  - fetched by the DTF
-  - initial data quality checks performed by the DTF
-  - further data checks and EDA required
-  - produce forecast and reconcile
+::: callout-note
+-   Data is from several resources (ABS, etc.):
+    -   fetched by the DTF
+    -   initial data quality checks performed by the DTF
+    -   further data checks and EDA required
+    -   produce forecast and reconcile
 :::
 
-## Value 
+## Value
 
-::: {.callout-note}
-- How *LTD* affected by other factors (e.g. sales, hvi, interest rate, etc.)
-- Trend and seasonality of LTD
-- Any acts (taxes, subsidise) or regulations required (monetary, fiscal policy)
+::: callout-note
+-   How *LTD* affected by other factors (e.g. sales, hvi, interest rate, etc.)
+-   Trend and seasonality of LTD
+-   Any acts (taxes, subsidise) or regulations required (monetary, fiscal policy)
 :::
 
 ## Approach Overview
 
-::: {.callout-note}
+::: callout-note
 Consists of 3 parts:
 
-- Model fitting
+-   Model fitting
 
-- Forecast
+-   Forecast
 
-- Reconciliation
+-   Reconciliation
 :::
 
 ## Model fitting
 
-::: {.callout-tip}
+::: callout-tip
 Models are considered:
 
-- VAR
-- VECM
-- ETS
-- ARIMA
+-   VAR
+-   VECM
+-   ETS
+-   ARIMA
 
 ::: {.fragment .fade-in}
 The model choice based on data traits, chosen based on accuracy test
 :::
 :::
+
 ## Forecasting
 
 Advanced forecasting method from creating hierarchical and grouped time series
 
-::: {.callout-tip}
-- Disaggregate time series into a hierarchical structure
-  - cross-sectional
-  - temporal
-  - cross-temporal
-- Fit model to all levels
-- Forecast!!
+::: callout-tip
+-   Disaggregate time series into a hierarchical structure
+    -   cross-sectional
+    -   temporal
+    -   cross-temporal
+-   Fit model to all levels
+-   Forecast!!
 :::
 
 ## Forecasting
+
 ::: {.fragment .fade-in}
 ![](image/hierarchy_struc.png){.absolute top="135" left="1" width="1100" height="480"}
 :::
@@ -83,7 +85,7 @@ Advanced forecasting method from creating hierarchical and grouped time series
 :::
 
 ::: {.fragment .fade-in}
-::: {.callout-important}
+::: callout-important
 ## Something doesn't add up here...
 
 Independently produced forecasts are [**incoherent**]{.danger},
@@ -94,8 +96,7 @@ $\text{LTD}_{T+h|T} \neq \text{Residential}_{T+h|T} + \text{Non-residential}_{T+
 
 ## Reconciliation
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Impose constraints to ensure coherency
 
 Adjust the forecasts to satisfy the constraint
@@ -103,45 +104,49 @@ Adjust the forecasts to satisfy the constraint
 $\text{LTD}_{T+h|T} = \text{Residential}_{T+h|T} + \text{Non-residential}_{T+h|T}$.
 
 ::: {.fragment .fade-in}
-<br>
-Often we have many constraints, so matrices are used:
+<br> Often we have many constraints, so matrices are used:
 
 $$
 \begin{bmatrix}
   \text{LTD}_{t} \\
-  \text{Residential}_{t} \\
   \text{Non-residential}_{t} \\
-\end{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
 =
 \begin{bmatrix}
-  1 & 1 \\
-  1 & 0\\
-  0 & 1 \\
+  1 & 1 & 1 & 1 \\
+  0 & 1 & 1 & 1 \\
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
 \end{bmatrix}
 \begin{bmatrix}
   \text{Residential}_{t} \\
-  \text{Non-residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
 \end{bmatrix}
 $$
 
 or compactly, $\mathbf{y}_t = \mathbf{S} \mathbf{b}_t$
-
 :::
 :::
 
 ## Reconciliation
 
-::: {.callout-tip}
+::: callout-tip
 **Few reconciliation methods:**
 
-- *Traditional*
-  - bottom-up
-  - top-down
-  - middle-out
-  
-- *MinT optimal reconciliation*
-  - variance scaling
-  - structural scaling
-  - shrinkage minT
+-   *Traditional*
+    -   bottom-up
+    -   top-down
+    -   middle-out
+-   *MinT optimal reconciliation*
+    -   variance scaling
+    -   structural scaling
+    -   shrinkage minT
 :::
-

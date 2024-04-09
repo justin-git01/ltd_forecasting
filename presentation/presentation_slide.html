@@ -496,18 +496,26 @@
 <p><span class="math display">\[
 \begin{bmatrix}
   \text{LTD}_{t} \\
-  \text{Residential}_{t} \\
   \text{Non-residential}_{t} \\
-\end{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
 =
 \begin{bmatrix}
-  1 &amp; 1 \\
-  1 &amp; 0\\
-  0 &amp; 1 \\
+  1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 1 \\
+  1 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1 \\
 \end{bmatrix}
 \begin{bmatrix}
   \text{Residential}_{t} \\
-  \text{Non-residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
 \end{bmatrix}
 \]</span></p>
 <p>or compactly, <span class="math inline">\(\mathbf{y}_t = \mathbf{S} \mathbf{b}_t\)</span></p>
