@@ -10,6 +10,7 @@ dat_tsibble <- dat %>%
   as_tsibble(index = Month) %>%
   relocate(Month)
 
+#dat1 <- ts(dat_cv[,-1] %>% filter(.id == 1) %>% select(-.id), frequency = 12)
 dat1 <- ts(dat[,-1], frequency = 12)
 
 # Johansen cointegration test to determine the rank

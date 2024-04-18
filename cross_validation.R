@@ -21,14 +21,15 @@ dat_tsibble <- dat %>%
 dat_cv <- dat_tsibble |>
   stretch_tsibble(.init = 60, .step = 1)
 
+
 fit_models <- function(data_slice) {
   # Fit each model
   models <- model(
     data_slice,
     VAR = VAR(vars(train, sales, hvi)),  # You might adjust based on your `forecast_fun1`
     VECM = { # Fitting VECM model might require the Johansen test results to specify ranks
-      jtest <- ca.jo(ts(data_slice, frequency = 12), spec = "longrun", K = 2)
-      r <- sum(test_stats > jtest@cval[, "5pct"])  # Example: Using r=1
+      jtest <- ca.jo(ts(data_slice[,-1] %>% select(-.id), frequency = 12), spec = "longrun", K = 2)
+      r <- sum(jtest@teststat > jtest@cval[, "5pct"])  # Example: Using r=1
       vars::vec2var(jtest, r = r)
     },
     ARIMA = ARIMA(train),
@@ -55,24 +56,43 @@ results_summary <- results %>%
 
 
 
-forecast_fun1 <- function(dat, period){
-  if (period %in% c("6 months", "year")){
-    model(dat, VAR = VAR(vars(train, sales, hvi) ~ AR(p = 1)))
-  } else {
-    model(dat, VAR = VAR(vars(train, sales, hvi)))
-  }
+############
+
+library(dplyr)
+library(dplyr)
+library(tsibble)
+library(fable)
+library(vars)
+library(forecast)
+library(urca)
+
+fit_models <- function(data_slice) {
+  # Assuming data_slice is already a tsibble
+  # Fit models using the fable framework
+  models <- data_slice %>%
+    model(
+      VAR = VAR(vars(train, sales, hvi)),
+      VECM = {
+        jtest <- ca.jo(as.ts(data_slice %>% select(train, sales, hvi)), spec = "longrun", K = 2)
+        r <- sum(jtest@teststat > jtest@cval[, "5pct"])
+        vec2var(jtest, r = r)
+      },
+      ARIMA = ARIMA(train),
+      ETS = ETS(train)
+    )
+  
+  # Forecast using the fitted models
+  forecasts <- models %>%
+    forecast(h = "12 months")  # specifying 12 months explicitly
+  
+  # Calculate accuracy metrics
+  accuracy_metrics <- accuracy(forecasts, data_slice)
+  
+  return(accuracy_metrics)
 }
 
-
-base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
-residuals_fc$k1 <- matrix(NA, nrow = 108, ncol = ncol(data$k1)-2)
-for (i in 1:6) {
-  train <- data$k1[1:108, i]
-  sales <- data$k1[1:108, 7]
-  hvi <- data$k1[1:108, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "month", 108, 12)
-  base_fc$k1[, i] <- forecast_res[[1]]
-  residuals_fc$k1[, i] <- forecast_res[[2]]
-}
-
-
+# Apply the function over each slice of the data
+results <- dat_cv %>%
+  group_by(.id) %>%
+  summarise(accuracy_metrics = list(fit_models(cur_data())), .groups = "drop") %>%
+  unnest(cols = c(accuracy_metrics))
