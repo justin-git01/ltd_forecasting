@@ -267,8 +267,8 @@ for(i in 1:n){
 }
 
 ## cross-temp
-oct_recf <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                   comb = "bdshr", res = FoReco_data$res, keep = "recf")
+oct_recf <- octrec(exp(FoReco_data$base), m = 12, C = FoReco_data$C,
+                   comb = "ols", keep = "recf")
 
 # discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
 #   cs <- max(abs(cs_info$Ut %*% x))
@@ -286,9 +286,9 @@ oct_score <- score_index(recf = oct_recf,
 # Visualise result
 starting_time <- as.POSIXct("2013-07-01 00:00:00", tz="UTC")
 
-data_ct <- tibble(cross_sec = exp(as.numeric(hts_recf[1, -c(1:16)])),
-                  temp = exp(as.numeric(thf_recf[1, -c(1:16)])),
-                  cross_temp = exp(as.numeric(oct_recf[1, -c(1:16)])),
+data_ct <- tibble(#cross_sec = exp(as.numeric(hts_recf[1, -c(1:16)])),
+                  #temp = exp(as.numeric(thf_recf[1, -c(1:16)])),
+                  cross_temp = (as.numeric(oct_recf[1, -c(1:16)])),
                   base = exp(as.numeric(base[1, -c(1:16)])),
                   obs = exp(as.numeric(obs$k1[c(109:120), 1])),
                   time = seq(from=starting_time, by="month", length.out = 12))

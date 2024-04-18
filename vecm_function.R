@@ -11,14 +11,14 @@ dat_tsibble <- dat %>%
   relocate(Month)
 
 #dat1 <- ts(dat_cv[,-1] %>% filter(.id == 1) %>% select(-.id), frequency = 12)
-dat1 <- ts(dat[,-1], frequency = 12)
+dat1 <- ts(dat_tsibble[,-1], frequency = 12)
 
 # Johansen cointegration test to determine the rank
 library(urca)
 coint_test <- ca.jo(dat1, spec = "longrun", K = 2)  
 
 # Fit the VECM model using the rank from Johansen test
-vecm_fit <- vars::vec2var(coint_test, r = 1) 
+vecm_fit <- vars::vec2var(coint_test, r = 2) 
 
 # Access test statistics and critical values
 test_stats <- coint_test@teststat
@@ -39,5 +39,5 @@ res <- residuals(vecm_fit)
 res1 <- c(mean(res, na.rm = TRUE), mean(res, na.rm = TRUE), as.numeric(residuals(vecm_fit)[,1]))
 
 # Forecast
-forecast_res <- as.numeric(predict(vecm_fit, n.ahead = 2)$fcst$train[,1])
+forecast_res <- as.numeric(predict(vecm_fit, n.ahead = 12)$fcst$train[,1])
  
