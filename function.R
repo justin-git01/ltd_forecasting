@@ -3,9 +3,9 @@ library(fpp3)
 
 #### Final
 forecast_fun <- function(train, sales, hvi, period, length, fc_range){
-dat <- data.frame(train = train,
-                  sales = sales,
-                  hvi = hvi,
+dat <- data.frame(train = log(train),
+                  sales = log(sales),
+                  hvi = log(hvi),
                   Date = seq(as.Date("2013-07-01"), by = period, length.out = length))
 
 
