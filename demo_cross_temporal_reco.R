@@ -200,6 +200,19 @@ FoReco_data <- list(base = base,
                     C = C,
                     obs = obs)
 
+# Cross-sectional (contemporaneous) matrix
+cs_info <- hts_tools(C = C)
+
+ut <- cs_info$Ut
+
+cs_info$Ut %*% FoReco_data$test
+
+# Temporal matrix
+te_info <- thf_tools(m = 12)
+
+Zt <- te_info$Zt
+
+FoReco_data$test %*% t(te_info$Zt)
 
 # Reconciliation
 
@@ -236,10 +249,6 @@ mrecf <- htsrec(mbase, C = FoReco_data$C, comb = "shr", res = mres)$recf
 hts_score <- score_index(recf = mrecf, base = mbase, test = mtest, nb = 4)
 
 ## temp
-m <- 12 # Highest available sampling frequency per seasonal cycle
-H <- 1 # Forecast horizon (daily level)
-# List with all the temporal information
-te_info <- FoReco::thf_tools(m = 12, h = H)
 te_info$R
 
 n <- NROW(FoReco_data$base)
@@ -258,13 +267,13 @@ for(i in 1:n){
 oct_recf <- octrec(exp(FoReco_data$base), m = 12, C = FoReco_data$C,
                    comb = "ols", keep = "recf")
 
-# discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
-#   cs <- max(abs(cs_info$Ut %*% x))
-#   te <- max(abs(te_info$Zt %*% t(x)))
-#   cat("cs discrepancy:", ifelse(cs>tol, sprintf("%.8f", cs), 0),
-#       "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
-# }
-# discrepancy(reco_pbu2)
+discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
+  cs <- max(abs(cs_info$Ut %*% x))
+  te <- max(abs(te_info$Zt %*% t(x)))
+  cat("cs discrepancy:", ifelse(cs>tol, sprintf("%.8f", cs), 0),
+      "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
+}
+discrepancy(oct_recf)
 
 oct_score <- score_index(recf = oct_recf,
                          base = FoReco_data$base,
