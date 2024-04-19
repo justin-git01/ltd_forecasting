@@ -36,7 +36,7 @@ forecast_res <- fit |>
   fabletools::forecast(h = fc_range) 
 
 train_res <- dat$residual_train
-forecast_output <- as.numeric(forecast_res$.mean[, "train"])
+forecast_output <- exp(as.numeric(forecast_res$.mean[, "train"]))
 
 output <- list(forecast_output, train_res)
 return(output)
