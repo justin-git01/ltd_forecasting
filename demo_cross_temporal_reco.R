@@ -5,23 +5,13 @@ library(readxl)
 library(fpp3)
 
 ltd_agg <- read_excel("data/LTD data aggregate.xlsx") %>%
-  mutate(log_ltd = log(ltd),
-         log_sales = log(sales),
-         log_hvi = log(hvi)) %>%
-  dplyr::select(c(Date, log_ltd, log_sales, log_hvi))
+  dplyr::select(c(Date, ltd, sales, hvi))
 
 ltd_unit <- read_excel("data/LTD unit records summary.xlsx") |>
   dplyr::select(dd, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
-  left_join(ltd_agg, by = c("dd" = "Date"))
+  left_join(ltd_agg, by = c("dd" = "Date")) |>
+  dplyr::select(-ltd)
 
-ltd_unit <- ltd_unit %>%
-  mutate(log_total = log(ltd_total),
-         log_nonres = log(ltd_nonres),
-         log_comm = log(ltd_comm),
-         log_ind = log(ltd_ind),
-         log_other = log(ltd_other),
-         log_res = log(ltd_res)) %>%
-  dplyr::select(dd, log_total, log_nonres, log_comm, log_ind, log_other, log_res, log_sales, log_hvi)
 
 names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
@@ -68,8 +58,6 @@ data$k12 <- ts(apply(data$k1, 2,
                  frequency = 1)
 
 # MONTHLY FORECASTS
-#library(vars)
-#library(fpp3)
 base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
 residuals_fc$k1 <- matrix(NA, nrow = 108, ncol = ncol(data$k1)-2)
 for (i in 1:6) {
