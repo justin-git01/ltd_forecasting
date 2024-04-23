@@ -4,6 +4,8 @@ library(feasts)
 library(dplyr)
 library(urca)  
 
+############
+#VAR cross-validation
 dat <- data.frame(train = log(data$k1[1:120, 1]),
                   sales = log(data$k1[1:120, 7]),
                   hvi = log(data$k1[1:120, 8]),
@@ -28,13 +30,6 @@ fc <- dat_cv |>
            distribution = .distribution, 
            point_forecast = list(.mean = mean))
 
-
-fc2 <- dat_cv |>
-  model(VAR = VAR(vars(train,sales,hvi))) |>
-  forecast(h=12) |>
-  group_by(.id,.model) |>
-  mutate(h = row_number()) |>
-  ungroup() 
 
 fc_fable <- fc2 %>%
   unnest(c(.mean)) %>%
@@ -97,36 +92,34 @@ results_summary <- results %>%
 
 
 ############
+# ETS and ARIMA cross-validation
 
-library(urca)
+dat <- data.frame(train = log(data$k1[1:120, 1]),
+                  sales = log(data$k1[1:120, 7]),
+                  hvi = log(data$k1[1:120, 8]),
+                  Date = seq(as.Date("2013-07-01"), by = "month", length.out = 120))
 
-fit_models <- function(data_slice) {
-  # Assuming data_slice is already a tsibble
-  # Fit models using the fable framework
-  models <- data_slice %>%
-    model(
-      VAR = VAR(vars(train, sales, hvi)),
-      VECM = {
-        jtest <- ca.jo(as.ts(data_slice %>% select(train, sales, hvi)), spec = "longrun", K = 2)
-        r <- sum(jtest@teststat > jtest@cval[, "5pct"])
-        vec2var(jtest, r = r)
-      },
-      ARIMA = ARIMA(train),
-      ETS = ETS(train)
-    )
-  
-  # Forecast using the fitted models
-  forecasts <- models %>%
-    forecast(h = "12 months")  # specifying 12 months explicitly
-  
-  # Calculate accuracy metrics
-  accuracy_metrics <- accuracy(forecasts, data_slice)
-  
-  return(accuracy_metrics)
-}
+dat_tsibble <- dat %>%
+  mutate(Month = yearmonth(Date)) %>%
+  select(-Date) %>%
+  as_tsibble(index = Month) %>%
+  relocate(Month)
 
-# Apply the function over each slice of the data
-results <- dat_cv %>%
-  group_by(.id) %>%
-  summarise(accuracy_metrics = list(fit_models(cur_data())), .groups = "drop") %>%
-  unnest(cols = c(accuracy_metrics))
+dat_cv <- dat_tsibble |>
+  stretch_tsibble(.init = 60, .step = 1)
+
+fc <- dat_cv |>
+  model(ARIMA = ARIMA(train), 
+        ETS= ETS(train)) |>
+  forecast(h = 12) |>
+  group_by(.id) |>
+  mutate(h = row_number()) |>
+  ungroup() |>
+  as_fable(response = "train", distribution = train)
+
+fc |>
+  accuracy(dat_tsibble, by = c("h", ".model")) |>
+  ggplot(aes(x = h, y = RMSE, color = .model)) +
+  facet_wrap(~.model) +
+  geom_point()
+
