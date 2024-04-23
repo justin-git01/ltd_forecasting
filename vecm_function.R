@@ -19,6 +19,11 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, frequ
   
   r <- sum(coint_test@teststat > coint_test@cval[, "5pct"])  # Example: Using r=1
   
+  # Condition test for r 
+  if (r == 0){
+    stop("There is no cointegration (r=0), use VAR instead")
+  }
+  
   # Fit the VECM model using the rank from Johansen test
   vecm_fit <- vars::vec2var(coint_test, r = r) 
   
@@ -40,7 +45,13 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, frequ
   return(output)
 }
 
+train <- data$k12[1:9, 1]
+sales <- data$k12[1:9, 7]
+hvi <- data$k12[1:9, 8]
 
-
-
-
+monthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 12)[[1]]
+bimonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6, 6)[[1]]
+quarterly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4, 4)[[1]]
+fourmonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "4 months", 27,3,3)[[1]]
+semiannually_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "6 months", 18,2,2)[[1]]
+annual_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "year", 9,1,1)[[1]]
