@@ -1,6 +1,6 @@
 ###VECM 
 
-vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, frequency){
+vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
   dat <- data.frame(train = log(train),
                     sales = log(sales),
                     hvi = log(hvi),
@@ -12,7 +12,7 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, frequ
     as_tsibble(index = Month) %>%
     relocate(Month)
   
-  dat1 <- ts(dat_tsibble[,-1], frequency = frequency)
+  dat1 <- ts(dat_tsibble[,-1], frequency = fc_range)
   
   # Johansen cointegration test to determine the rank
   coint_test <- ca.jo(dat1, spec = "longrun", K = 2)  
@@ -45,13 +45,13 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, frequ
   return(output)
 }
 
-train <- data$k12[1:9, 1]
-sales <- data$k12[1:9, 7]
-hvi <- data$k12[1:9, 8]
+train <- data$k1[1:108, 1]
+sales <- data$k1[1:108, 7]
+hvi <- data$k1[1:108, 8]
 
-monthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 12)[[1]]
-bimonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6, 6)[[1]]
-quarterly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4, 4)[[1]]
-fourmonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "4 months", 27,3,3)[[1]]
-semiannually_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "6 months", 18,2,2)[[1]]
-annual_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "year", 9,1,1)[[1]]
+monthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12)[[1]]
+bimonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6)[[1]]
+quarterly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4)[[1]]
+fourmonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3)[[1]]
+semiannually_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "6 months", 18,2)[[1]]
+annual_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "year", 9,1)[[1]]
