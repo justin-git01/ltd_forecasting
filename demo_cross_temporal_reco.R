@@ -83,7 +83,8 @@ for (i in 1:6) {
   train <- data$k2[1:54, i]
   sales <- data$k2[1:54, 7]
   hvi <- data$k2[1:54, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "2 months", 54, 6)
+  #forecast_res <- forecast_fun(train, sales, hvi, "2 months", 54, 6)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6)
   base_fc$k2[, i] <- forecast_res[[1]]
   residuals_fc$k2[, i] <- forecast_res[[2]]
 }
@@ -100,7 +101,13 @@ for (i in 1:6) {
   train <- data$k3[1:36, i]
   sales <- data$k3[1:36, 7]
   hvi <- data$k3[1:36, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "quarter", 36, 4)
+  #forecast_res <- forecast_fun(train, sales, hvi, "quarter", 36, 4)
+  if (i %in% c(3,5,6)){
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4)
+  }
+  else {
+    forecast_res <- forecast_fun(train, sales, hvi, "quarter", 36, 4)
+  }
   base_fc$k3[,i] <- forecast_res[[1]]
   residuals_fc$k3[,i] <- forecast_res[[2]]
 }
@@ -117,7 +124,13 @@ for (i in 1:6) {
   train <- data$k4[1:27, i]
   sales <- data$k4[1:27, 7]
   hvi <- data$k4[1:27, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "4 months", 27, 3)
+  #forecast_res <- forecast_fun(train, sales, hvi, "4 months", 27, 3)
+  if (i %in% c(3,6)){
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3)
+  }
+  else {
+    forecast_res <- forecast_fun(train, sales, hvi, "4 months", 27, 3)
+  }
   base_fc$k4[,i] <- forecast_res[[1]]
   residuals_fc$k4[,i] <- forecast_res[[2]]
 }
@@ -135,7 +148,13 @@ for (i in 1:6) {
   train <- data$k6[1:18, i]
   sales <- data$k6[1:18, 7]
   hvi <- data$k6[1:18, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "6 months", 18, 2)
+  #forecast_res <- forecast_fun(train, sales, hvi, "6 months", 18, 2)
+  if (!i %in% c(4,5)){
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", 18, 2)
+  }
+  else {
+    forecast_res <- forecast_fun(train, sales, hvi, "6 months", 18, 2)
+  }
   base_fc$k6[,i] <- forecast_res[[1]]
   residuals_fc$k6[,i] <- forecast_res[[2]]
 }
@@ -280,7 +299,7 @@ oct_score <- score_index(recf = oct_recf,
                          base = FoReco_data$base,
                          test = FoReco_data$test, m = 12, nb = 4, type = "rmse")
 
-
+oct_score
 # Visualise result
 
 data_ct <- tibble(#cross_sec = exp(as.numeric(hts_recf[1, -c(1:16)])),
@@ -299,9 +318,9 @@ plot_ct <- data_ct |>
   theme(legend.title = element_blank())
 plotly::ggplotly(plot_ct)
 
-score_ct <- data_ct |>
+score_ct1 <- data_ct |>
   pivot_longer(-c(time, obs), names_to = "Approach") |>
   group_by(Approach) |>
   summarise(RMSE = sqrt(mean((value-obs)^2)))
 
-score_ct
+score_ct1
