@@ -1,8 +1,8 @@
 library(patchwork)
 
-testing <- tibble(base = exp(as.numeric(base_fc$k1[,1])),
-                  base_vecm = exp(forecast_res),
-                  obs = exp(as.numeric(test_fc$k1[,1])),
+testing <- tibble(base = (as.numeric(base_fc$k1[,1])),
+                  #base_vecm = exp(forecast_res),
+                  obs = (as.numeric(test_fc$k1[,1])),
                   time = seq(from=as.Date("2013-07-01"), by="month", length.out = 12))
 
 plot_test <- testing |>
@@ -15,9 +15,9 @@ plot_test <- testing |>
 plot <- plotly::ggplotly(plot_test)
 
 # 2months
-testing <- tibble(base = exp(as.numeric(base_fc$k2[,1])),
-                  base_vecm = exp(forecast_res),
-                  obs = exp(as.numeric(test_fc$k2[,1])),
+testing <- tibble(base = (as.numeric(base_fc$k2[,1])),
+                  #base_vecm = exp(forecast_res),
+                  obs = (as.numeric(test_fc$k2[,1])),
                   time = seq(from=as.Date("2013-07-01"), by="2 months", length.out = 6))
 
 plot_test <- testing |>
@@ -31,9 +31,9 @@ plot_test <- testing |>
 plot2 <- plotly::ggplotly(plot_test)
 plot2
 # quarter
-testing <- tibble(base = exp(as.numeric(base_fc$k3[,1])),
-                  base_vecm = exp(forecast_res),
-                  obs = exp(as.numeric(test_fc$k3[,1])),
+testing <- tibble(base = (as.numeric(base_fc$k3[,1])),
+                  #base_vecm = exp(forecast_res),
+                  obs = (as.numeric(test_fc$k3[,1])),
                   time = seq(from=as.Date("2013-07-01"), by="quarter", length.out = 4))
 
 plot_test <- testing |>
@@ -47,9 +47,9 @@ plot_test <- testing |>
 plot3 <- plotly::ggplotly(plot_test)
 plot3
 # 4months
-testing <- tibble(base = exp(as.numeric(base_fc$k4[,1])),
-                  base_vecm = exp(forecast_res),
-                  obs = exp(as.numeric(test_fc$k4[,1])),
+testing <- tibble(base = (as.numeric(base_fc$k4[,1])),
+                  #base_vecm = exp(forecast_res),
+                  obs = (as.numeric(test_fc$k4[,1])),
                   time = seq(from=as.Date("2013-07-01"), by="4 months", length.out = 3))
 
 plot_test <- testing |>
@@ -63,9 +63,9 @@ plot_test <- testing |>
 plot4 <- plotly::ggplotly(plot_test)
 plot4
 # semi-annual
-testing <- tibble(base = exp(as.numeric(base_fc$k6[,1])),
-                  base_vecm = exp(forecast_res),
-                  obs = exp(as.numeric(test_fc$k6[,1])),
+testing <- tibble(base = (as.numeric(base_fc$k6[,1])),
+                  #base_vecm = exp(forecast_res),
+                  obs = (as.numeric(test_fc$k6[,1])),
                   time = seq(from=as.Date("2013-07-01"), by="6 months", length.out = 2))
 
 plot_test <- testing |>
@@ -79,8 +79,8 @@ plot_test <- testing |>
 plot6 <- plotly::ggplotly(plot_test)
 plot6
 # annual
-testing <- tibble(base = exp(as.numeric(base_fc$k12[,1])),
-                  obs = exp(as.numeric(test_fc$k12[1])),
+testing <- tibble(base = (as.numeric(base_fc$k12[,1])),
+                  obs = (as.numeric(test_fc$k12[1])),
                   time = seq(from=as.Date("2013-07-01"), by="year", length.out = 1))
 
 plot_test <- testing |>

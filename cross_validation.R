@@ -1,14 +1,13 @@
 library(fable)
-library(fabletools)
 library(tsibble)
 library(feasts)
 library(dplyr)
 library(urca)  
 
-dat <- data.frame(train = data$k1[1:108, 1],
-                  sales = data$k1[1:108, 7],
-                  hvi = data$k1[1:108, 8],
-                  Date = seq(as.Date("2013-07-01"), by = "month", length.out = 108))
+dat <- data.frame(train = log(data$k1[1:120, 1]),
+                  sales = log(data$k1[1:120, 7]),
+                  hvi = log(data$k1[1:120, 8]),
+                  Date = seq(as.Date("2013-07-01"), by = "month", length.out = 120))
 
 dat_tsibble <- dat %>%
   mutate(Month = yearmonth(Date)) %>%
@@ -16,12 +15,53 @@ dat_tsibble <- dat %>%
   as_tsibble(index = Month) %>%
   relocate(Month)
 
-
-
 dat_cv <- dat_tsibble |>
   stretch_tsibble(.init = 60, .step = 1)
 
+fc <- dat_cv |>
+  model(VAR = VAR(vars(train, sales, hvi)))|>
+  forecast(h = 12) |>
+  group_by(.id) |>
+  mutate(h = row_number()) |>
+  ungroup() |>
+  as_fable(response = ".distribution",
+           distribution = .distribution, 
+           point_forecast = list(.mean = mean))
 
+
+fc2 <- dat_cv |>
+  model(VAR = VAR(vars(train,sales,hvi))) |>
+  forecast(h=12) |>
+  group_by(.id,.model) |>
+  mutate(h = row_number()) |>
+  ungroup() 
+
+fc_fable <- fc2 %>%
+  unnest(c(.mean)) %>%
+  select(.id, .model, Month, .distribution, train, h) %>%
+    as_fable(index = Month, 
+             response = ".distribution", 
+             distribution = .distribution, 
+             point_forecast = train,
+             key = c(".id", ".model"))
+
+
+# Calculate accuracy
+accuracy_results <- accuracy(fc_fable, dat_tsibble, by = c("h", ".model"))
+
+# Plot the RMSE
+accuracy_results %>%
+  ggplot(aes(x = h, y = RMSE, colour = variable)) +
+  geom_point() +
+  facet_wrap(~ variable)
+
+
+fc |>
+  accuracy(dat_tsibble, by = c("h", ".model",".mean")) |>
+  ggplot(aes(x = h, y = RMSE)) +
+  geom_point()
+
+#################
 fit_models <- function(data_slice) {
   # Fit each model
   models <- model(
@@ -58,12 +98,6 @@ results_summary <- results %>%
 
 ############
 
-library(dplyr)
-library(dplyr)
-library(tsibble)
-library(fable)
-library(vars)
-library(forecast)
 library(urca)
 
 fit_models <- function(data_slice) {
