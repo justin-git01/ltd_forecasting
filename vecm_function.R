@@ -44,14 +44,3 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
   output <- list(forecast_output, train_res)
   return(output)
 }
-
-train <- data$k4[1:27, 3] #3, 6
-sales <- data$k4[1:27, 7]
-hvi <- data$k4[1:27, 8]
-
-monthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12)[[1]]
-bimonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6)[[1]]
-quarterly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4)[[1]]
-fourmonthly_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3)[[1]]
-semiannually_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "6 months", 18,2)[[1]]
-annual_vecm_forecast <- vecm_forecast_fun(train, sales, hvi, "year", 9,1)[[1]]
