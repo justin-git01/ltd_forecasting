@@ -2,7 +2,7 @@
 library(fpp3)
 
 #### Final
-forecast_fun <- function(train, sales, hvi, period, length, fc_range){
+var_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
 dat <- data.frame(train = log(train),
                   sales = log(sales),
                   hvi = log(hvi),
