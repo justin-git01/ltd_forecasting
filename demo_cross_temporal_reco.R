@@ -57,6 +57,17 @@ data$k12 <- ts(apply(data$k1, 2,
                        function(x) colSums(matrix(x, nrow = 12))),
                  frequency = 1)
 
+# ARIMA 
+base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, 49))
+
+for (i in 1:49){
+  base_arima_forecast[,,i] <- matrix(rnorm(12*6, 12, 6))
+  test_set[, ,i] <- matrix(rnorm(12*6, 12,6))
+  reconciled_arima[, , i] <- matrix(rnorm(12*6,12,6))
+}
+
+colMeans(base_arima_forecast-test_set)
+# VAR n VECM
 # MONTHLY FORECASTS
 base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
 residuals_fc$k1 <- matrix(NA, nrow = 108, ncol = ncol(data$k1)-2)
@@ -324,3 +335,8 @@ score_ct1 <- data_ct |>
   summarise(RMSE = sqrt(mean((value-obs)^2)))
 
 score_ct1
+
+for (i in 1:49){
+base_list <- NULL
+reco_list <- NUL
+}
