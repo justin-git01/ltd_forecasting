@@ -12,6 +12,8 @@ ltd_unit <- read_excel("data/LTD unit records summary.xlsx") |>
   left_join(ltd_agg, by = c("dd" = "Date")) |>
   dplyr::select(-ltd)
 
+source("function.R")
+source("vecm_function.R")
 
 names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
@@ -57,17 +59,6 @@ data$k12 <- ts(apply(data$k1, 2,
                        function(x) colSums(matrix(x, nrow = 12))),
                  frequency = 1)
 
-# ARIMA 
-base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, 49))
-
-for (i in 1:49){
-  base_arima_forecast[,,i] <- matrix(rnorm(12*6, 12, 6))
-  test_set[, ,i] <- matrix(rnorm(12*6, 12,6))
-  reconciled_arima[, , i] <- matrix(rnorm(12*6,12,6))
-}
-
-colMeans(base_arima_forecast-test_set)
-# VAR n VECM
 # MONTHLY FORECASTS
 base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
 residuals_fc$k1 <- matrix(NA, nrow = 108, ncol = ncol(data$k1)-2)
@@ -117,7 +108,7 @@ for (i in 1:6) {
     forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4)
   }
   else {
-    forecast_res <- forecast_fun(train, sales, hvi, "quarter", 36, 4)
+    forecast_res <- var_forecast_fun(train, sales, hvi, "quarter", 36, 4)
   }
   base_fc$k3[,i] <- forecast_res[[1]]
   residuals_fc$k3[,i] <- forecast_res[[2]]
@@ -140,7 +131,7 @@ for (i in 1:6) {
     forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3)
   }
   else {
-    forecast_res <- forecast_fun(train, sales, hvi, "4 months", 27, 3)
+    forecast_res <- var_forecast_fun(train, sales, hvi, "4 months", 27, 3)
   }
   base_fc$k4[,i] <- forecast_res[[1]]
   residuals_fc$k4[,i] <- forecast_res[[2]]
@@ -164,7 +155,7 @@ for (i in 1:6) {
     forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", 18, 2)
   }
   else {
-    forecast_res <- forecast_fun(train, sales, hvi, "6 months", 18, 2)
+    forecast_res <- var_forecast_fun(train, sales, hvi, "6 months", 18, 2)
   }
   base_fc$k6[,i] <- forecast_res[[1]]
   residuals_fc$k6[,i] <- forecast_res[[2]]
@@ -183,7 +174,7 @@ for (i in 1:6) {
   train <- data$k12[1:9, i]
   sales <- data$k12[1:9, 7]
   hvi <- data$k12[1:9, 8]
-  forecast_res <- forecast_fun(train, sales, hvi, "year", 9, 1)
+  forecast_res <- var_forecast_fun(train, sales, hvi, "year", 9, 1)
   base_fc$k12[,i] <- forecast_res[[1]]
   residuals_fc$k12[,i] <- forecast_res[[2]]
 }
@@ -295,8 +286,17 @@ for(i in 1:n){
 }
 
 ## cross-temp
-oct_recf <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                   comb = "ols", keep = "recf")
+oct_recf_ols <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                         comb = "ols", keep = "recf")
+
+oct_recf_t_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                         comb = "t_struc", res = FoReco_data$res, keep = "recf")
+
+oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                         comb = "struc", res = FoReco_data$res, keep = "recf")
+
+oct_recf_wlsv <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                         comb = "wlsv", res = FoReco_data$res, keep = "recf")
 
 discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
   cs <- max(abs(cs_info$Ut %*% x))
@@ -313,12 +313,15 @@ oct_score <- score_index(recf = oct_recf,
 oct_score
 # Visualise result
 
-data_ct <- tibble(#cross_sec = exp(as.numeric(hts_recf[1, -c(1:16)])),
-                  #temp = exp(as.numeric(thf_recf[1, -c(1:16)])),
-                  cross_temp = as.numeric(oct_recf[1, -c(1:16)]),
+data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
+                  #temp = as.numeric(thf_recf[1, -c(1:16)]),
+                  #cross_temp_ols = as.numeric(oct_recf_ols[1, -c(1:16)]),
+                  cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
+                  cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
+                  cross_temp_wlsv = as.numeric(oct_recf_wlsv[1, -c(1:16)]),
                   base = as.numeric(base[1, -c(1:16)]),
                   obs = as.numeric(obs$k1[c(109:120), 1]),
-                  time = seq(from=as.POSIXct("2013-07-01 00:00:00", tz="UTC"), by="month", length.out = 12))
+                  time = seq(from=as.POSIXct("2023-07-01 00:00:00", tz="UTC"), by="month", length.out = 12))
 
 plot_ct <- data_ct |>
   pivot_longer(-time, names_to = "Approach") |>
@@ -335,8 +338,3 @@ score_ct1 <- data_ct |>
   summarise(RMSE = sqrt(mean((value-obs)^2)))
 
 score_ct1
-
-for (i in 1:49){
-base_list <- NULL
-reco_list <- NUL
-}
