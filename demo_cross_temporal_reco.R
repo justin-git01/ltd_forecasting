@@ -12,8 +12,8 @@ ltd_unit <- read_excel("data/LTD unit records summary.xlsx") |>
   left_join(ltd_agg, by = c("dd" = "Date")) |>
   dplyr::select(-ltd)
 
-source("var_function.R")
-source("vecm_function.R")
+source("Function/var_function.R")
+source("Function/vecm_function.R")
 
 names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
