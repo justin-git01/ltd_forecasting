@@ -40,7 +40,7 @@ ltd_unit_test <- ltd_unit[-c(1:117),]
 
 # Perform cross-validation with 6 years initially
 ltd_cv <- ltd_unit_train |>
-  stretch_tsibble(.init = 84, .step = 1)
+  stretch_tsibble(.init = 108, .step = 1)
 
 # Number of folds
 folds <- length(unique(ltd_cv$.id))
@@ -56,28 +56,28 @@ for (i in 1:folds){
 
   # Extract test set
   test_set[, ,i] <- test_extract(ltd_filtered)
-  
+
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
   residuals_fc <- NULL
-  
+
   # Monthly series
   data$k1 <- adjust_series(ltd_filtered[, -1], freq = 12)
   colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
-  
+
   # BI-MONTHLY SERIES
   data$k2 <- adjust_series(data$k1, freq = 6)
-  
+
   # QUARTERLY SERIES
   data$k3 <- adjust_series(data$k1, freq = 4)
-  
+
   # FOUR-MONTHLY SERIES
   data$k4 <- adjust_series(data$k1, freq = 3)
-  
+
   # SEMI-ANNUAL SERIES
   data$k6 <- adjust_series(data$k1, freq = 2)
-  
+
   # ANNUAL SERIES
   data$k12 <- adjust_series(data$k1, freq = 1)
 
@@ -136,8 +136,8 @@ for (i in 1:folds){
   colnames(base_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k4 <- ts(residuals_fc$k4, frequency = 3)
   colnames(residuals_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  
-  
+
+
   # Semi-annual
   base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6)-2)
   residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-2)
@@ -151,8 +151,8 @@ for (i in 1:folds){
   colnames(base_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k6 <- ts(residuals_fc$k6, frequency = 2)
   colnames(residuals_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  
-  
+
+
   # Annual
   base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12)-2)
   residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-2)
@@ -166,7 +166,7 @@ for (i in 1:folds){
   colnames(base_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k12 <- ts(residuals_fc$k12, frequency = 1)
   colnames(residuals_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  
+
   base <- t(do.call(rbind, rev(base_fc)))
   res <- t(do.call(rbind, rev(residuals_fc)))
 
@@ -183,7 +183,7 @@ for (i in 1:folds){
                            rev(kset) * h,
                            function(x) seq(1:x)))),
                          sep = "")
-  
+
   C <- matrix(c(rep(1,4),
                 rep(1,3), 0), byrow = TRUE, nrow = 2)
   colnames(C) <- c("Comm", "Ind", "Other", "Res")
@@ -192,22 +192,22 @@ for (i in 1:folds){
   FoReco_data <- list(base = base,
                       res = res,
                       C = C)
-  
+
   # Cross-sectional (contemporaneous) matrix
   cs_info <- hts_tools(C = C)
-  
+
   ut <- cs_info$Ut
-  
+
   # Temporal matrix
   te_info <- thf_tools(m = 12)
-  
+
   Zt <- te_info$Zt
-  
+
   # Reconciliation
   ## cross-temp
   oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                            comb = "struc", res = FoReco_data$res, keep = "recf")
-  
+
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
     cs <- max(abs(cs_info$Ut %*% x))
     te <- max(abs(te_info$Zt %*% t(x)))
@@ -215,11 +215,11 @@ for (i in 1:folds){
         "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
   }
   discrepancy(oct_recf_struc)
-  
-  
+
+
   for (j in 1:nrow(base)){
     base_arima_forecast[j, ,i] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_arima[j, , i] <- t(as.matrix(oct_recf_struc[1, -c(1:16)]))
+    reconciled_arima[j, , i] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
   }
 }
 
