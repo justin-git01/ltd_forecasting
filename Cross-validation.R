@@ -87,8 +87,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k1[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 12)
-    base$k1[, i] <- forecast_arima$mean
-    residuals$k1[, i] <- forecast_arima$residuals
+    base_fc$k1[, i] <- forecast_arima$mean
+    residuals_fc$k1[, i] <- forecast_arima$residuals
   }
   base_fc$k1 <- ts(base_fc$k1, frequency = 12)
   colnames(base_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -101,8 +101,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k2[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 6)
-    base$k2[, i] <- forecast_arima$mean
-    residuals$k2[, i] <- forecast_arima$residuals
+    base_fc$k2[, i] <- forecast_arima$mean
+    residuals_fc$k2[, i] <- forecast_arima$residuals
   }
   base_fc$k2 <- ts(base_fc$k2, frequency = 6)
   colnames(base_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -115,8 +115,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k3[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 4)
-    base$k3[, i] <- forecast_arima$mean
-    residuals$k3[, i] <- forecast_arima$residuals
+    base_fc$k3[, i] <- forecast_arima$mean
+    residuals_fc$k3[, i] <- forecast_arima$residuals
   }
   base_fc$k3 <- ts(base_fc$k3, frequency = 4)
   colnames(base_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -129,8 +129,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k4[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 3)
-    base$k4[, i] <- forecast_arima$mean
-    residuals$k4[, i] <- forecast_arima$residuals
+    base_fc$k4[, i] <- forecast_arima$mean
+    residuals_fc$k4[, i] <- forecast_arima$residuals
   }
   base_fc$k4 <- ts(base_fc$k4, frequency = 3)
   colnames(base_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -144,8 +144,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k6[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 2)
-    base$k6[, i] <- forecast_arima$mean
-    residuals$k6[, i] <- forecast_arima$residuals
+    base_fc$k6[, i] <- forecast_arima$mean
+    residuals_fc$k6[, i] <- forecast_arima$residuals
   }
   base_fc$k6 <- ts(base_fc$k6, frequency = 2)
   colnames(base_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -159,8 +159,8 @@ for (i in 1:folds){
   for (i in 1:6) {
     train <- data$k12[, i]
     forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 1)
-    base$k12[, i] <- forecast_arima$mean
-    residuals$k12[, i] <- forecast_arima$residuals
+    base_fc$k12[, i] <- forecast_arima$mean
+    residuals_fc$k12[, i] <- forecast_arima$residuals
   }
   base_fc$k12 <- ts(base_fc$k12, frequency = 1)
   colnames(base_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
