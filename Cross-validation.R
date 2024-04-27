@@ -4,9 +4,9 @@ library(readxl)
 library(fpp3)
 library(urca)
 
-source("var_function.R")
-source("vecm_function.R")
-source("adjust_series_fun.R")
+source("Function/var_function.R")
+source("Function/vecm_function.R")
+source("Function/adjust_series_fun.R")
 
 # Load ltd aggregate date
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
