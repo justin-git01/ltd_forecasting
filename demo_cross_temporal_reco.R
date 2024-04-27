@@ -31,33 +31,33 @@ residuals_fc <- NULL
 test_fc <- NULL
 
 # Monthly
-data$k1 <- ts(month[1:120,], frequency = 12)
+data$k1 <- ts(month[1:120,], frequency = 12, start = c(13, 7))
 colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
 # BI-MONTHLY SERIES
 data$k2 <- ts(apply(data$k1, 2,
                       function(x) colSums(matrix(x, nrow = 2))),
-                frequency = 6)
+                frequency = 6, start = c(13, 7))
 
 # QUARTERLY SERIES
 data$k3 <- ts(apply(data$k1, 2,
                       function(x) colSums(matrix(x, nrow = 3))),
-                frequency = 4)
+                frequency = 4, start = c(13, 7))
 
 # FOUR-MONTHLY SERIES
 data$k4 <- ts(apply(data$k1, 2,
                       function(x) colSums(matrix(x, nrow = 4))),
-                frequency = 3)
+                frequency = 3, start = c(13, 7))
 
 # SEMI-ANNUAL SERIES
 data$k6 <- ts(apply(data$k1, 2,
                       function(x) colSums(matrix(x, nrow = 6))),
-                frequency = 2)
+                frequency = 2, start = c(13, 7))
 
 # ANNUAL SERIES
 data$k12 <- ts(apply(data$k1, 2,
                        function(x) colSums(matrix(x, nrow = 12))),
-                 frequency = 1)
+                 frequency = 1, start = c(13, 7))
 
 # MONTHLY FORECASTS
 base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
@@ -286,9 +286,6 @@ for(i in 1:n){
 }
 
 ## cross-temp
-oct_recf_ols <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                         comb = "ols", keep = "recf")
-
 oct_recf_t_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                          comb = "t_struc", res = FoReco_data$res, keep = "recf")
 
@@ -304,21 +301,40 @@ discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
   cat("cs discrepancy:", ifelse(cs>tol, sprintf("%.8f", cs), 0),
       "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
 }
-discrepancy(oct_recf)
+discrepancy(oct_recf_t_struc)
 
-oct_score <- score_index(recf = oct_recf,
-                         base = FoReco_data$base,
-                         test = FoReco_data$test, m = 12, nb = 4, type = "rmse")
+# oct_score <- score_index(recf = oct_recf,
+#                          base = FoReco_data$base,
+#                          test = FoReco_data$test, m = 12, nb = 4, type = "rmse")
+# 
+# oct_score
 
-oct_score
+#### 
+# Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
+tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                   thf_comb = "struc", hts_comb = "bu",
+                   res = FoReco_data$res)$recf
+
+# Heuristic first-cross-sectional-then-temporal cross-temporal reconciliation
+cst_recf <- cstrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                   thf_comb = "shr", hts_comb = "bu",
+                   res = FoReco_data$res)$recf
+
+# Iterative cross-temporal reconciliation 
+ite_recf <- iterec(FoReco_data$base,
+                   m = 12, C = FoReco_data$C,
+                   thf_comb = "struc", hts_comb = "bu",
+                   res = FoReco_data$res, start_rec = "thf")$recf
 # Visualise result
 
 data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
                   #temp = as.numeric(thf_recf[1, -c(1:16)]),
-                  #cross_temp_ols = as.numeric(oct_recf_ols[1, -c(1:16)]),
-                  cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
+                  #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
-                  cross_temp_wlsv = as.numeric(oct_recf_wlsv[1, -c(1:16)]),
+                  #cross_temp_wlsv = as.numeric(oct_recf_wlsv[1, -c(1:16)]),
+                  tcs_recf = as.numeric(tcs_recf[1, -c(1:16)]),
+                  cst_recf = as.numeric(cst_recf[1, -c(1:16)]),
+                  ite_recf = as.numeric(ite_recf[1, -c(1:16)]),
                   base = as.numeric(base[1, -c(1:16)]),
                   obs = as.numeric(obs$k1[c(109:120), 1]),
                   time = seq(from=as.POSIXct("2023-07-01 00:00:00", tz="UTC"), by="month", length.out = 12))
@@ -327,7 +343,7 @@ plot_ct <- data_ct |>
   pivot_longer(-time, names_to = "Approach") |>
   ggplot(aes(x = time, y = value, col = Approach)) +
   geom_line()+
-  labs(x = NULL, y = NULL) +
+  labs(x = NULL, y = NULL, title = "Total LTD monthly forecast vs. Observation") +
   theme_minimal() +
   theme(legend.title = element_blank())
 plotly::ggplotly(plot_ct)
@@ -338,3 +354,4 @@ score_ct1 <- data_ct |>
   summarise(RMSE = sqrt(mean((value-obs)^2)))
 
 score_ct1
+
