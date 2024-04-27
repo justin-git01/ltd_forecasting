@@ -52,7 +52,7 @@ base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, fo
 
 for (i in 1:folds){
   # Filter to fold
-  ltd_filtered <- ltd_cv %>% filter(.id == i) %>% dplyr::select(-.id)
+  ltd_filtered <- ltd_cv %>% filter(.id == 1) %>% dplyr::select(-.id)
 
   # Extract test set
   test_set[, ,i] <- test_extract(ltd_filtered)
@@ -61,7 +61,6 @@ for (i in 1:folds){
   data <- NULL
   base_fc <- NULL
   residuals_fc <- NULL
-  test_fc <- NULL
   
   # Monthly series
   data$k1 <- ts(ltd_filtered[, -1], frequency = 12)
@@ -87,7 +86,7 @@ for (i in 1:folds){
   residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-2)
   for (i in 1:6) {
     train <- data$k1[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 12)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 12)
     base$k1[, i] <- forecast_arima$mean
     residuals$k1[, i] <- forecast_arima$residuals
   }
@@ -101,7 +100,7 @@ for (i in 1:folds){
   residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-2)
   for (i in 1:6) {
     train <- data$k2[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 6)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 6)
     base$k2[, i] <- forecast_arima$mean
     residuals$k2[, i] <- forecast_arima$residuals
   }
@@ -115,7 +114,7 @@ for (i in 1:folds){
   residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-2)
   for (i in 1:6) {
     train <- data$k3[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 4)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 4)
     base$k3[, i] <- forecast_arima$mean
     residuals$k3[, i] <- forecast_arima$residuals
   }
@@ -129,7 +128,7 @@ for (i in 1:folds){
   residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-2)
   for (i in 1:6) {
     train <- data$k4[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 3)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 3)
     base$k4[, i] <- forecast_arima$mean
     residuals$k4[, i] <- forecast_arima$residuals
   }
@@ -144,7 +143,7 @@ for (i in 1:folds){
   residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-2)
   for (i in 1:6) {
     train <- data$k6[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 2)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 2)
     base$k6[, i] <- forecast_arima$mean
     residuals$k6[, i] <- forecast_arima$residuals
   }
@@ -159,7 +158,7 @@ for (i in 1:folds){
   residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-2)
   for (i in 1:6) {
     train <- data$k12[, i]
-    forecast_arima <- forecast(forecast::auto.arima(train), h = 1)
+    forecast_arima <- forecast::forecast(forecast::auto.arima(train), h = 1)
     base$k12[, i] <- forecast_arima$mean
     residuals$k12[, i] <- forecast_arima$residuals
   }
@@ -219,12 +218,12 @@ for (i in 1:folds){
   
   
   for (j in 1: nrow(base)){
-    base_arima_forecast[j,,i] <- base[j, -c(1:16)]
-    reconciled_arima[j, , i] <- oct_recf_struc[j, -c(1:16)]
+    base_arima_forecast[j,,i] <- as.matrix(base[j, -c(1:16)])
+    reconciled_arima[j, , i] <- as.matrix(oct_recf_struc[j, -c(1:16)])
   }
 }
 
-colMeans(base_arima_forecast-test_set)
+#colMeans(base_arima_forecast-test_set)
 # VAR n VECM
 
 
