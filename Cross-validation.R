@@ -40,7 +40,7 @@ ltd_unit_test <- ltd_unit[-c(1:117),]
 
 # Perform cross-validation with 6 years initially
 ltd_cv <- ltd_unit_train |>
-  stretch_tsibble(.init = 72, .step = 1)
+  stretch_tsibble(.init = 84, .step = 1)
 
 # Number of folds
 folds <- length(unique(ltd_cv$.id))
@@ -52,7 +52,7 @@ base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, fo
 
 for (i in 1:folds){
   # Filter to fold
-  ltd_filtered <- ltd_cv %>% filter(.id == 1) %>% dplyr::select(-.id)
+  ltd_filtered <- ltd_cv %>% filter(.id == i) %>% dplyr::select(-.id)
 
   # Extract test set
   test_set[, ,i] <- test_extract(ltd_filtered)
@@ -63,7 +63,7 @@ for (i in 1:folds){
   residuals_fc <- NULL
   
   # Monthly series
-  data$k1 <- ts(ltd_filtered[, -1], frequency = 12)
+  data$k1 <- adjust_series(ltd_filtered[, -1], freq = 12)
   colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
   
   # BI-MONTHLY SERIES
@@ -177,7 +177,7 @@ for (i in 1:folds){
                             rev(kset) * h,
                             function(x) seq(1:x)))),
                           sep = "")
-  h <- 9
+  h <- nrow(data$k12)
   colnames(res) <- paste("k", rep(kset, h * rev(kset)), "_h",
                          do.call("c", as.list(sapply(
                            rev(kset) * h,
@@ -217,9 +217,9 @@ for (i in 1:folds){
   discrepancy(oct_recf_struc)
   
   
-  for (j in 1: nrow(base)){
-    base_arima_forecast[j,,i] <- as.matrix(base[j, -c(1:16)])
-    reconciled_arima[j, , i] <- as.matrix(oct_recf_struc[j, -c(1:16)])
+  for (j in 1:nrow(base)){
+    base_arima_forecast[j, ,i] <- t(as.matrix(base[j, -c(1:16)]))
+    reconciled_arima[j, , i] <- t(as.matrix(oct_recf_struc[1, -c(1:16)]))
   }
 }
 
