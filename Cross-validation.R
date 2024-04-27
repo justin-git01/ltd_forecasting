@@ -87,7 +87,7 @@ for (i in 1:folds){
   residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-2)
   for (i in 1:6) {
     train <- data$k1[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 12)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 12)
     base$k1[, i] <- forecast_arima$mean
     residuals$k1[, i] <- forecast_arima$residuals
   }
@@ -95,14 +95,13 @@ for (i in 1:folds){
   colnames(base_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k1 <- ts(residuals_fc$k1, frequency = 12)
   colnames(residuals_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k1 <- data$k1[-c(1:108), c(1:6)]
-  
+
   # BI-MONTHLY FORECASTS
   base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2)-2)
   residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-2)
   for (i in 1:6) {
     train <- data$k2[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 6)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 6)
     base$k2[, i] <- forecast_arima$mean
     residuals$k2[, i] <- forecast_arima$residuals
   }
@@ -110,14 +109,13 @@ for (i in 1:folds){
   colnames(base_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k2 <- ts(residuals_fc$k2, frequency = 6)
   colnames(residuals_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k2 <- data$k2[-c(1:54), c(1:6)]
-  
+
   # Quarterly
   base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3)-2)
   residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-2)
   for (i in 1:6) {
     train <- data$k3[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 4)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 4)
     base$k3[, i] <- forecast_arima$mean
     residuals$k3[, i] <- forecast_arima$residuals
   }
@@ -125,14 +123,13 @@ for (i in 1:folds){
   colnames(base_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k3 <- ts(residuals_fc$k3, frequency = 4)
   colnames(residuals_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k3 <- data$k3[-c(1:36), c(1:6) ]
-  
+
   # Four-monthly
   base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4)-2)
   residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-2)
   for (i in 1:6) {
     train <- data$k4[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 3)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 3)
     base$k4[, i] <- forecast_arima$mean
     residuals$k4[, i] <- forecast_arima$residuals
   }
@@ -140,7 +137,6 @@ for (i in 1:folds){
   colnames(base_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k4 <- ts(residuals_fc$k4, frequency = 3)
   colnames(residuals_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k4 <- data$k4[-c(1:27), c(1:6) ]
   
   
   # Semi-annual
@@ -148,7 +144,7 @@ for (i in 1:folds){
   residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-2)
   for (i in 1:6) {
     train <- data$k6[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 2)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 2)
     base$k6[, i] <- forecast_arima$mean
     residuals$k6[, i] <- forecast_arima$residuals
   }
@@ -156,7 +152,6 @@ for (i in 1:folds){
   colnames(base_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k6 <- ts(residuals_fc$k6, frequency = 2)
   colnames(residuals_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k6 <- data$k6[-c(1:18), c(1:6)]
   
   
   # Annual
@@ -164,7 +159,7 @@ for (i in 1:folds){
   residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-2)
   for (i in 1:6) {
     train <- data$k12[, i]
-    forecast_arima <- forecast(auto.arima(train), h = 1)
+    forecast_arima <- forecast(forecast::auto.arima(train), h = 1)
     base$k12[, i] <- forecast_arima$mean
     residuals$k12[, i] <- forecast_arima$residuals
   }
@@ -172,7 +167,6 @@ for (i in 1:folds){
   colnames(base_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   residuals_fc$k12 <- ts(residuals_fc$k12, frequency = 1)
   colnames(residuals_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  #test_fc$k12 <- data$k12[-c(1:9), c(1:6)]
   
   base <- t(do.call(rbind, rev(base_fc)))
   res <- t(do.call(rbind, rev(residuals_fc)))
