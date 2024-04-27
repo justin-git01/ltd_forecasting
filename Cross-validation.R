@@ -7,6 +7,7 @@ library(urca)
 source("Function/var_function.R")
 source("Function/vecm_function.R")
 source("Function/adjust_series_fun.R")
+source("Function/test_extract_fun.R")
 
 # Load ltd aggregate date
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
