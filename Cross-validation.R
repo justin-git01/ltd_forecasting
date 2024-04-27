@@ -53,26 +53,9 @@ base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, fo
 for (i in 1:folds){
   # Filter to fold
   ltd_filtered <- ltd_cv %>% filter(.id == i) %>% dplyr::select(-.id)
-  
-  # Process each fold
 
-    # Get the last month available in ltd_filtered
-    last_month <- max(ltd_filtered$Month)
-    
-    # Calculate the range for the next 12 months
-    start_date <- last_month %m+% months(1)
-    end_date <- last_month %m+% months(12)
-    
-    # Extract the corresponding rows from ltd_unit_train
-    required_data <- ltd_unit_train %>%
-      filter(Month >= start_date & Month <= end_date) %>%
-      select(Total, NonRes, Comm, Ind, Other, Res)
-    
-    # Check if the extracted data has 12 months, otherwise continue with NA for this fold
-    if(nrow(required_data) == 12) {
-      # Assign the data to the test_set array for this fold
-      test_set[,,as.character(i)] <- as.matrix(required_data)
-    }
+  # Extract test set
+  test_set[, ,i] <- test_extract(ltd_filtered)
   
   # Pre-define set of data
   data <- NULL
@@ -231,14 +214,8 @@ for (i in 1:folds){
   
   # Reconciliation
   ## cross-temp
-  #oct_recf_t_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                             comb = "t_struc", res = FoReco_data$res, keep = "recf")
-  
   oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                            comb = "struc", res = FoReco_data$res, keep = "recf")
-  
-  #oct_recf_wlsv <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                          comb = "wlsv", res = FoReco_data$res, keep = "recf")
   
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
     cs <- max(abs(cs_info$Ut %*% x))
@@ -251,7 +228,6 @@ for (i in 1:folds){
   
   for (j in 1: nrow(base)){
     base_arima_forecast[j,,i] <- base[j, -c(1:16)]
-    test_set[j, ,i] <- matrix(rnorm(12*6, 12,6))
     reconciled_arima[j, , i] <- oct_recf_struc[j, -c(1:16)]
   }
 }
