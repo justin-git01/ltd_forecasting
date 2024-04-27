@@ -195,12 +195,10 @@ for (i in 1:folds){
                 rep(1,3), 0), byrow = TRUE, nrow = 2)
   colnames(C) <- c("Comm", "Ind", "Other", "Res")
   rownames(C) <- c("Total", "NonRes")
-  #obs <- data
+
   FoReco_data <- list(base = base,
-                      #test = test,
                       res = res,
-                      C = C,
-                      #obs = obs)
+                      C = C)
   
   # Cross-sectional (contemporaneous) matrix
   cs_info <- hts_tools(C = C)
