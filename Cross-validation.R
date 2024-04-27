@@ -4,7 +4,7 @@ library(readxl)
 library(fpp3)
 library(urca)
 
-source("function.R")
+source("var_function.R")
 source("vecm_function.R")
 source("adjust_series_fun.R")
 
