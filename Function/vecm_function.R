@@ -8,7 +8,7 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
   
   dat_tsibble <- dat %>%
     mutate(Month = yearmonth(Date)) %>%
-    select(-Date) %>%
+    dplyr::select(-Date) %>%
     as_tsibble(index = Month) %>%
     relocate(Month)
   
