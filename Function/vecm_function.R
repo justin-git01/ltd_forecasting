@@ -20,27 +20,29 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
   r <- sum(coint_test@teststat > coint_test@cval[, "5pct"])  # Example: Using r=1
   
   # Condition test for r 
-  if (r == 0){
-    stop("There is no cointegration (r=0), use VAR instead")
+  if (r != 0){
+    # Fit the VECM model using the rank from Johansen test
+    vecm_fit <- vars::vec2var(coint_test, r = r) 
+    
+    # Construct residuals
+    fitted_values <- fitted(vecm_fit)
+    
+    fitted_train <- c(rep(mean(fitted_values[,1], na.rm = T),2), fitted_values[,1] )
+    
+    dat_tsibble <- mutate(dat_tsibble,
+                          residual_train = exp(train) - exp(fitted_train)) 
+    
+    # Forecasting
+    forecast_res <- as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,1])
+    
+    train_res <- dat_tsibble$residual_train
+    forecast_output <- exp(forecast_res)
+    
+    output <- list(forecast_output, train_res)
+    return(output)
   }
-  
-  # Fit the VECM model using the rank from Johansen test
-  vecm_fit <- vars::vec2var(coint_test, r = r) 
-  
-  # Construct residuals
-  fitted_values <- fitted(vecm_fit)
-  
-  fitted_train <- c(rep(mean(fitted_values[,1], na.rm = T),2), fitted_values[,1] )
-  
-  dat_tsibble <- mutate(dat_tsibble,
-                        residual_train = exp(train) - exp(fitted_train)) 
-  
-  # Forecasting
-  forecast_res <- as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,1])
-  
-  train_res <- dat_tsibble$residual_train
-  forecast_output <- exp(forecast_res)
-  
-  output <- list(forecast_output, train_res)
-  return(output)
+  else {
+    warning("There is no cointegration (r=0), use VAR instead")
+    var_forecast_fun(train, sales, hvi, period, length, fc_range)
+  }
 }
