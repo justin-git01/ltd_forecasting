@@ -47,8 +47,14 @@ folds <- length(unique(ltd_cv$.id))
 
 # ARIMA 
 
-# Define set of data
+# Define array of data
 base_vecm_forecast <- reconciled_vecm <- test_set <- array(, dim = c(6, 12, folds))
+
+# Add row names for the array
+rownames(base_vecm_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+
 
 for (t in 1:folds){
   # Filter to fold
@@ -57,14 +63,13 @@ for (t in 1:folds){
   # Extract test set
   test_set[, ,t] <- test_extract(ltd_filtered)
   
-  # Add row names for the test set
-  rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-  
-  # Add column names for the test set
+  # Add column names for the array
   last_month <- max(ltd_filtered$Month)
   start_ym <- as.Date(last_month) + months(1)
-  colnames(test_set[, , t]) <- yearmonth(seq.Date(start_ym, by = "month", length.out = 12))
-
+  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
+  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
+  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
+  
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
@@ -257,7 +262,11 @@ for (t in 1:folds){
   }
 }
 
-#colMeans(base_arima_forecast-test_set)
-# VAR n VECM
+# RMSE for base forecast (row: .id, col: h-step)
+rowMeans(sqrt(colMeans((base_vecm_forecast-test_set)^2)))
+
+# RMSE for reconciled forecast (row: .id, col: h-step)
+sqrt(colMeans((reconciled_vecm-test_set)^2))
+
 
 
