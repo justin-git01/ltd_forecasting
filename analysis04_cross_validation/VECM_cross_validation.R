@@ -133,12 +133,7 @@ for (t in 1:folds){
     train <- data$k3[, i]
     sales <- data$k3[, 7]
     hvi <- data$k3[, 8]
-    if (i %in% c(3,5,6)){
-      forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4)
-    }
-    else {
-      forecast_res <- var_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4)
-    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4)
     base_fc$k3[,i] <- forecast_res[[1]]
     residuals_fc$k3[,i] <- forecast_res[[2]]
   }
@@ -154,12 +149,7 @@ for (t in 1:folds){
     train <- data$k4[, i]
     sales <- data$k4[, 7]
     hvi <- data$k4[, 8]
-    if (i %in% c(3,6)){
-      forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3)
-    }
-    else {
-      forecast_res <- var_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3)
-    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3)
     base_fc$k4[,i] <- forecast_res[[1]]
     residuals_fc$k4[,i] <- forecast_res[[2]]
   }
@@ -176,12 +166,7 @@ for (t in 1:folds){
     train <- data$k6[, i]
     sales <- data$k6[, 7]
     hvi <- data$k6[, 8]
-    if (!i %in% c(4,5)){
-      forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2)
-    }
-    else {
-      forecast_res <- var_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2)
-    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2)
     base_fc$k6[,i] <- forecast_res[[1]]
     residuals_fc$k6[,i] <- forecast_res[[2]]
   }
@@ -284,5 +269,45 @@ plot(1:12, RMSE_h_reconciled, type = "l", xlab = "h-step forecast", ylab = "RMSE
 abline(h = mean_RMSE_rec, col = "red")
 title(sub = "Reconciled Forecast")
 
+base_vecm_forecast
 
+library(plotly)
 
+plots <- list()
+
+# Loop through each .id
+for (i in 1:10) {
+  # Extract Total values for each .id and each array
+  total_base <- base_vecm_forecast["Total", , i]
+  total_reconciled <- reconciled_vecm["Total", , i]
+  total_observed <- test_set["Total", , i]
+  arima_base <- base_arima_forecast["Total", , i]
+  arima_reconciled <- reconciled_arima["Total", , i]
+  
+  # Create a dataframe for the current .id
+  df <- data.frame(
+    Date = seq(from=as.POSIXct("2023-07-01 00:00:00", tz="UTC"), by="month", length.out = 12),
+    total_base = as.numeric(total_base),
+    total_reconciled = as.numeric(total_reconciled),
+    observations = as.numeric(total_observed),
+    arima_base = as.numeric(arima_base),
+    arima_reconciled = as.numeric(arima_reconciled),
+    id = as.factor(i)
+  )
+  
+  # Convert Yearmonth to a Date object
+  df$Date <- as.Date(df$Date)
+}
+
+plot_ct <- df |>
+  select(-id) |>
+  pivot_longer(-Date, names_to = "Approach") |>
+  ggplot(aes(x = Date, y = value, col = Approach)) +
+  geom_line()+
+  labs(x = NULL, y = NULL, title = "Total LTD monthly forecast vs. Observation") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+plotly::ggplotly(plot_ct)
+
+# Show the plots
+subplot(plots)
