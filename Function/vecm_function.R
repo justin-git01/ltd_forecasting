@@ -42,7 +42,7 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
     return(output)
   }
   else {
-    warning("There is no cointegration (r=0), use VAR instead")
+    warning("There is no cointegration (r=0), VAR model fitted instead")
     var_forecast_fun(train, sales, hvi, period, length, fc_range)
   }
 }
