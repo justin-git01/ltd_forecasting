@@ -57,6 +57,9 @@ for (i in 1:folds){
   # Extract test set
   test_set[, ,i] <- test_extract(ltd_filtered)
   
+  # Add row names for the test set
+  rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
