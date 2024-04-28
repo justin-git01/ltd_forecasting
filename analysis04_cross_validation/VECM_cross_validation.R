@@ -269,13 +269,13 @@ plot(1:12, RMSE_h_reconciled, type = "l", xlab = "h-step forecast", ylab = "RMSE
 abline(h = mean_RMSE_rec, col = "red")
 title(sub = "Reconciled Forecast")
 
-base_vecm_forecast
 
 library(plotly)
 
 plots <- list()
 
 # Loop through each .id
+df <- NULL
 for (i in 1:10) {
   # Extract Total values for each .id and each array
   total_base <- base_vecm_forecast["Total", , i]
@@ -285,8 +285,8 @@ for (i in 1:10) {
   arima_reconciled <- reconciled_arima["Total", , i]
   
   # Create a dataframe for the current .id
-  df <- data.frame(
-    Date = seq(from=as.POSIXct("2023-07-01 00:00:00", tz="UTC"), by="month", length.out = 12),
+  df1 <- data.frame(
+    Date = seq(from=as.POSIXct("2023-04-01 00:00:00", tz="UTC"), by="month", length.out = 12),
     total_base = as.numeric(total_base),
     total_reconciled = as.numeric(total_reconciled),
     observations = as.numeric(total_observed),
@@ -295,11 +295,14 @@ for (i in 1:10) {
     id = as.factor(i)
   )
   
+  df <- rbind(df, df1)
+  
   # Convert Yearmonth to a Date object
   df$Date <- as.Date(df$Date)
 }
 
 plot_ct <- df |>
+  filter(id == 9) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -310,4 +313,3 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 # Show the plots
-subplot(plots)
