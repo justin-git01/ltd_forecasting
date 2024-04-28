@@ -48,16 +48,19 @@ folds <- length(unique(ltd_cv$.id))
 # Define set of data
 base_arima_forecast <- reconciled_arima <- test_set <- array(, dim = c(6, 12, folds))
 
-for (i in 1:folds){
+# Add row names for the array
+rownames(base_arima_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(reconciled_arima) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+
+
+for (t in 1:folds){
   # Filter to fold
-  ltd_filtered <- ltd_cv %>% filter(.id == i) %>% dplyr::select(-.id)
+  ltd_filtered <- ltd_cv %>% filter(.id == t) %>% dplyr::select(-.id)
 
   # Extract test set
-  test_set[, ,i] <- test_extract(ltd_filtered)
+  test_set[, ,t] <- test_extract(ltd_filtered)
   
-  # Add row names for the test set
-  rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
@@ -219,12 +222,32 @@ for (i in 1:folds){
 
 
   for (j in 1:nrow(base)){
-    base_arima_forecast[j, ,i] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_arima[j, , i] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    base_arima_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
+    reconciled_arima[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
   }
 }
 
-#colMeans(base_arima_forecast-test_set)
-# VAR n VECM
+par(mfrow=c(1,2))  # Set up a 2x1 grid for plots
+
+# RMSE for base forecast (row: h_step, col: .id)
+RMSE_base <- sqrt(colMeans((base_arima_forecast-test_set)^2))
+RMSE_h_base <- rowMeans(RMSE_base)
+mean_RMSE_base <- mean(RMSE_h_base)
+
+# Plot base forecast RMSE
+plot(1:12, RMSE_h_base, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_base))
+abline(h = mean_RMSE_base, col = "red")
+title(main = "RMSE at each h-step forecast", sub = "Base Forecast")
+
+# RMSE for reconciled forecast (row: h_step, col: .id)
+RMSE_reconciled <- sqrt(colMeans((reconciled_arima-test_set)^2))
+RMSE_h_reconciled <- rowMeans(RMSE_reconciled)
+mean_RMSE_rec <- mean(RMSE_h_reconciled)
+
+# Plot reconciled forecast RMSE
+plot(1:12, RMSE_h_reconciled, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled))
+abline(h = mean_RMSE_rec, col = "red")
+title(sub = "Reconciled Forecast")
+
 
 
