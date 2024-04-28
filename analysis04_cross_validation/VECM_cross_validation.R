@@ -50,16 +50,21 @@ folds <- length(unique(ltd_cv$.id))
 # Define set of data
 base_vecm_forecast <- reconciled_vecm <- test_set <- array(, dim = c(6, 12, folds))
 
-for (i in 1:folds){
+for (t in 1:folds){
   # Filter to fold
-  ltd_filtered <- ltd_cv %>% filter(.id == i) %>% dplyr::select(-.id)
+  ltd_filtered <- ltd_cv %>% filter(.id == t) %>% dplyr::select(-.id)
   
   # Extract test set
-  test_set[, ,i] <- test_extract(ltd_filtered)
+  test_set[, ,t] <- test_extract(ltd_filtered)
   
   # Add row names for the test set
   rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
+  # Add column names for the test set
+  last_month <- max(ltd_filtered$Month)
+  start_ym <- as.Date(last_month) + months(1)
+  colnames(test_set[, , t]) <- yearmonth(seq.Date(start_ym, by = "month", length.out = 12))
+
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
@@ -247,8 +252,8 @@ for (i in 1:folds){
   
   
   for (j in 1:nrow(base)){
-    base_vecm_forecast[j, ,i] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_vecm[j, , i] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    base_vecm_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
+    reconciled_vecm[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
   }
 }
 

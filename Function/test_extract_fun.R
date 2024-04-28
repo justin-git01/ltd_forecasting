@@ -14,3 +14,4 @@ test_extract <- function(data){
   
   return(t(required_data[,-1]))
 }
+
