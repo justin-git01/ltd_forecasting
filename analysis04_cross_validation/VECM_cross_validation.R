@@ -3,6 +3,7 @@ library(tidyverse)
 library(readxl)
 library(fpp3)
 library(urca)
+library(plotly)
 
 source("Function/var_function.R")
 source("Function/vecm_function.R")
@@ -48,11 +49,12 @@ folds <- length(unique(ltd_cv$.id))
 # ARIMA 
 
 # Define array of data
-base_vecm_forecast <- reconciled_vecm <- test_set <- array(, dim = c(6, 12, folds))
+base_vecm_forecast <- reconciled_vecm_struc <- reconciled_vecm_tcs <- test_set <- array(, dim = c(6, 12, folds))
 
 # Add row names for the array
 rownames(base_vecm_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-rownames(reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(reconciled_vecm_struc) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(reconciled_vecm_tcs) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 
 
@@ -67,9 +69,7 @@ for (t in 1:folds){
   last_month <- max(ltd_filtered$Month)
   start_ym <- as.Date(last_month) + months(1)
   colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
-  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
-  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
-  
+
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
@@ -101,7 +101,16 @@ for (t in 1:folds){
     train <- data$k1[, i]
     sales <- data$k1[, 7]
     hvi <- data$k1[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", nrow(data$k1), 12)
+    if (t %in% c(1:7)){
+      lag_length <- 5
+    } 
+    else if (t == 9) {
+      lag_length <- 18
+    }
+    else {
+      lag_length <- 20
+    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", nrow(data$k1), 12, lag_length)
     base_fc$k1[, i] <- forecast_res[[1]]
     residuals_fc$k1[, i] <- forecast_res[[2]]
   }
@@ -117,7 +126,13 @@ for (t in 1:folds){
     train <- data$k2[, i]
     sales <- data$k2[, 7]
     hvi <- data$k2[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", nrow(data$k2), 6)
+    if (t %in% c(1:7)){
+      lag_length_2months <- 3
+    } 
+    else {
+      lag_length_2months <- 5
+    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", nrow(data$k2), 6, lag_length_2months)
     base_fc$k2[, i] <- forecast_res[[1]]
     residuals_fc$k2[, i] <- forecast_res[[2]]
   }
@@ -133,7 +148,7 @@ for (t in 1:folds){
     train <- data$k3[, i]
     sales <- data$k3[, 7]
     hvi <- data$k3[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4)
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4, 2)
     base_fc$k3[,i] <- forecast_res[[1]]
     residuals_fc$k3[,i] <- forecast_res[[2]]
   }
@@ -149,7 +164,7 @@ for (t in 1:folds){
     train <- data$k4[, i]
     sales <- data$k4[, 7]
     hvi <- data$k4[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3)
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3, 2)
     base_fc$k4[,i] <- forecast_res[[1]]
     residuals_fc$k4[,i] <- forecast_res[[2]]
   }
@@ -166,7 +181,7 @@ for (t in 1:folds){
     train <- data$k6[, i]
     sales <- data$k6[, 7]
     hvi <- data$k6[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2)
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2, 2)
     base_fc$k6[,i] <- forecast_res[[1]]
     residuals_fc$k6[,i] <- forecast_res[[2]]
   }
@@ -232,6 +247,11 @@ for (t in 1:folds){
   oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                            comb = "struc", res = FoReco_data$res, keep = "recf")
   
+  # Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
+  tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                     thf_comb = "struc", hts_comb = "bu",
+                     res = FoReco_data$res)$recf
+  
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
     cs <- max(abs(cs_info$Ut %*% x))
     te <- max(abs(te_info$Zt %*% t(x)))
@@ -243,7 +263,8 @@ for (t in 1:folds){
   
   for (j in 1:nrow(base)){
     base_vecm_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_vecm[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    reconciled_vecm_struc[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    reconciled_vecm_tcs[j, , t] <- t(as.matrix(tcs_recf[j, -c(1:16)]))
   }
 }
 
@@ -260,38 +281,46 @@ abline(h = mean_RMSE_base, col = "red")
 title(main = "RMSE at each h-step forecast", sub = "Base Forecast")
 
 # RMSE for reconciled forecast (row: h_step, col: .id)
-RMSE_reconciled <- sqrt(colMeans((reconciled_vecm-test_set)^2))
-RMSE_h_reconciled <- rowMeans(RMSE_reconciled)
-mean_RMSE_rec <- mean(RMSE_h_reconciled)
+RMSE_reconciled_struc <- sqrt(colMeans((reconciled_vecm_struc-test_set)^2))
+RMSE_h_reconciled_struc <- rowMeans(RMSE_reconciled_struc)
+mean_RMSE_rec_struc <- mean(RMSE_h_reconciled_struc)
 
 # Plot reconciled forecast RMSE
-plot(1:12, RMSE_h_reconciled, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled))
-abline(h = mean_RMSE_rec, col = "red")
+plot(1:12, RMSE_h_reconciled_struc, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled_struc))
+abline(h = mean_RMSE_rec_struc, col = "red")
 title(sub = "Reconciled Forecast")
 
+# RMSE for reconciled forecast (row: h_step, col: .id)
+RMSE_reconciled_tcs <- sqrt(colMeans((reconciled_vecm_tcs-test_set)^2))
+RMSE_h_reconciled_tcs <- rowMeans(RMSE_reconciled_tcs)
+mean_RMSE_rec_struc_tcs <- mean(RMSE_h_reconciled_tcs)
 
-library(plotly)
+# Plot reconciled forecast RMSE
+plot(1:12, RMSE_h_reconciled_tcs, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled_tcs))
+abline(h = mean_RMSE_rec_struc_tcs, col = "red")
+title(sub = "Reconciled Forecast")
 
-plots <- list()
 
 # Loop through each .id
 df <- NULL
 for (i in 1:10) {
   # Extract Total values for each .id and each array
-  total_base <- base_vecm_forecast["Total", , i]
-  total_reconciled <- reconciled_vecm["Total", , i]
+  vecm_base <- base_vecm_forecast["Total", , i]
+  vecm_struc_reconciled <- reconciled_vecm_struc["Total", , i]
+  vecm_tcs_reconciled <- reconciled_vecm_tcs["Total", , i]
   total_observed <- test_set["Total", , i]
-  arima_base <- base_arima_forecast["Total", , i]
-  arima_reconciled <- reconciled_arima["Total", , i]
+  #arima_base <- base_arima_forecast["Total", , i]
+  #arima_reconciled <- reconciled_arima["Total", , i]
   
   # Create a dataframe for the current .id
   df1 <- data.frame(
     Date = seq(from=as.POSIXct("2023-04-01 00:00:00", tz="UTC"), by="month", length.out = 12),
-    total_base = as.numeric(total_base),
-    total_reconciled = as.numeric(total_reconciled),
+    vecm_base = as.numeric(vecm_base),
+    vecm_struc_reconciled = as.numeric(vecm_struc_reconciled),
+    vecm_tcs_reconciled = as.numeric(vecm_tcs_reconciled),
     observations = as.numeric(total_observed),
-    arima_base = as.numeric(arima_base),
-    arima_reconciled = as.numeric(arima_reconciled),
+    #arima_base = as.numeric(arima_base),
+    #arima_reconciled = as.numeric(arima_reconciled),
     id = as.factor(i)
   )
   
@@ -312,4 +341,12 @@ plot_ct <- df |>
   theme(legend.title = element_blank())
 plotly::ggplotly(plot_ct)
 
-# Show the plots
+score_ct1 <- df |>
+  filter(id == 10) |>
+  select(-id) |>
+  pivot_longer(-c(Date, observations), names_to = "Approach") |>
+  group_by(Approach) |>
+  summarise(RMSE = sqrt(mean((value-observations)^2)))
+
+score_ct1
+
