@@ -66,8 +66,7 @@ for (i in 1:6) {
   train <- data$k1[1:108, i]
   sales <- data$k1[1:108, 7]
   hvi <- data$k1[1:108, 8]
-  #forecast_res <- forecast_fun(train, sales, hvi, "month", 108, 12)
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 7)
   base_fc$k1[, i] <- forecast_res[[1]]
   residuals_fc$k1[, i] <- forecast_res[[2]]
 }
@@ -86,7 +85,7 @@ for (i in 1:6) {
   sales <- data$k2[1:54, 7]
   hvi <- data$k2[1:54, 8]
   #forecast_res <- forecast_fun(train, sales, hvi, "2 months", 54, 6)
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6, 3)
   base_fc$k2[, i] <- forecast_res[[1]]
   residuals_fc$k2[, i] <- forecast_res[[2]]
 }
@@ -103,13 +102,7 @@ for (i in 1:6) {
   train <- data$k3[1:36, i]
   sales <- data$k3[1:36, 7]
   hvi <- data$k3[1:36, 8]
-  #forecast_res <- forecast_fun(train, sales, hvi, "quarter", 36, 4)
-  if (i %in% c(3,5,6)){
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4)
-  }
-  else {
-    forecast_res <- var_forecast_fun(train, sales, hvi, "quarter", 36, 4)
-  }
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4, 2)
   base_fc$k3[,i] <- forecast_res[[1]]
   residuals_fc$k3[,i] <- forecast_res[[2]]
 }
@@ -126,13 +119,7 @@ for (i in 1:6) {
   train <- data$k4[1:27, i]
   sales <- data$k4[1:27, 7]
   hvi <- data$k4[1:27, 8]
-  #forecast_res <- forecast_fun(train, sales, hvi, "4 months", 27, 3)
-  if (i %in% c(3,6)){
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3)
-  }
-  else {
-    forecast_res <- var_forecast_fun(train, sales, hvi, "4 months", 27, 3)
-  }
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", 27, 3, 2)
   base_fc$k4[,i] <- forecast_res[[1]]
   residuals_fc$k4[,i] <- forecast_res[[2]]
 }
@@ -150,13 +137,7 @@ for (i in 1:6) {
   train <- data$k6[1:18, i]
   sales <- data$k6[1:18, 7]
   hvi <- data$k6[1:18, 8]
-  #forecast_res <- forecast_fun(train, sales, hvi, "6 months", 18, 2)
-  if (!i %in% c(4,5)){
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", 18, 2)
-  }
-  else {
-    forecast_res <- var_forecast_fun(train, sales, hvi, "6 months", 18, 2)
-  }
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", 18, 2, 2)
   base_fc$k6[,i] <- forecast_res[[1]]
   residuals_fc$k6[,i] <- forecast_res[[2]]
 }
@@ -292,9 +273,6 @@ oct_recf_t_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
 oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                          comb = "struc", res = FoReco_data$res, keep = "recf")
 
-oct_recf_wlsv <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                         comb = "wlsv", res = FoReco_data$res, keep = "recf")
-
 discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
   cs <- max(abs(cs_info$Ut %*% x))
   te <- max(abs(te_info$Zt %*% t(x)))
@@ -328,12 +306,11 @@ ite_recf <- iterec(FoReco_data$base,
 # Visualise result
 
 data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
-                  #temp = as.numeric(thf_recf[1, -c(1:16)]),
-                  #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
+                  temp = as.numeric(thf_recf[1, -c(1:16)]),
+                  cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
-                  #cross_temp_wlsv = as.numeric(oct_recf_wlsv[1, -c(1:16)]),
                   tcs_recf = as.numeric(tcs_recf[1, -c(1:16)]),
-                  cst_recf = as.numeric(cst_recf[1, -c(1:16)]),
+                  #cst_recf = as.numeric(cst_recf[1, -c(1:16)]),
                   ite_recf = as.numeric(ite_recf[1, -c(1:16)]),
                   base = as.numeric(base[1, -c(1:16)]),
                   obs = as.numeric(obs$k1[c(109:120), 1]),
