@@ -4,6 +4,9 @@ library(readxl)
 library(fpp3)
 library(urca)
 
+source("Function/var_function.R")
+source("Function/vecm_function.R")
+
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
   rename(Date = ...1,
          ltd = LTD,
@@ -18,8 +21,6 @@ ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
   left_join(ltd_agg, by = c("Date")) |>
   dplyr::select(-ltd)
 
-source("Function/var_function.R")
-source("Function/vecm_function.R")
 
 names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
@@ -37,7 +38,7 @@ residuals_fc <- NULL
 test_fc <- NULL
 
 # Monthly
-data$k1 <- ts(month[1:120,], frequency = 12, start = c(13, 7))
+data$k1 <- ts(month[10:129,], frequency = 12, start = c(13, 7))
 colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
 
 # BI-MONTHLY SERIES
@@ -72,7 +73,7 @@ for (i in 1:6) {
   train <- data$k1[1:108, i]
   sales <- data$k1[1:108, 7]
   hvi <- data$k1[1:108, 8]
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 3)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 20)
   base_fc$k1[, i] <- forecast_res[[1]]
   residuals_fc$k1[, i] <- forecast_res[[2]]
 }
@@ -91,7 +92,7 @@ for (i in 1:6) {
   sales <- data$k2[1:54, 7]
   hvi <- data$k2[1:54, 8]
   #forecast_res <- forecast_fun(train, sales, hvi, "2 months", 54, 6)
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6, 3)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", 54, 6, 5)
   base_fc$k2[, i] <- forecast_res[[1]]
   residuals_fc$k2[, i] <- forecast_res[[2]]
 }
@@ -108,7 +109,7 @@ for (i in 1:6) {
   train <- data$k3[1:36, i]
   sales <- data$k3[1:36, 7]
   hvi <- data$k3[1:36, 8]
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4, 2)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", 36, 4, 3)
   base_fc$k3[,i] <- forecast_res[[1]]
   residuals_fc$k3[,i] <- forecast_res[[2]]
 }
