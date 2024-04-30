@@ -4,12 +4,18 @@ library(readxl)
 library(fpp3)
 library(urca)
 
-ltd_agg <- read_excel("data/LTD data aggregate.xlsx") %>%
+ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI) |>
   dplyr::select(c(Date, ltd, sales, hvi))
 
-ltd_unit <- read_excel("data/LTD unit records summary.xlsx") |>
-  dplyr::select(dd, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
-  left_join(ltd_agg, by = c("dd" = "Date")) |>
+# Load ltd unit data and join with aggregate data
+ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
+  rename(Date = ...1) |>
+  dplyr::select(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
+  left_join(ltd_agg, by = c("Date")) |>
   dplyr::select(-ltd)
 
 source("Function/var_function.R")
@@ -66,7 +72,7 @@ for (i in 1:6) {
   train <- data$k1[1:108, i]
   sales <- data$k1[1:108, 7]
   hvi <- data$k1[1:108, 8]
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 7)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 3)
   base_fc$k1[, i] <- forecast_res[[1]]
   residuals_fc$k1[, i] <- forecast_res[[2]]
 }
@@ -306,8 +312,8 @@ ite_recf <- iterec(FoReco_data$base,
 # Visualise result
 
 data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
-                  temp = as.numeric(thf_recf[1, -c(1:16)]),
-                  cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
+                  #temp = as.numeric(thf_recf[1, -c(1:16)]),
+                  #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
                   tcs_recf = as.numeric(tcs_recf[1, -c(1:16)]),
                   #cst_recf = as.numeric(cst_recf[1, -c(1:16)]),
