@@ -1,6 +1,6 @@
 ###VECM 
 
-vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
+vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, lag){
   dat <- data.frame(train = log(train),
                     sales = log(sales),
                     hvi = log(hvi),
@@ -15,7 +15,7 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
   dat1 <- ts(dat_tsibble[,-1], frequency = fc_range)
   
   # Johansen cointegration test to determine the rank
-  coint_test <- ca.jo(dat1, spec = "longrun", K = 2)  
+  coint_test <- ca.jo(dat1, spec = "longrun", K = lag)  
   
   r <- sum(coint_test@teststat > coint_test@cval[, "5pct"])  # Example: Using r=1
   
@@ -27,7 +27,7 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range){
     # Construct residuals
     fitted_values <- fitted(vecm_fit)
     
-    fitted_train <- c(rep(mean(fitted_values[,1], na.rm = T),2), fitted_values[,1] )
+    fitted_train <- c(rep(mean(fitted_values[,1], na.rm = T),lag), fitted_values[,1] )
     
     dat_tsibble <- mutate(dat_tsibble,
                           residual_train = exp(train) - exp(fitted_train)) 
