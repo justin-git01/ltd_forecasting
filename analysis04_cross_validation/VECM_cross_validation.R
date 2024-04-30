@@ -148,7 +148,13 @@ for (t in 1:folds){
     train <- data$k3[, i]
     sales <- data$k3[, 7]
     hvi <- data$k3[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4, 2)
+    if (t == 10) {
+      lag_quarter <- 3
+    }
+    else {
+      lag_quarter <- 2
+    }
+    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4, lag_quarter)
     base_fc$k3[,i] <- forecast_res[[1]]
     residuals_fc$k3[,i] <- forecast_res[[2]]
   }
@@ -331,7 +337,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 9) |>
+  filter(id == 10) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +

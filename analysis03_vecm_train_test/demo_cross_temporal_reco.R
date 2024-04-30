@@ -73,7 +73,7 @@ for (i in 1:6) {
   train <- data$k1[1:108, i]
   sales <- data$k1[1:108, 7]
   hvi <- data$k1[1:108, 8]
-  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 18)
+  forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", 108, 12, 20)
   base_fc$k1[, i] <- forecast_res[[1]]
   residuals_fc$k1[, i] <- forecast_res[[2]]
 }
