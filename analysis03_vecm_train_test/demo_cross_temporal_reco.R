@@ -300,11 +300,6 @@ tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                    thf_comb = "struc", hts_comb = "bu",
                    res = FoReco_data$res)$recf
 
-# Heuristic first-cross-sectional-then-temporal cross-temporal reconciliation
-cst_recf <- cstrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                   thf_comb = "shr", hts_comb = "bu",
-                   res = FoReco_data$res)$recf
-
 # Iterative cross-temporal reconciliation 
 ite_recf <- iterec(FoReco_data$base,
                    m = 12, C = FoReco_data$C,
@@ -317,8 +312,7 @@ data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
                   #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
                   tcs_recf = as.numeric(tcs_recf[1, -c(1:16)]),
-                  #cst_recf = as.numeric(cst_recf[1, -c(1:16)]),
-                  ite_recf = as.numeric(ite_recf[1, -c(1:16)]),
+                  #ite_recf = as.numeric(ite_recf[1, -c(1:16)]),
                   base = as.numeric(base[1, -c(1:16)]),
                   obs = as.numeric(obs$k1[c(109:120), 1]),
                   time = seq(from=as.POSIXct("2023-07-01 00:00:00", tz="UTC"), by="month", length.out = 12))
