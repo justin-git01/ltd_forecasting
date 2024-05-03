@@ -1,0 +1,222 @@
+---
+title: "Expert advice from experts"
+author:
+- familyname: Curie
+  othernames: Marie
+  address: University of Paris
+  qualifications: Nobel Prize, PhD
+email: mcurie.notreal@gmail.com
+phone: (03) 9905 2478
+department: Department of\newline Econometrics &\newline Business Statistics
+organization: Acme Corporation
+bibliography: references.bib
+biblio-style: authoryear-comp
+linestretch: 1.5
+output:
+  monash::report:
+    branding: false
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 8
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+    number_sections: yes
+    citation_package: biblatex
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache=TRUE, messages=FALSE, warning=FALSE)
+library(ggplot2)
+```
+
+# Abstract
+- Overview: Briefly summarize the purpose, methodology, key findings, and implications of the forecast.
+- Key Recommendations: High-level actionable recommendations based on the forecast results.
+
+
+# Introduction
+## Background: 
+Overview of LTD and its economic significance.
+
+## Objective: 
+Purpose of forecasting LTD for DTF. Outline the specific goals of the project, such as predicting revenue from LTD or analyzing trends.
+
+# Rationale for the Forecast
+## Need for Forecasting: 
+Discuss why forecasting LTD is critical for budgetary planning and economic analysis at DTF.
+
+## Benefits: 
+How the forecasting results will aid in policy making, financial planning, etc.
+
+# Data Description
+## Data Source: 
+Detail the sources of the LTD data, including collection methods, frequency, and historical range.
+
+## Variables Description:
+Describe each variable used in the analysis, including dependent and independent variables.
+
+# Initial Data Analysis (IDA)
+## Data Cleansing: 
+Steps taken to clean and preprocess the data.
+
+## Descriptive Statistics: 
+Basic statistics like mean, median, etc., and initial observations.
+
+## Data Integrity Checks: 
+Ensuring data completeness, accuracy, and consistency.
+
+# Exploratory Data Analysis (EDA)
+## Visualization: 
+Use plots (time series plots, histograms, etc.) to visualize trends, cycles, and outliers in LTD data.
+
+## Correlation Analysis: 
+Identify relationships between LTD and potential predictors.
+
+## Preliminary Findings: 
+Summarize insights gained about the data and any implications for modeling.
+
+# Methodology
+## Hierarchical time series
+
+Upon analyzing the data characteristics and the disaggregation of LTD, it becomes evident that a three-level hierarchy structure can be established. There is utility in generating forecasts at various levels of aggregation, driven by diverse reasons and objectives. For instance, forecasting solely at the total or top level may lead to inaccuracies due to the limited number of time series encompassed. Additionally, each level of aggregation may exhibit distinct characteristics; for instance, transactions involving residential properties might vary from those involving non-residential properties due to differences in market dynamics or market size for each property type.
+
+In an ideal scenario, forecasts from different levels of aggregation could seamlessly sum up to the top level. However, practical implementation often reveals incoherent among independently produced forecasts. Consequently, it becomes vital for forecasts to align and aggregate according to the hierarchical structure organizing the array of time series. As a solution to this challenge, reconciliation forecasting emerges as one of the most prevalent and effective methodologies employed today.
+
+Within the domain of hierarchical time series forecasting, there are three traditional single level approaches for generating forecasts for hierarchical time series. The first, known as the bottom-up approach, initiates by producing forecasts for each series at the lowest level and subsequently aggregates these to generate forecasts for the upper levels of the hierarchy. Conversely, the top-down approach starts with a forecast at the highest level, which is then disaggregated to lower levels using predetermined proportions—typically based on historical data distributions. Lastly, the middle-out approach amalgamates elements of both the bottom-up and top-down methods.
+
+## Forecast reconciliation
+
+Recall from the data structure and insights from EDA section, we can construct this hierarchical structure for LTD:
+
+$$
+\begin{bmatrix}
+  \text{Total}_{t} \\
+  \text{Non-residential}_{t} \\
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  1 & 1 & 1 & 1 \\
+  0 & 1 & 1 & 1 \\
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+\end{bmatrix}
+$$
+or in a more compact notation:
+$$
+\text{LTD}_{t} = \text{S}\text{b}_{t},
+$$
+where S represents the summing matrix defining how bottom-level series are aggregated.
+
+As indicated by Hyndman and Athanasopoulos (2021), reconciliation forecasting involves the introduction of a mapping matrix, denoted as **G**, to the base forecast, which is determined by the adopted methodology. This matrix, when multiplied by **SG**, yields a coherent set of forecasts. 
+
+However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, Wickramasuriya et al. (2019) introduced the *MinT* (Minimum Trace) optimal reconciliation methodology, which devises a **G** matrix aimed at minimizing the total forecast variance within the coherent forecast set.
+
+This leads to the need for estimating $\text{W}_{h}$, the forecast error variance of h-step-ahead base forecasts. There are four simplifying approximations in place that have been shown to work well:
+
+* **OLS**: $\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$
+
+* **Variance Scaling**: $\mathbf{W}_{h} = \text{k}_{h}\text{diag(}\mathbf{\hat{W}}_{1}\text{)}$
+
+* **Structural Scaling**: $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$
+
+* **MinT Shrinkage**: $\mathbf{W}_{h} = \text{k}_{h}\mathbf{W}_{1}$
+
+## Model Selection: 
+
+As depicted in *<cross-ref>*, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
+
+The Vector Autoregression (VAR) model, which predicts future values of multiple time series based on their historical data, is well-suited for capturing these complex interactions. Furthermore, as illustrated in *<cross-ref>*, the detection of cointegration patterns indicating a stable long-term equilibrium relationship among variables such as LTD, sales, and HVI, which necessitates the application of the Vector Error Correction Model (VECM). This highlights the pertinence of employing both VAR and VECM to adequately model these relationships.
+
+One limitation of these models is their reliance on ample data to produce reliable parameters. Monthly data spanning over a decade for LTD has been found to be sufficient. Nevertheless, the subsequent section on cross-validation will elaborate on the precise sizing of the training dataset required to ensure compatibility with the VAR and VECM models.
+
+In addition to VAR and VECM, the Autoregressive Integrated Moving Average (ARIMA) model has also been employed, primarily for purposes of comparison and validation of improvements. The efficacy of this comparison will be assessed through time series cross-validation, utilizing various accuracy metrics such as the Root Mean Square Error (RMSE), Mean Absolute Percentage Error (MAPE), and the Mean Absolute Scaled Error (MASE).
+
+# Time Series Cross-Validation
+
+## Definition and rationale
+Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by Hyndman and Athanasopoulos (2021). This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques. 
+
+In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the b base forecasts. Another critical application of time series cross-validation in this context is to generate rolling forecasts over a 12-month period for various time intervals. This is essential for the Department of Treasury and Finance (DTF) to analyze the effects of market dynamics or policy changes on land transfer duty (LTD).
+
+### VECM
+As VECM fitting is not supported by ‘fpp3’ package, more complicated procedure is required. Firstly, ‘ca.jo()’ will be used to conduct Johansen test for cointegration between LTD, sales and hvi. This test checks if a set of time series variables have a long-term, stable relationship. Value of argument K is initially set to 2, indicating the lag order in the VAR model used within the Johansen procedure is 2. This value can also be put into a cross-validation for optimal value, generally between 1 and 3 is suitable for this data.
+
+Afterwards, the test result at 5% level of significance identifies value for r, indicating the number of cointegrating relationships to include in the VECM model. The function for fitting VECM is ‘vars::vec2var()’, belongs to ‘vars’ package in R.
+
+This procedure will be applied to each folds, using ‘group_by()’ and then producing forecast. Similarly, only forecast result for LTD will be used. 
+
+## Forecasting
+
+To create folds for the time series cross-validation procedure, we will use `stretch_tsibble()` function with user defined value for two arguments, `.init` for size of initial training set, and `.step` to define how many steps training sets will roll forward each time. 
+
+For example, `stretch_tsibble(.init = 10, .step = 1)` produces series of training sets, where first training set has size of 10 observations and will roll 1 step forward each time, i.e. the size of second set and third set will be 11 and 12, respectively. Each folds will be denoted by a unique `.id` value.
+
+### Generating forecast
+
+#### ARIMA
+
+
+#### VAR/VECM
+Procedures and models used to forecast LTD.
+-	Apply models and produce forecast, as well as residuals across aggregation levels for one temporal frequency at a time.
+-	Monthly data Temporal frequency considering will be: monthly (denoted as k1), bi-monthly (k2), quarterly (k3), 4-monthly (k4), semi-annually (k6), annually (k12)
+-	By using this fitting and forecast producing procedure, it is easy to fit different model for different temporal frequency, if needed.
+-	However, if different model required for different cross-sectional level, conditional if will be used nested inside each loop for all temporal frequencies. 
+-	Forecast and residuals will be assigned to ‘base’ and ‘res’ data.
+
+## Reconciliation Process
+### Approach: 
+-	After combine all forecast and residuals output to ‘base’ and ‘res’ data, FoReco package will be used for reconciliation process, since it supports cross-sectional, temporal, optimal cross-temporal reconciliation all in one place. 
+-	‘htsrec()’ for cross-sectional reconciliation
+-	‘thfrec()’ for temporal reconciliation
+-	‘octrec()’ for optimal cross-temporal reconciliation
+-	Base forecast as well as reconciled forecast of different methods will be plotted against the test set or observation
+-	Accuracy metrics used: RMSE, MASE, MAPE
+
+# Results
+## Model Performance: 
+Presentation of model accuracy and comparison.
+
+## Forecast Results: 
+Detailed discussion of the forecasted values and their confidence intervals.
+
+# Discussion
+## Interpretation of Results: 
+Analysis of what this forecasts mean for DTF.
+
+## Limitations and Assumptions: 
+Any limitations encountered during the forecasting process.
+
+# Conclusion and Recommendations
+## Summary: 
+Recap the findings and their implications.
+
+## Future Work: 
+Suggestions for improving future forecasts.
+
+# Appendices
+## Additional Data: 
+Any supplementary data or detailed tables.
+
+## Code: 
+Include or reference the R scripts used for analysis.
+
+# References
+## Bibliography: 
+Cite all data sources, literature, and software used in the report the insights generated by your work.
+
+Hyndman, R.J., & Athanasopoulos, G. (2021) Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Accessed on <current date>.
