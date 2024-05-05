@@ -4,7 +4,9 @@ author:
 - familyname: Do
   othernames: Hoang
   address: Monash University
+  qualifications: Nobel Prize, PhD
 email: vdoo0002@student.monash.edu
+phone: (03) 9905 2478
 department: Department of\newline Econometrics &\newline Business Statistics
 organization: Department of Treasury and Finance
 bibliography: references.bib
@@ -25,8 +27,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, cache=TRUE, messages=FALSE, warning=FALSE)
-library(ggplot2)
+knitr::opts_chunk$set(echo = FALSE, cache=F, messages=FALSE, warning=FALSE)
 ```
 
 # Abstract
@@ -169,18 +170,15 @@ This structured approach facilitates the fitting of different models tailored to
 
 #### ARIMA
 
-
 The ARIMA model will be implemented across all levels of the temporal hierarchical structure and at every cross-sectional level using the `auto.arima()` function from the `forecast` package. This function efficiently determines the optimal parameters for the autoregressive lag, differencing, and moving average components of the model by automatically adjusting them for the error terms.
 
 Forecasts will be generated up to one year, or 12 months into the future, utilizing the `forecast()` function. This function is designed to produce both the mean point forecasts and the associated residuals, thereby providing a comprehensive output that includes predictions and their accuracy measures.
 
 #### VAR/VECM
 
-
 Fitting VAR and VECM models to complex hierarchical structured data necessitates a more intricate approach, as there is no standard method readily available for this specific application. Additionally, these models require the incorporation of external variables, such as sales and the home value index (HVI). To address these challenges, the chosen strategy involves the creation of two separate user-defined functions for VAR and VECM. These functions are designed to process the input data and output both the mean point forecasts and residuals, mirroring the functionality provided by the `auto.arima()` function. Given the significant differences in the scales of sales, HVI, and LTD data, it is advisable to employ logarithmic transformations prior to model fitting, followed by re-transformation to their original scales. This method will be embedded within both functions to ensure accurate scale representation.
 
 ##### Vector Autoregression (VAR) Model
-
 
 The VAR fitting function, designated as `var_forecast_fun()`, accepts six parameters:
 
@@ -209,12 +207,16 @@ Similar to the VAR model, the VECM procedure also involves the generation of for
 
 ## Reconciliation Process
 
--	After combine all forecast and residuals output to ‘base’ and ‘res’ data, FoReco package will be used for reconciliation process, since it supports cross-sectional, temporal, optimal cross-temporal reconciliation all in one place. 
--	‘htsrec()’ for cross-sectional reconciliation
--	‘thfrec()’ for temporal reconciliation
--	‘octrec()’ for optimal cross-temporal reconciliation
--	Base forecast as well as reconciled forecast of different methods will be plotted against the test set or observation
--	Accuracy metrics used: RMSE, MASE, MAPE
+The reconciliation procedure is consistent across ARIMA and VAR/VECM cross-validation models. Initially, forecasts and residuals from all cross-sectional levels and temporal frequencies are amalgamated into `base` and `res` datasets. The `FoReco` package facilitates the reconciliation process, offering integrated solutions for cross-sectional, temporal, and cross-temporal reconciliation.
+
+* **`htsrec()`**: Implements cross-sectional reconciliation utilizing `shr`, which denotes the use of a shrunk covariance matrix—specifically MinT-shr.
+* **`thfrec()`**: Facilitates temporal reconciliation employing `struc` for the computation of structural variances.
+* **`octrec()`**: Conducts optimal cross-temporal reconciliation, using `struc` to calculate cross-temporal structural variances.
+* **`tcsrec()`**: Executes heuristic first-temporal-then-cross-sectional reconciliation, combining structural variances for temporal aggregation with a bottom-up approach for cross-sectional aggregation.
+
+The output of this reconciliation process is a matrix where rows represent different cross-sectional levels, and columns span from a 1-step to a 12-step-ahead forecast, reflecting the original scale of land transfer duty (LTD).
+
+Subsequently, this matrix is integrated into a nested structure within an array corresponding to its designated `.id` value. This entire forecasting and reconciliation process is then repeated for subsequent folds or `.id` values.
 
 # Results
 ## Model Performance: 

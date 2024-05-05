@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  5 MAY 2024 13:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  5 MAY 2024 14:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -925,7 +925,7 @@ Package: setspace 2022/12/04 v6.7b set line spacing
 )
 \@quotelevel=\count439
 \@quotereset=\count440
-(./Final_Report.aux)
+No file Final_Report.aux.
 \openout1 = `Final_Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 292.
@@ -980,7 +980,6 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-bch.cfg 2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)
 )
 Package hyperref Info: Link coloring ON on input line 292.
-(./Final_Report.out) (./Final_Report.out)
 \@outlinefile=\write4
 \openout4 = `Final_Report.out'.
 
@@ -1031,8 +1030,8 @@ Package biblatex Info: Data encoding 'utf8' specified.
 \openout3 = `Final_Report.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'Final_Report.bbl' found.
-(./Final_Report.bbl)
+Package biblatex Info: ... file 'Final_Report.bbl' not found.
+No file Final_Report.bbl.
 Package biblatex Info: Reference section=0 on input line 292.
 Package biblatex Info: Reference segment=0 on input line 292.
 Package caption Info: Begin \AtBeginDocument code.
@@ -1049,27 +1048,27 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-<AACSB.png, id=164, 1204.5pt x 406.51875pt>
+<AACSB.png, id=4, 1204.5pt x 406.51875pt>
 File: AACSB.png Graphic file (type png)
 <use AACSB.png>
 Package pdftex.def Info: AACSB.png  used on input line 293.
 (pdftex.def)             Requested size: 50.57945pt x 17.07182pt.
-<EQUIS.png, id=165, 619.56468pt x 380.92313pt>
+<EQUIS.png, id=5, 619.56468pt x 380.92313pt>
 File: EQUIS.png Graphic file (type png)
 <use EQUIS.png>
 Package pdftex.def Info: EQUIS.png  used on input line 293.
 (pdftex.def)             Requested size: 27.76575pt x 17.07182pt.
-<AMBA.png, id=166, 276.03125pt x 83.31125pt>
+<AMBA.png, id=6, 276.03125pt x 83.31125pt>
 File: AMBA.png Graphic file (type png)
 <use AMBA.png>
 Package pdftex.def Info: AMBA.png  used on input line 293.
 (pdftex.def)             Requested size: 56.5615pt x 17.07182pt.
-<monash2.png, id=168, 2730.2pt x 791.95876pt>
+<monash2.png, id=8, 2730.2pt x 791.95876pt>
 File: monash2.png Graphic file (type png)
 <use monash2.png>
 Package pdftex.def Info: monash2.png  used on input line 293.
 (pdftex.def)             Requested size: 170.71652pt x 49.50938pt.
-<MBSportrait.jpg, id=169, 621.32124pt x 503.8825pt>
+<MBSportrait.jpg, id=9, 621.32124pt x 503.8825pt>
 File: MBSportrait.jpg Graphic file (type jpg)
 <use MBSportrait.jpg>
 Package pdftex.def Info: MBSportrait.jpg  used on input line 293.
@@ -1301,81 +1300,21 @@ LaTeX Font Info:    Font shape `T1/fvs/m/n' will be
 LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
 (Font)              scaled to size 12.1535pt on input line 293.
 
-Overfull \hbox (172.68228pt too wide) detected at line 293
-[] 
- []
+! LaTeX Error: There's no line here to end.
 
-
-Overfull \hbox (56.23262pt too wide) detected at line 293
- [] |  [] []
- []
-
-[1
-
-{/Users/justinaight/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/fontawesome/fontawesometwo.enc} <./monash2.png> <./MBSportrait.jpg> <./AACSB.png> <./EQUIS.png> <./AMBA.png>]
-LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 13.82408pt on input line 297.
-(./Final_Report.toc
-LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
-(Font)              scaled to size 10.51207pt on input line 1.
-[2{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc}])
-\tf@toc=\write5
-\openout5 = `Final_Report.toc'.
-
-LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 304.
-(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/ts1mdbch.fd
-File: ts1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for TS1/mdbch.
-)
-LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 10.51207pt on input line 304.
-[3] [4] [5]
-LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 383.
-LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 5.76004pt on input line 383.
-LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
-(Font)              scaled to size 10.51207pt on input line 414.
-[6] [7]
-LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 9.24173pt on input line 449.
-LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
-(Font)              scaled to size 9.24173pt on input line 453.
-[8] [9] [10] [11]
-
-LaTeX Warning: Empty bibliography on input line 575.
-
-
-Package caption Warning: Unused \captionsetup[figure] on input line 60.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: Unused \captionsetup[table] on input line 61.
-See the caption package documentation for explanation.
-
-[12] (./Final_Report.aux)
- ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2020/03/25>
- ***********
-Package rerunfilecheck Info: File `Final_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 77B87FF3E704DC0F587EA1DF7490214C;6531.
-Package logreq Info: Writing requests to 'Final_Report.run.xml'.
-\openout1 = `Final_Report.run.xml'.
-
- ) 
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.293 \titlepage
+                 
 Here is how much of TeX's memory you used:
- 26368 strings out of 476010
- 453789 string characters out of 5790271
- 1940751 words of memory out of 5000000
- 47732 multiletter control sequences out of 15000+600000
- 678791 words of font info for 378 fonts, out of 8000000 for 9000
+ 25843 strings out of 476010
+ 446919 string characters out of 5790271
+ 1928751 words of memory out of 5000000
+ 47572 multiletter control sequences out of 15000+600000
+ 634224 words of font info for 176 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,14n,81p,1009b,854s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb>
-Output written on Final_Report.pdf (12 pages, 520592 bytes).
-PDF statistics:
- 347 PDF objects out of 1000 (max. 8388607)
- 300 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 98650 words of extra memory for PDF output out of 106986 (max. 10000000)
 
+!  ==> Fatal error occurred, no output PDF file produced!

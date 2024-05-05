@@ -21,7 +21,7 @@
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
-            pdftitle={Expert advice from experts},
+            pdftitle={Reconciliation Forecasting for Land Transfer Duty},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -49,7 +49,7 @@
 \makeatother
 
 
-\title{Expert advice from experts}
+\title{Reconciliation Forecasting for Land Transfer Duty}
 
 %% MONASH STUFF
 
@@ -190,11 +190,11 @@
 \DeclareDelimFormat[cbx@textcite]{nameyeardelim}{\addspace}
 \makeatother
 
-\author{\sf{\Large\textbf{Marie Curie}\\\large Nobel Prize, PhD\\[0.5cm]}}
+\author{\sf{\Large\textbf{Hoang Do}\\\large \\[0.5cm]}}
 
 \date{\sf\Date~\Month~\Year}
 \makeatletter
-\lfoot{\sf Curie: \@date}
+\lfoot{\sf Do: \@date}
 \makeatother
 
 
@@ -205,13 +205,13 @@
 \def\telephone#1{\gdef\@telephone{#1}}
 \def\email#1{\gdef\@email{#1}}
 \makeatother
-  \organization{Acme Corporation}
+  \organization{Department of Treasury and Finance}
 
   \def\name{Department of\newline Econometrics \&\newline Business Statistics}
 
   \telephone{(03) 9905 2478}
 
-  \email{\href{mailto:mcurie.notreal@gmail.com}{\nolinkurl{mcurie.notreal@gmail.com}}}
+  \email{\href{mailto:vdoo0002@student.monash.edu}{\nolinkurl{vdoo0002@student.monash.edu}}}
 
 \def\webaddress{\url{http://buseco.monash.edu/ebs/consulting/}}
 \def\abn{12 377 614 012}
@@ -426,7 +426,7 @@ This leads to the need for estimating \(\text{W}_{h}\), the forecast error varia
   \textbf{MinT Shrinkage}: \(\mathbf{W}_{h} = \text{k}_{h}\mathbf{W}_{1}\)
 \end{itemize}
 
-\subsection{Model Selection:}\label{model-selection}
+\subsection{Model Selection}\label{model-selection}
 
 As depicted in \emph{}, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
 
@@ -508,21 +508,23 @@ Similar to the VAR model, the VECM procedure also involves the generation of for
 
 \subsection{Reconciliation Process}\label{reconciliation-process}
 
+The reconciliation procedure is consistent across ARIMA and VAR/VECM cross-validation models. Initially, forecasts and residuals from all cross-sectional levels and temporal frequencies are amalgamated into \texttt{base} and \texttt{res} datasets. The \texttt{FoReco} package facilitates the reconciliation process, offering integrated solutions for cross-sectional, temporal, and cross-temporal reconciliation.
+
 \begin{itemize}
 \tightlist
 \item
-  After combine all forecast and residuals output to `base' and `res' data, FoReco package will be used for reconciliation process, since it supports cross-sectional, temporal, optimal cross-temporal reconciliation all in one place.
+  \textbf{\texttt{htsrec()}}: Implements cross-sectional reconciliation utilizing \texttt{shr}, which denotes the use of a shrunk covariance matrix---specifically MinT-shr.
 \item
-  `htsrec()' for cross-sectional reconciliation
+  \textbf{\texttt{thfrec()}}: Facilitates temporal reconciliation employing \texttt{struc} for the computation of structural variances.
 \item
-  `thfrec()' for temporal reconciliation
+  \textbf{\texttt{octrec()}}: Conducts optimal cross-temporal reconciliation, using \texttt{struc} to calculate cross-temporal structural variances.
 \item
-  `octrec()' for optimal cross-temporal reconciliation
-\item
-  Base forecast as well as reconciled forecast of different methods will be plotted against the test set or observation
-\item
-  Accuracy metrics used: RMSE, MASE, MAPE
+  \textbf{\texttt{tcsrec()}}: Executes heuristic first-temporal-then-cross-sectional reconciliation, combining structural variances for temporal aggregation with a bottom-up approach for cross-sectional aggregation.
 \end{itemize}
+
+The output of this reconciliation process is a matrix where rows represent different cross-sectional levels, and columns span from a 1-step to a 12-step-ahead forecast, reflecting the original scale of land transfer duty (LTD).
+
+Subsequently, this matrix is integrated into a nested structure within an array corresponding to its designated \texttt{.id} value. This entire forecasting and reconciliation process is then repeated for subsequent folds or \texttt{.id} values.
 
 \section{Results}\label{results}
 
