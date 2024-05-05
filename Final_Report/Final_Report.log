@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  4 MAY 2024 18:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  5 MAY 2024 13:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1336,13 +1336,13 @@ LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
 (Font)              scaled to size 10.51207pt on input line 414.
 [6] [7]
-LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
-(Font)              scaled to size 9.24173pt on input line 447.
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 9.24173pt on input line 457.
-[8] [9] [10]
+(Font)              scaled to size 9.24173pt on input line 449.
+LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
+(Font)              scaled to size 9.24173pt on input line 453.
+[8] [9] [10] [11]
 
-LaTeX Warning: Empty bibliography on input line 549.
+LaTeX Warning: Empty bibliography on input line 575.
 
 
 Package caption Warning: Unused \captionsetup[figure] on input line 60.
@@ -1352,7 +1352,7 @@ See the caption package documentation for explanation.
 Package caption Warning: Unused \captionsetup[table] on input line 61.
 See the caption package documentation for explanation.
 
-[11] (./Final_Report.aux)
+[12] (./Final_Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
@@ -1364,18 +1364,18 @@ Package logreq Info: Writing requests to 'Final_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26347 strings out of 476010
- 453483 string characters out of 5790271
+ 26368 strings out of 476010
+ 453789 string characters out of 5790271
  1940751 words of memory out of 5000000
- 47729 multiletter control sequences out of 15000+600000
- 677722 words of font info for 365 fonts, out of 8000000 for 9000
+ 47732 multiletter control sequences out of 15000+600000
+ 678791 words of font info for 378 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,14n,81p,1009b,854s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb>
-Output written on Final_Report.pdf (11 pages, 516454 bytes).
+Output written on Final_Report.pdf (12 pages, 520592 bytes).
 PDF statistics:
- 343 PDF objects out of 1000 (max. 8388607)
- 297 compressed objects within 3 object streams
- 57 named destinations out of 1000 (max. 500000)
+ 347 PDF objects out of 1000 (max. 8388607)
+ 300 compressed objects within 3 object streams
+ 58 named destinations out of 1000 (max. 500000)
  98650 words of extra memory for PDF output out of 106986 (max. 10000000)
 

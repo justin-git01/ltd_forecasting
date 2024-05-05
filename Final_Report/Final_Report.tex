@@ -444,14 +444,6 @@ Time series cross-validation represents a sophisticated adaptation of the conven
 
 In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the b base forecasts. Another critical application of time series cross-validation in this context is to generate rolling forecasts over a 12-month period for various time intervals. This is essential for the Department of Treasury and Finance (DTF) to analyze the effects of market dynamics or policy changes on land transfer duty (LTD).
 
-\subsubsection{VECM}\label{vecm}
-
-As VECM fitting is not supported by `fpp3' package, more complicated procedure is required. Firstly, `ca.jo()' will be used to conduct Johansen test for cointegration between LTD, sales and hvi. This test checks if a set of time series variables have a long-term, stable relationship. Value of argument K is initially set to 2, indicating the lag order in the VAR model used within the Johansen procedure is 2. This value can also be put into a cross-validation for optimal value, generally between 1 and 3 is suitable for this data.
-
-Afterwards, the test result at 5\% level of significance identifies value for r, indicating the number of cointegrating relationships to include in the VECM model. The function for fitting VECM is `vars::vec2var()', belongs to `vars' package in R.
-
-This procedure will be applied to each folds, using `group\_by()' and then producing forecast. Similarly, only forecast result for LTD will be used.
-
 \subsection{Forecasting}\label{forecasting}
 
 To create folds for the time series cross-validation procedure, we will use \texttt{stretch\_tsibble()} function with user defined value for two arguments, \texttt{.init} for size of initial training set, and \texttt{.step} to define how many steps training sets will roll forward each time.
@@ -476,11 +468,45 @@ Forecasts will be generated up to one year, or 12 months into the future, utiliz
 
 \paragraph{VAR/VECM}\label{varvecm}
 
-Fitting VAR and VECM models to complex hierarchical structured data necessitates a more intricate approach, as there is no standard method readily available for this specific application. Additionally, these models require the incorporation of external variables, such as sales and the home value index (HVI). To address these challenges, the chosen strategy involves the creation of two separate user-defined functions for VAR and VECM. These functions are designed to process the input data and output both the mean point forecasts and residuals, mirroring the functionality provided by the \texttt{auto.arima()} function.
+Fitting VAR and VECM models to complex hierarchical structured data necessitates a more intricate approach, as there is no standard method readily available for this specific application. Additionally, these models require the incorporation of external variables, such as sales and the home value index (HVI). To address these challenges, the chosen strategy involves the creation of two separate user-defined functions for VAR and VECM. These functions are designed to process the input data and output both the mean point forecasts and residuals, mirroring the functionality provided by the \texttt{auto.arima()} function. Given the significant differences in the scales of sales, HVI, and LTD data, it is advisable to employ logarithmic transformations prior to model fitting, followed by re-transformation to their original scales. This method will be embedded within both functions to ensure accurate scale representation.
+
+\subparagraph{Vector Autoregression (VAR) Model}\label{vector-autoregression-var-model}
+
+The VAR fitting function, designated as \texttt{var\_forecast\_fun()}, accepts six parameters:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{train}: A series representing LTD data across various hierarchical levels.
+\item
+  \texttt{sales}: The time series data for sales.
+\item
+  \texttt{hvi}: The time series data for the Home Value Index (HVI).
+\item
+  \texttt{period}: The temporal frequency for generating nested Date variables, such as \texttt{month}, \texttt{2\ months}, \texttt{quarter}, etc.
+\item
+  \texttt{length}: The total number of rows in the input data.
+\item
+  \texttt{fc\_range}: The forecast range, which may include 12 months for monthly data, or 6 two-month periods for bimonthly data, etc.
+\end{itemize}
+
+The input data is consolidated into a single dataframe, or \texttt{tibble} object, with an appropriately nested Date variable. This \texttt{tibble} is subsequently transformed into a \texttt{tsibble} object utilizing the \texttt{as\_tsibble()} function from the \texttt{tsibble} package. A VAR model is then applied to this \texttt{tsibble} using the \texttt{VAR(vars(train,\ sales,\ hvi))} syntax, where parameters such as lag are automatically determined by the function. However, temporal aggregation results in insufficient observations for semi-annual and annual frequencies if the lag exceeds two. To address this limitation, an \texttt{if} condition restricts the chosen lag for these data frequencies to one.
+
+Post model fitting, forecasts and residuals are computed as standard. Nevertheless, due to the lag configuration, there might be instances of missing residual values. Given that the \texttt{FoReco} package does not support missing values in the residual input matrices, these missing values are substituted with the calculated mean of the residuals. Since the number of these substituted values ranges from one to three, their impact on the reconciled results is anticipated to be minimal.
+
+Ultimately, the function is structured to output both the mean point forecast and residuals, aggregated into a list format for subsequent extraction.
+
+\subparagraph{Vector Error Correction Model (VECM)}\label{vector-error-correction-model-vecm}
+
+The VECM fitting function, denoted as \texttt{vecm\_forecast\_fun}, accepts the same parameters as \texttt{var\_forecast\_fun} along with an additional \texttt{lag} parameter. This parameter facilitates the selection of varying lag lengths. The procedure for transforming the input data into a \texttt{tsibble} object remains consistent with that of the VAR model.
+
+A distinct feature that differentiates VECM from VAR is its accommodation for non-stationary variables or those exhibiting cointegration patterns. The Johansen test, executed via the \texttt{ca.jo()} function from the \texttt{urca} package, assesses the presence of cointegration. The \texttt{K} parameter of \texttt{ca.jo()}, which determines the lag order in the VAR model employed within the Johansen procedure, is specified by the \texttt{lag} argument. This parameter can also be chosen using cross-validation to ascertain the optimal value for each temporal frequency or cross-sectional level, employing information criteria such as Akaike (AIC) or Bayesian (BIC).
+
+Subsequent to the cointegration test, a significance level of 5\% helps determine the value of \texttt{r}, representing the number of cointegrating relationships to be included in the VECM model. Should the Johansen test indicate an absence of a cointegration pattern, particularly in annual frequency data due to insufficient observations, a VAR model is utilized instead. If cointegration is confirmed, the VECM fitting function used is \texttt{vec2var()} from the \texttt{vars} package.
+
+Similar to the VAR model, the VECM procedure also involves the generation of forecasts and residuals. Additionally, it addresses missing residual values caused by lag length, in a manner analogous to the \texttt{var\_forecast\_fun} procedure. The output of this function comprises a list containing the mean point forecast and residuals.
 
 \subsection{Reconciliation Process}\label{reconciliation-process}
-
-\subsubsection{Approach:}\label{approach}
 
 \begin{itemize}
 \tightlist
