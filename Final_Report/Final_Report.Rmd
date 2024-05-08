@@ -57,8 +57,9 @@ Detail the sources of the LTD data, including collection methods, frequency, and
 Describe each variable used in the analysis, including dependent and independent variables.
 
 # Initial Data Analysis (IDA)
-## Data Cleansing: 
-Steps taken to clean and preprocess the data.
+## Data Preparation and Cleaning: 
+
+Since initial data for both aggregate and unit LTD is pre-processed and cleaned by LTD, not much further cleaning required. In this case, only missing values and data format check is required
 
 ## Descriptive Statistics: 
 Basic statistics like mean, median, etc., and initial observations.

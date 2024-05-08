@@ -50,8 +50,7 @@ html_null_output <- paste0(
 cat(html_null_output)
 ```
 
-There are 193 missing values in `lending` variable. This is because the ABS value of new lending finance in Victoria only 
-available from 2002. It also has *one-month reporting lag.* Therefore, **no** missing values handling required.
+There are 193 missing values in `lending` variable. This is because the ABS value of new lending finance in Victoria only available from 2002. It also has *one-month reporting lag.* Therefore, **no** missing values handling required.
 
 However, when fitting model incorporating with `lending`, missing values may need to be omitted.
 
@@ -62,7 +61,6 @@ data.frame(sapply(ltd_agg, class))[1,]
 ```
 
 All variables are already in appropriate format, and thus no further action required.
-
 
 ## ltd unit records
 
@@ -97,7 +95,6 @@ data.frame(sapply(ltd_unit, class))[1,]
 ```
 
 All variables are already in appropriate format, and thus no further action required.
-
 
 # Data Exploration
 
@@ -168,23 +165,17 @@ cat(html_numerical_output)
 
 Based on the summary statistics, these are some insights:
 
-1. **Loan to Deposit Ratio**:
-   - A broad range of the LTD ratio, from approximately 28 million to over 1 billion, suggests significant variability in the funding practices of banks or financial institutions. A higher LTD ratio can indicate that a bank is lending more than it has in deposits, which could be riskier. However, the context of these numbers would need to be clearer since the LTD ratio is typically expressed as a percentage rather than in monetary values. The mention of such large numbers could imply these are aggregated or scaled values rather than direct ratios.
-   
-   
-2. **Predictor variable**:
-   - **HVI (Home Value Index)**: Reflects the price movement of residential properties. It ranges from 22.45 to 192.41, indicating a wide variation in home values over time or across different areas within Victoria. The median value is significantly lower than the mean, suggesting a right-skewed distribution with higher values pulling the mean up.
-   - **Sales**: Represents the volume of sales at the contract date. Similar to HVI, sales volume has a broad range (3,553 to 15,176), indicating periods or areas of low and high activity. The median is closer to the mean, suggesting a more symmetrical distribution compared to HVI.
-   - **Interest Rate (int_rate)**: This variable ranges from 4.52% to 17.00%, showing significant fluctuations over time. The mean is higher than the median, indicating a right-skewed distribution, possibly reflecting periods of economic instability or policy changes affecting interest rates.
-   - **Lending**: The amount of new lending finance, ranging from $2,173m to $10,594m, with a mean higher than the median, also suggests a right-skewed distribution. This could indicate periods of increased borrowing, possibly associated with higher property values or increased investment activity.
-   
-
-3. **Impact of Economic Factors**:
-   - **Interest Rates**: The variation in interest rates from 4.52% to 17% is crucial for understanding the LTD ratio dynamics. Higher interest rates can affect borrowers' ability to take out loans, potentially lowering the LTD ratio. Conversely, lower interest rates could encourage borrowing, increasing the LTD ratio.
-   - **HVI and Sales**: The Home Value Index and sales volumes directly impact the real estate market's liquidity and, by extension, the banking sector's loan portfolios. A high HVI could lead to increased property lending, affecting the LTD ratio.
-   
-
-4. **Temporal and Lag Considerations**: The note that lending data only goes back to 2002 and has a one-month reporting lag compared to other variables suggests temporal alignment and lagged effects need to be considered in any analysis. This could impact how models are structured and how predictive analysis is conducted, especially when trying to forecast future trends in aggregate LTD based on these variables.
+1.  **Loan to Deposit Ratio**:
+    -   A broad range of the LTD ratio, from approximately 28 million to over 1 billion, suggests significant variability in the funding practices of banks or financial institutions. A higher LTD ratio can indicate that a bank is lending more than it has in deposits, which could be riskier. However, the context of these numbers would need to be clearer since the LTD ratio is typically expressed as a percentage rather than in monetary values. The mention of such large numbers could imply these are aggregated or scaled values rather than direct ratios.
+2.  **Predictor variable**:
+    -   **HVI (Home Value Index)**: Reflects the price movement of residential properties. It ranges from 22.45 to 192.41, indicating a wide variation in home values over time or across different areas within Victoria. The median value is significantly lower than the mean, suggesting a right-skewed distribution with higher values pulling the mean up.
+    -   **Sales**: Represents the volume of sales at the contract date. Similar to HVI, sales volume has a broad range (3,553 to 15,176), indicating periods or areas of low and high activity. The median is closer to the mean, suggesting a more symmetrical distribution compared to HVI.
+    -   **Interest Rate (int_rate)**: This variable ranges from 4.52% to 17.00%, showing significant fluctuations over time. The mean is higher than the median, indicating a right-skewed distribution, possibly reflecting periods of economic instability or policy changes affecting interest rates.
+    -   **Lending**: The amount of new lending finance, ranging from \$2,173m to \$10,594m, with a mean higher than the median, also suggests a right-skewed distribution. This could indicate periods of increased borrowing, possibly associated with higher property values or increased investment activity.
+3.  **Impact of Economic Factors**:
+    -   **Interest Rates**: The variation in interest rates from 4.52% to 17% is crucial for understanding the LTD ratio dynamics. Higher interest rates can affect borrowers' ability to take out loans, potentially lowering the LTD ratio. Conversely, lower interest rates could encourage borrowing, increasing the LTD ratio.
+    -   **HVI and Sales**: The Home Value Index and sales volumes directly impact the real estate market's liquidity and, by extension, the banking sector's loan portfolios. A high HVI could lead to increased property lending, affecting the LTD ratio.
+4.  **Temporal and Lag Considerations**: The note that lending data only goes back to 2002 and has a one-month reporting lag compared to other variables suggests temporal alignment and lagged effects need to be considered in any analysis. This could impact how models are structured and how predictive analysis is conducted, especially when trying to forecast future trends in aggregate LTD based on these variables.
 
 ### Identify outliers
 
@@ -259,7 +250,7 @@ ltd_agg %>%
   labs(x = "", y = "Value (in $ millions)", title = "Boxplot for lending")
 ```
 
-@fig-boxlend shows that there are a few `lending` outliers at around $10 billions
+@fig-boxlend shows that there are a few `lending` outliers at around \$10 billions
 
 ### Variables Distribution
 
@@ -275,7 +266,7 @@ ltd_agg %>%
   labs(x = "Values (in millions)", y = "Count", title = "Histogram for LTD") 
 ```
 
-As indicated by @fig-histltd, mostly values lie on the right end, which means `ltd` is right-skewed. Moreover, values for `ltd` can be separated to different clusters (at $250m, $500m, etc).
+As indicated by @fig-histltd, mostly values lie on the right end, which means `ltd` is right-skewed. Moreover, values for `ltd` can be separated to different clusters (at \$250m, \$500m, etc).
 
 #### Predictor variables
 
@@ -331,15 +322,15 @@ ltd_agg %>%
 
 Similarly, as indicated by @fig-histlend, we can also see some clusters.
 
-We can see most distributions include clusters, which indicates **multimodal distributions.** A distribution with multiple peaks (or clusters) is referred to as multimodal. 
+We can see most distributions include clusters, which indicates **multimodal distributions.** A distribution with multiple peaks (or clusters) is referred to as multimodal.
 
 This could due to a few reasons:
 
-1. **Different Subpopulations**: The presence of distinct groups within the dataset. For example, as we are looking at property data, different clusters could represent different types of property (e.g., residential, non-residential) each with its own typical value range for variables like price or size.
+1.  **Different Subpopulations**: The presence of distinct groups within the dataset. For example, as we are looking at property data, different clusters could represent different types of property (e.g., residential, non-residential) each with its own typical value range for variables like price or size.
 
-2. **Seasonal Variations**: Different clusters may reflect seasonal effects. For example, sales data might show peaks during certain times of the year due to holidays or seasonal buying patterns.
+2.  **Seasonal Variations**: Different clusters may reflect seasonal effects. For example, sales data might show peaks during certain times of the year due to holidays or seasonal buying patterns.
 
-3. **Economic Phases**: Variables like interest rates or lending volumes might cluster around different values due to economic cycles, such as expansion, recession, or recovery phases, reflecting periods of tightening or loosening credit conditions.
+3.  **Economic Phases**: Variables like interest rates or lending volumes might cluster around different values due to economic cycles, such as expansion, recession, or recovery phases, reflecting periods of tightening or loosening credit conditions.
 
 We expect to see similar pattern for ltd unit data (`ltd_unit`).
 
@@ -414,32 +405,28 @@ The summary statistics for the LTD unit records reveal insights about the distri
 
 #### LTD Revenue Analysis
 
-1. **Dominance of Residential Sector**:
-   - The residential sector (ltd_res) contributes a significant portion of the total LTD, with amounts ranging from about 238 million to 761 million. This indicates a strong focus or demand in the residential sector, making it a key area for banking and financial services.
-
-2. **Non-Residential Sectors**:
-   - The non-residential sector, while smaller than the residential sector, still represents a significant portion of the total LTD, suggesting diverse lending practices that cater to various needs beyond residential.
-   - Within non-residential, the commercial sector (ltd_comm) is the largest contributor, followed by industrial (ltd_ind) and then other (mainly agricultural) (ltd_other). This hierarchy reflects the economic structure where commercial activities typically require more financing compared to industrial and agricultural sectors.
-
-3. **Unknown Sector**:
-   - The presence of an unknown sector (ltd_unknown) with a maximum LTD value of 8.585 million (`r paste(round(as.numeric(numerical_summary[7,6])/as.numeric(numerical_summary[1,6])*100,2),"%")`), although small compared to other sectors, highlights the importance of improving data collection and classification methods to reduce missing information.
+1.  **Dominance of Residential Sector**:
+    -   The residential sector (ltd_res) contributes a significant portion of the total LTD, with amounts ranging from about 238 million to 761 million. This indicates a strong focus or demand in the residential sector, making it a key area for banking and financial services.
+2.  **Non-Residential Sectors**:
+    -   The non-residential sector, while smaller than the residential sector, still represents a significant portion of the total LTD, suggesting diverse lending practices that cater to various needs beyond residential.
+    -   Within non-residential, the commercial sector (ltd_comm) is the largest contributor, followed by industrial (ltd_ind) and then other (mainly agricultural) (ltd_other). This hierarchy reflects the economic structure where commercial activities typically require more financing compared to industrial and agricultural sectors.
+3.  **Unknown Sector**:
+    -   The presence of an unknown sector (ltd_unknown) with a maximum LTD value of 8.585 million (`r paste(round(as.numeric(numerical_summary[7,6])/as.numeric(numerical_summary[1,6])*100,2),"%")`), although small compared to other sectors, highlights the importance of improving data collection and classification methods to reduce missing information.
 
 #### Volume of Transactions
 
-1. **Higher Transaction Volume in Residential**:
-   - The volume of transactions is significantly higher in the residential sector compared to non-residential sectors. This aligns with the LTD revenue data, underscoring the residential sector's dominance in lending activities.
-
-2. **Non-Residential Transaction Volume**:
-   - Similar to the LTD revenue, the commercial sector (volume_comm) sees more activity than industrial (volume_ind) and other (volume_other) sectors within the non-residential category, aligning with its financial contribution.
-
-3. **Low or Unknown Volume**:
-   - The volume_unknown category shows transactions did occur in sectors not properly classified, emphasizing again the need for better data management.
+1.  **Higher Transaction Volume in Residential**:
+    -   The volume of transactions is significantly higher in the residential sector compared to non-residential sectors. This aligns with the LTD revenue data, underscoring the residential sector's dominance in lending activities.
+2.  **Non-Residential Transaction Volume**:
+    -   Similar to the LTD revenue, the commercial sector (volume_comm) sees more activity than industrial (volume_ind) and other (volume_other) sectors within the non-residential category, aligning with its financial contribution.
+3.  **Low or Unknown Volume**:
+    -   The volume_unknown category shows transactions did occur in sectors not properly classified, emphasizing again the need for better data management.
 
 #### Insights and Implications
 
-- **Market Focus**: The data underscores the banking sector's focus on residential lending, likely driven by the consistent demand for housing and residential properties. This could also reflect broader economic trends, such as population growth or urbanization.
+-   **Market Focus**: The data underscores the banking sector's focus on residential lending, likely driven by the consistent demand for housing and residential properties. This could also reflect broader economic trends, such as population growth or urbanization.
 
-- **Economic Contributions**: The contributions of commercial and industrial sectors to the LTD and transaction volumes reflect their roles in the economy, with commercial activities leading in financial needs. This might indicate opportunities for banks and financial institutions to further tailor their products and services to these sectors.
+-   **Economic Contributions**: The contributions of commercial and industrial sectors to the LTD and transaction volumes reflect their roles in the economy, with commercial activities leading in financial needs. This might indicate opportunities for banks and financial institutions to further tailor their products and services to these sectors.
 
 ### Identify outliers
 
@@ -617,12 +604,11 @@ ltd_unit %>%
 
 Similarly, @fig-histvolnonres indicates the distribution is symmetrical, with one visible outlier.
 
-
 # Exploratory Data Analysis (EDA)
 
 ## ltd_agg
 
-### Correlation 
+### Correlation
 
 ```{r}
 #| label: fig-corr1
@@ -637,7 +623,7 @@ corrplot(M, method="circle")
 
 @fig-corr1 indicates that `ltd` is positively correlated with `hvi`, `sales` and `lending`, while negatively correlated with `int_rate`.
 
-The absolute correlation value between `ltd` and `hvi` and `lending` (`r M[1,2]` and `r M[1,5]`, respectively)  is larger than the other 2 variables (`sales` and `int_rate`), which is `r M[1,3]` and `r abs(M[1,4])`.
+The absolute correlation value between `ltd` and `hvi` and `lending` (`r M[1,2]` and `r M[1,5]`, respectively) is larger than the other 2 variables (`sales` and `int_rate`), which is `r M[1,3]` and `r abs(M[1,4])`.
 
 We can also see some multicollinearity, e.g. hvi and lending, etc.
 
@@ -667,10 +653,9 @@ ltd_agg_ts |>
   gg_season(ltd, labels = "both") 
 ```
 
-
 ## ltd_unit
 
-### Correlation 
+### Correlation
 
 ```{r}
 #| label: fig-corr2
@@ -745,7 +730,6 @@ ltd_unit_ts |>
 
 The relationship is strongly positive at March (lag3)
 
-
 ```{r}
 dcmp <- ltd_unit_ts |>
   model(stl = STL(ltd_total))
@@ -773,7 +757,6 @@ components(dcmp) |>
   geom_line(aes(y=season_adjust), colour = "#0072B2")
 ```
 
-
 There is seasonal pattern for `ltd_total` but the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
 
 ```{r}
@@ -794,5 +777,3 @@ components(dcmp) |>
 components(dcmp) |>
   autoplot()
 ```
-
-

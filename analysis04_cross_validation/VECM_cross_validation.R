@@ -274,39 +274,6 @@ for (t in 1:folds){
   }
 }
 
-par(mfrow=c(1,2))  # Set up a 2x1 grid for plots
-
-# RMSE for base forecast (row: h_step, col: .id)
-RMSE_base <- sqrt(colMeans((base_vecm_forecast-test_set)^2))
-RMSE_h_base <- rowMeans(RMSE_base)
-mean_RMSE_base <- mean(RMSE_h_base)
-
-# Plot base forecast RMSE
-plot(1:12, RMSE_h_base, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_base))
-abline(h = mean_RMSE_base, col = "red")
-title(main = "RMSE at each h-step forecast", sub = "Base Forecast")
-
-# RMSE for reconciled forecast (row: h_step, col: .id)
-RMSE_reconciled_struc <- sqrt(colMeans((reconciled_vecm_struc-test_set)^2))
-RMSE_h_reconciled_struc <- rowMeans(RMSE_reconciled_struc)
-mean_RMSE_rec_struc <- mean(RMSE_h_reconciled_struc)
-
-# Plot reconciled forecast RMSE
-plot(1:12, RMSE_h_reconciled_struc, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled_struc))
-abline(h = mean_RMSE_rec_struc, col = "red")
-title(sub = "Reconciled Forecast")
-
-# RMSE for reconciled forecast (row: h_step, col: .id)
-RMSE_reconciled_tcs <- sqrt(colMeans((reconciled_vecm_tcs-test_set)^2))
-RMSE_h_reconciled_tcs <- rowMeans(RMSE_reconciled_tcs)
-mean_RMSE_rec_struc_tcs <- mean(RMSE_h_reconciled_tcs)
-
-# Plot reconciled forecast RMSE
-plot(1:12, RMSE_h_reconciled_tcs, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled_tcs))
-abline(h = mean_RMSE_rec_struc_tcs, col = "red")
-title(sub = "Reconciled Forecast")
-
-
 # Loop through each .id
 df <- NULL
 for (i in 1:10) {

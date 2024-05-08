@@ -226,28 +226,3 @@ for (t in 1:folds){
     reconciled_arima[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
   }
 }
-
-par(mfrow=c(1,2))  # Set up a 2x1 grid for plots
-
-# RMSE for base forecast (row: h_step, col: .id)
-RMSE_base <- sqrt(colMeans((base_arima_forecast-test_set)^2))
-RMSE_h_base <- rowMeans(RMSE_base)
-mean_RMSE_base <- mean(RMSE_h_base)
-
-# Plot base forecast RMSE
-plot(1:12, RMSE_h_base, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_base))
-abline(h = mean_RMSE_base, col = "red")
-title(main = "RMSE at each h-step forecast", sub = "Base Forecast")
-
-# RMSE for reconciled forecast (row: h_step, col: .id)
-RMSE_reconciled <- sqrt(colMeans((reconciled_arima-test_set)^2))
-RMSE_h_reconciled <- rowMeans(RMSE_reconciled)
-mean_RMSE_rec <- mean(RMSE_h_reconciled)
-
-# Plot reconciled forecast RMSE
-plot(1:12, RMSE_h_reconciled, type = "l", xlab = "h-step forecast", ylab = "RMSE", xlim = c(1, 12), ylim = range(RMSE_h_reconciled))
-abline(h = mean_RMSE_rec, col = "red")
-title(sub = "Reconciled Forecast")
-
-
-
