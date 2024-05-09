@@ -33,12 +33,15 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, lag){
                           residual_train = exp(train) - exp(fitted_train)) 
     
     # Forecasting
-    forecast_res <- as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,1])
-    
+    forecast_output <- exp(as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,1]))
+    lower <- exp(as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,2]))
+    upper <- exp(as.numeric(predict(vecm_fit, n.ahead = fc_range)$fcst$train[,3]))
     train_res <- dat_tsibble$residual_train
-    forecast_output <- exp(forecast_res)
-    
-    output <- list(forecast_output, train_res)
+
+    output <- list(fc = forecast_output, 
+                   res = train_res,
+                   lower = lower,
+                   upper = upper)
     return(output)
   }
   else {
