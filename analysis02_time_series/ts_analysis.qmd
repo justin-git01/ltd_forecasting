@@ -20,8 +20,8 @@ library(fpp3)
 ```
 
 ```{r}
-ltd_agg <- read_excel("data/LTD data aggregate.xlsx")
-ltd_unit <- read_excel("data/LTD unit records summary.xlsx")
+ltd_agg <- read_excel(here::here("data/LTD data aggregate.xlsx"))
+ltd_unit <- read_excel(here::here("data/LTD unit records summary.xlsx"))
 ```
 
 ```{r}
@@ -192,7 +192,6 @@ ltd_unit_ts <- ltd_unit_ts %>%
   mutate(bc_ltd = difference(box_cox(ltd, lambda),1))
 ```
 
-
 ```{r}
 # Create hierarchical time series
 ltd_hts <- ltd_unit_ts %>%
@@ -337,7 +336,6 @@ Value of 0.01 indicates the `ltd` from this data is stationary and thus require 
 ltd_unit_ts |>
   features(log(ltd/volume), unitroot_ndiffs)
 ```
-
 
 ```{r}
 # Create hierarchical time series

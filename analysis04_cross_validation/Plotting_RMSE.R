@@ -3,11 +3,13 @@ library(plotly)
 library(ggplot2)
 
 # Plotting RMSE of base forecast to choose the benchmark 
+## Node index (1: Total, 2: Non-residential, 3: Commercial, 4: Industrial, 5: Other, 5: Residential)
+i = 1
 ## Create a data frame for plotting
 rmse_base_data <- data.frame(
   h_step = 1:12,
-  RMSE_ARIMA_base_total = RMSE_arima_h_base[1,],
-  RMSE_VECM_base_total = RMSE_vecm_h_base[1,]
+  RMSE_ARIMA_base_total = RMSE_arima_h_base[i,],
+  RMSE_VECM_base_total = RMSE_vecm_h_base[i,]
 )
 
 ## Convert to long format
@@ -27,13 +29,13 @@ ggplotly(ggplot_rmse)
 
 
 # Plotting all reconciled forecasts proportion against vecm based forecast for comparison
-prop_arima_vs_vecm_base <- (RMSE_arima_h_rec / RMSE_vecm_h_base)[1,]
+prop_arima_vs_vecm_base <- (RMSE_arima_h_rec / RMSE_vecm_h_base)[i,]
 
 # Create a data frame for plotting
 prop_data <- data.frame(
   h_step = 1:12,
-  Structural = RMSE_vecm_struc_prop[1,],
-  TCS = RMSE_vecm_tcs_prop[1,],
+  Structural = RMSE_vecm_struc_prop[i,],
+  TCS = RMSE_vecm_tcs_prop[i,],
   ARIMA_vs_VECM_Base = prop_arima_vs_vecm_base
 )
 

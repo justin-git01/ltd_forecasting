@@ -21,7 +21,7 @@
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
-            pdftitle={Reconciliation Forecasting for Land Transfer Duty},
+            pdftitle={Forecast Reconciliation for Land Transfer Duty},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -49,7 +49,7 @@
 \makeatother
 
 
-\title{Reconciliation Forecasting for Land Transfer Duty}
+\title{Forecast Reconciliation for Land Transfer Duty}
 
 %% MONASH STUFF
 
@@ -287,6 +287,7 @@
 \setstretch{1.5}
 
 %% Any special functions or other packages can be loaded here.
+\usepackage{float}
 
 
 \begin{document}
@@ -340,21 +341,135 @@ Describe each variable used in the analysis, including dependent and independent
 
 \subsection{Data Preparation and Cleaning:}\label{data-preparation-and-cleaning}
 
-Since initial data for both aggregate and unit LTD is pre-processed and cleaned by LTD, not much further cleaning required. In this case, only missing values and data format check is required
+Since the initial data for LTD is pre-processed and cleaned by DTF, not much further cleaning required. In this case, only missing values and data format check is required
+
+As shown in table \ref{tab:missingval} and \ref{tab:dataformat}, there is no missing value in this dataset, as well as, all variables are already in appropriate format, and thus no further action required.
 
 \subsection{Descriptive Statistics:}\label{descriptive-statistics}
 
-Basic statistics like mean, median, etc., and initial observations.
+Based on summary statistics results from table \ref{tab:statsumone} and table \ref{tab:statsumtwo},
 
-\subsection{Data Integrity Checks:}\label{data-integrity-checks}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Land Transfer Duty (LTD) Overview}:
 
-Ensuring data completeness, accuracy, and consistency.
+  \begin{itemize}
+  \tightlist
+  \item
+    The total LTD collected has varied considerably, ranging from approximately 286.2 million to over 1.013 billion. This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.
+  \item
+    Residential transactions dominate the LTD collection, contributing between 238.1 million and 761.4 million. This suggests that residential real estate remains a vital part of the market, possibly reflecting trends in housing demand and price movements.
+  \item
+    Non-residential transactions, though smaller than residential, still make a substantial contribution, with LTD from this sector ranging from about 42.9 million to 357.2 million. Within this, the commercial sector is the most significant, followed by industrial and other sectors (such as agricultural).
+  \end{itemize}
+\item
+  \textbf{Detailed Sector Analysis}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Commercial Sector}: With LTD ranging from 22.1 million to 132.4 million, this sector shows substantial activity, possibly reflecting economic growth, investment trends, and business expansions.
+  \item
+    \textbf{Industrial Sector}: This sector has collected LTD between 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods.
+  \item
+    \textbf{Other Sectors}: Including smaller sectors like agricultural, contributions range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.
+  \end{itemize}
+\item
+  \textbf{Residential Sector Analysis}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The residential sector consistently represents the largest portion of LTD, underscoring its importance to the overall property market. The variability in amounts likely mirrors the housing market dynamics, including fluctuations in home prices and the volume of transactions.
+  \end{itemize}
+\item
+  \textbf{Economic Indicators}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Sales}: The volume of sales has fluctuated from 4,629 to 15,177, indicating periods of both high and low market activity. The relatively close mean and median values suggest a fairly consistent level of transactions across the period.
+  \item
+    \textbf{Home Value Index (HVI)}: The HVI has ranged from 106.2 to 192.4, which is indicative of significant changes in home values. A higher HVI suggests increasing property values, which could contribute to higher LTD collections.
+  \end{itemize}
+\end{enumerate}
+
+This analysis suggests that while the property market is subject to cyclical changes reflected in LTD collections, the residential sector remains a cornerstone, significantly influencing overall market dynamics. Understanding these patterns can help in forecasting future trends and making informed decisions in real estate and financial sectors.
 
 \section{Exploratory Data Analysis (EDA)}\label{exploratory-data-analysis-eda}
 
-\subsection{Visualization:}\label{visualization}
+\subsection{Time series analysis:}\label{time-series-analysis}
 
-Use plots (time series plots, histograms, etc.) to visualize trends, cycles, and outliers in LTD data.
+\subsubsection{Land Transfer Duty}\label{land-transfer-duty}
+
+\paragraph{Trend}\label{trend}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/trend-1} 
+
+}
+
+\caption{Trend of Land Transfer Duty in Victoria over time}\label{fig:trend}
+\end{figure}
+
+As spotted by the figure \ref{fig:trend}, \texttt{ltd\_total} increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
+
+\paragraph{Seasonal Pattern}\label{seasonal-pattern}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/sspattern-1} 
+
+}
+
+\caption{Seasonal trend of Land Transfer Duty in Victoria}\label{fig:sspattern}
+\end{figure}
+
+Apart from there is a small hint of drop at the start of each quarter, figure \ref{fig:sspattern} shows that there is no clear sign for seasonal pattern
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/subseries-1} 
+
+}
+
+\caption{Subseries plot of Land Transfer Duty in Victoria over time}\label{fig:subseries}
+\end{figure}
+
+However, in the figure \ref{fig:subseries}, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from figure \ref{fig:sspattern}.
+
+\paragraph{Decomposition}\label{decomposition}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/dcmp-1} 
+
+}
+
+\caption{Decomposition of Land Transfer Duty in Victoria}\label{fig:dcmp}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/ssadj-1} 
+
+}
+
+\caption{Seasonal adjusted Land Transfer Duty in Victoria}\label{fig:ssadj}
+\end{figure}
+
+Figure \ref{fig:dcmp} shows that there is no seasonal pattern for \texttt{ltd\_total} and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
+
+Moreover, figure \ref{fig:dcmp} also shows that there is a sign of heterogeneity in \texttt{ltd} and thus log transformation may needed before model fitting.
+
+Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted \texttt{ltd\_total} and the original \texttt{ltd\_total}, which confirms the lack of seasonal pattern.
+
+\subsubsection{Sales}\label{sales}
+
+\subsubsection{Home Value Index}\label{home-value-index}
 
 \subsection{Correlation Analysis:}\label{correlation-analysis}
 
@@ -556,15 +671,80 @@ Recap the findings and their implications.
 
 Suggestions for improving future forecasts.
 
-\section{Appendices}\label{appendices}
+\section{Appendix}\label{appendix}
 
-\subsection{Additional Data:}\label{additional-data}
+\begin{table}
 
-Any supplementary data or detailed tables.
+\caption{\label{tab:missingval}Missing values check}
+\centering
+\begin{tabular}[t]{lr}
+\toprule
+  & Number of null values\\
+\midrule
+Date & 0\\
+ltd\_total & 0\\
+ltd\_nonres & 0\\
+ltd\_comm & 0\\
+ltd\_ind & 0\\
+\addlinespace
+ltd\_other & 0\\
+ltd\_res & 0\\
+sales & 0\\
+hvi & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Code:}\label{code}
+\begin{table}
 
-Include or reference the R scripts used for analysis.
+\caption{\label{tab:dataformat}Date format check}
+\centering
+\begin{tabular}[t]{lllllllll}
+\toprule
+Date & ltd\_total & ltd\_nonres & ltd\_comm & ltd\_ind & ltd\_other & ltd\_res & sales & hvi\\
+\midrule
+POSIXct & numeric & numeric & numeric & numeric & numeric & numeric & numeric & numeric\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:statsumone}Summary Statistics of variables (Table 1)}
+\centering
+\begin{tabular}[t]{lllll}
+\toprule
+  & Total LTD & Non-Residential LTD & Commercial LTD & Industrial LTD\\
+\midrule
+ & Min.   :2.862e+08 & Min.   : 42909678 & Min.   : 22106375 & Min.   :  5229382\\
+ & 1st Qu.:4.346e+08 & 1st Qu.: 76682419 & 1st Qu.: 42135408 & 1st Qu.: 17094782\\
+ & Median :5.019e+08 & Median : 97505851 & Median : 54959990 & Median : 24748954\\
+ & Mean   :5.422e+08 & Mean   :109079081 & Mean   : 59467363 & Mean   : 31256622\\
+ & 3rd Qu.:6.342e+08 & 3rd Qu.:135555977 & 3rd Qu.: 70539203 & 3rd Qu.: 37482400\\
+\addlinespace
+ & Max.   :1.013e+09 & Max.   :357222264 & Max.   :132405000 & Max.   :214372653\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:statsumtwo}Summary Statistics of variables (Table 2)}
+\centering
+\begin{tabular}[t]{lllll}
+\toprule
+  & Other property LTD & Residential LTD & Sales & HVI\\
+\midrule
+ & Min.   : 3325394 & Min.   :238100812 & Min.   : 4629 & Min.   :106.2\\
+ & 1st Qu.: 9464705 & 1st Qu.:346798966 & 1st Qu.: 8414 & 1st Qu.:132.5\\
+ & Median :14776865 & Median :406948825 & Median : 9697 & Median :155.0\\
+ & Mean   :18252446 & Mean   :433146031 & Mean   : 9680 & Mean   :152.9\\
+ & 3rd Qu.:24363583 & 3rd Qu.:489072115 & 3rd Qu.:11158 & 3rd Qu.:178.4\\
+\addlinespace
+ & Max.   :74469171 & Max.   :761393438 & Max.   :15177 & Max.   :192.4\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{References}\label{references}
 

@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="presentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.4.554">
+
+  <meta name="author" content="Hoang Do">
+  <meta name="dcterms.date" content="2025-10-05">
+  <title>Reconciliation Forecasting</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="assets/tachyons-addon.css">
+  <link rel="stylesheet" href="assets/custom.css">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="presentation_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <script src="presentation_files/libs/plotly-binding-4.10.2/plotly.js"></script>
+  <script src="presentation_files/libs/typedarray-0.1/typedarray.min.js"></script>
+  <script src="presentation_files/libs/jquery-3.5.1/jquery.min.js"></script>
+  <link href="presentation_files/libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet">
+  <script src="presentation_files/libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+  <link href="presentation_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="presentation_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+  <link href="presentation_files/libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
+  <script src="presentation_files/libs/vis-9.1.0/vis-network.min.js"></script>
+  <script src="presentation_files/libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="etc5523-title" class="slide level2" data-background-image="images/bg-01.png">
+<h2><br><span class="monash-blue">Reconciliation Forecasting</span></h2>
+<h3 id="land-transfer-duty">Land Transfer Duty</h3>
+<p>Author: <em>Hoang Do</em></p>
+<div class="tl">
+<p><br></p>
+<ul class="fa-ul">
+<li>
+<p><span class="fa-li"><i class="fas fa-envelope"></i></span>vdoo0002@student.monash.edu</p>
+</li>
+<li>
+<p><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> 22-05-2024</p>
+</li>
+<li>
+<p><span class="fa-li"><i class="fa-solid fa-globe"></i></span><a href="https://github.com/justin-git01/ltd_forecasting">https://github.com/justin-git01/ltd_forecasting</a></p>
+</li>
+</ul>
+<p><br></p>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<center>
+<p><img src="images/intro_pic.png" height="620"></p>
+</center>
+
+<aside><div>
+<p>Image generated by <a href="chat.openai.com">ChatGPT</a>.</p>
+</div></aside></section>
+<section>
+<section id="land-transfer-duty-1" class="title-slide slide level1 center" data-background-color="#006DAE">
+<h1>Land Transfer Duty</h1>
+
+</section>
+<section id="section-1" class="slide level2" data-background-image="images/mel_city1.jpg">
+<h2></h2>
+<center>
+<div class="monash-bg-white pa3 w-80" style="opacity:0.85;">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>What is Land Transfer Duty? (or Stamp Duty)</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Paid when a property is <em>bought</em> or <em>acquired</em></p></li>
+<li><p>Varies by property <em>value</em>, <em>usage</em>, <em>buyer nationality</em>, and <em>eligibility for exemptions</em>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</center>
+<br>
+<center>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f0b5a821459aa3873cb2" style="width:54%;height:307.2px;"></div>
+<script type="application/json" data-for="htmlwidget-f0b5a821459aa3873cb2">{"x":{"data":[{"x":[10988,11017,11048,11078,11109,11139,11170,11201,11231,11262,11292,11323,11354,11382,11413,11443,11474,11504,11535,11566,11596,11627,11657,11688,11719,11747,11778,11808,11839,11869,11900,11931,11961,11992,12022,12053,12084,12112,12143,12173,12204,12234,12265,12296,12326,12357,12387,12418,12449,12478,12509,12539,12570,12600,12631,12662,12692,12723,12753,12784,12815,12843,12874,12904,12935,12965,12996,13027,13057,13088,13118,13149,13180,13208,13239,13269,13300,13330,13361,13392,13422,13453,13483,13514,13545,13573,13604,13634,13665,13695,13726,13757,13787,13818,13848,13879,13910,13939,13970,14000,14031,14061,14092,14123,14153,14184,14214,14245,14276,14304,14335,14365,14396,14426,14457,14488,14518,14549,14579,14610,14641,14669,14700,14730,14761,14791,14822,14853,14883,14914,14944,14975,15006,15034,15065,15095,15126,15156,15187,15218,15248,15279,15309,15340,15371,15400,15431,15461,15492,15522,15553,15584,15614,15645,15675,15706,15737,15765,15796,15826,15857,15887,15918,15949,15979,16010,16040,16071,16102,16130,16161,16191,16222,16252,16283,16314,16344,16375,16405,16436,16467,16495,16526,16556,16587,16617,16648,16679,16709,16740,16770,16801,16832,16861,16892,16922,16953,16983,17014,17045,17075,17106,17136,17167,17198,17226,17257,17287,17318,17348,17379,17410,17440,17471,17501,17532,17563,17591,17622,17652,17683,17713,17744,17775,17805,17836,17866,17897,17928,17956,17987,18017,18048,18078,18109,18140,18170,18201,18231,18262,18293,18322,18353,18383,18414,18444,18475,18506,18536,18567,18597,18628,18659,18687,18718,18748,18779,18809,18840,18871,18901,18932,18962,18993,19024,19052,19083,19113,19144,19174,19205,19236,19266,19297,19327,19358,19389,19417,19448,19478,19509,19539,19570,19601,19631,19662,19692,19723,19754,19783],"y":[123.43854434,114.66147754,87.3224137499999,112.37075214,127.26206217,126.91782535,104.3382879,90.62277102,97.39952604,97.24291502,93.70366691,111.55181465,99.0473660899999,115.23466783,97.2234558399999,125.94185913,124.80194465,149.22234507,152.22290762,131.1055775,170.99745123,150.91033376,152.52641156,160.95239384,188.60947862,147.62852298,151.89217531,176.64827527,152.44894217,194.58915045,189.3396389,162.75224388,186.69447952,163.35487065,174.68201049,174.2114472,174.40139883,163.02800566,146.5472369,201.64009486,184.48587202,204.4637837,195.7287088,203.8339227,208.9383916,183.807201,234.0298074,197.0897484,205.77641236,190.17309825,268.99456464,172.41425873,180.37745374,196.4793876,181.95417142,226.20904423,165.8564441,182.94934456,222.48577537,158.02321041,209.76870373,197.16671144,172.51738758,208.77706405,215.02487931,187.3287245,226.09447415,214.1068855,204.48496633,204.78737105,257.89443762,210.47268808,223.74967595,220.90200676,179.17403913,225.4602061,316.77408452,213.3458916,248.85739795,208.96168026,249.54858252,241.60708383,273.50162115,239.04359314,237.34765225,245.82638174,204.90181527,269.35861334,329.06556295,293.21791685,313.30399948,271.03620887,342.80150965,315.7991166,305.68841646,328.10572781,374.46165578,292.02079459,309.41985568,279.33691703,280.37100599,267.10109444,241.79690585,227.97817067,269.83398442,248.90303648,246.15558136,196.64205669,231.2563449,211.19044813,182.81257205,208.19552228,269.17070255,253.36817937,229.61407569,287.38705342,267.350386409999,256.01504699,328.02773597,263.96472889,318.44356844,360.5743587,284.65780245,358.55632096,395.91107678,356.63608077,351.78276116,335.24396985,301.99756511,311.44335178,393.66014838,262.05531246,314.52850559,370.7212536,248.48532428,307.38375809,355.99122239,297.11396475,315.41403986,292.66690911,252.31773611,246.62744745,286.59219882,238.41174583,303.54639607,277.998167,220.13905782,295.65008618,280.49177578,277.13805663,269.33078448,235.51918391,314.39035994,242.78332742,273.87497324,283.92555975,252.66615805,239.22720056,285.33413961,312.01882995,289.86528492,385.75138687,314.29915365,250.80791357,360.68388122,309.92217582,438.41098338,341.30016475,395.48375904,303.85538884,305.62115504,391.86533516,369.53263348,424.83957636,370.50748985,396.721094,470.21373739,360.91837087,499.44291104,364.02750268,415.87725465,398.04298671,372.83674282,381.46422972,483.38804915,533.54461376,436.08750566,480.10618441,505.08186043,468.18056726,608.8009343,491.58940001,513.74242812,472.32048862,374.14714747,464.69032062,490.52247835,462.49080351,525.07210269,412.12836681,444.25347136,522.83946437,589.36927274,513.4940749,520.20669075,547.02280614,395.87758754,567.90470624,633.04538858,626.51127263,595.08379045,495.46224602,567.67421215,554.36373658,645.17398653,512.70912292,606.26729088,577.71003979,565.76502423,572.54857376,613.43440847,585.40868524,594.43457099,502.59239911,568.37817623,508.19542421,550.24151514,440.98187842,393.52553418,394.40084335,406.65113222,536.27274384,527.58281512,481.34412182,458.65260051,444.97759467,489.16146178,521.58680039,860.79171126,538.22378868,531.79618886,458.76887693,444.1393271,431.724681,481.47964723,436.27178787,454.68962621,415.85969104,387.16192742,392.44166136,660.65953328,484.24712567,500.96315847,617.251914199999,603.77812361,663.70609125,807.42530942,887.69971744,763.32707251,920.17443818,540.40821609,792.45141464,1036.04331602,908.501169959999,879.11301842,1015.38706039,764.44721245,847.34263819,1006.167757,877.73653573,815.5371028,812.99746454,664.8001036,733.61474274,767.22308296,575.45159739,572.14539357,767.13745207,562.76309174,776.15096393,812.51897912,644.79751663,693.35621958,662.10696709,635.61183776,707.46094766,908.48382126,649.61569644,669.43830771,601.97690859],"text":["Month: 2000 Feb<br />ltd_inM:  123.43854","Month: 2000 Mar<br />ltd_inM:  114.66148","Month: 2000 Apr<br />ltd_inM:   87.32241","Month: 2000 May<br />ltd_inM:  112.37075","Month: 2000 Jun<br />ltd_inM:  127.26206","Month: 2000 Jul<br />ltd_inM:  126.91783","Month: 2000 Aug<br />ltd_inM:  104.33829","Month: 2000 Sep<br />ltd_inM:   90.62277","Month: 2000 Oct<br />ltd_inM:   97.39953","Month: 2000 Nov<br />ltd_inM:   97.24292","Month: 2000 Dec<br />ltd_inM:   93.70367","Month: 2001 Jan<br />ltd_inM:  111.55181","Month: 2001 Feb<br />ltd_inM:   99.04737","Month: 2001 Mar<br />ltd_inM:  115.23467","Month: 2001 Apr<br />ltd_inM:   97.22346","Month: 2001 May<br />ltd_inM:  125.94186","Month: 2001 Jun<br />ltd_inM:  124.80194","Month: 2001 Jul<br />ltd_inM:  149.22235","Month: 2001 Aug<br />ltd_inM:  152.22291","Month: 2001 Sep<br />ltd_inM:  131.10558","Month: 2001 Oct<br />ltd_inM:  170.99745","Month: 2001 Nov<br />ltd_inM:  150.91033","Month: 2001 Dec<br />ltd_inM:  152.52641","Month: 2002 Jan<br />ltd_inM:  160.95239","Month: 2002 Feb<br />ltd_inM:  188.60948","Month: 2002 Mar<br />ltd_inM:  147.62852","Month: 2002 Apr<br />ltd_inM:  151.89218","Month: 2002 May<br />ltd_inM:  176.64828","Month: 2002 Jun<br />ltd_inM:  152.44894","Month: 2002 Jul<br />ltd_inM:  194.58915","Month: 2002 Aug<br />ltd_inM:  189.33964","Month: 2002 Sep<br />ltd_inM:  162.75224","Month: 2002 Oct<br />ltd_inM:  186.69448","Month: 2002 Nov<br />ltd_inM:  163.35487","Month: 2002 Dec<br />ltd_inM:  174.68201","Month: 2003 Jan<br />ltd_inM:  174.21145","Month: 2003 Feb<br />ltd_inM:  174.40140","Month: 2003 Mar<br />ltd_inM:  163.02801","Month: 2003 Apr<br />ltd_inM:  146.54724","Month: 2003 May<br />ltd_inM:  201.64009","Month: 2003 Jun<br />ltd_inM:  184.48587","Month: 2003 Jul<br />ltd_inM:  204.46378","Month: 2003 Aug<br />ltd_inM:  195.72871","Month: 2003 Sep<br />ltd_inM:  203.83392","Month: 2003 Oct<br />ltd_inM:  208.93839","Month: 2003 Nov<br />ltd_inM:  183.80720","Month: 2003 Dec<br />ltd_inM:  234.02981","Month: 2004 Jan<br />ltd_inM:  197.08975","Month: 2004 Feb<br />ltd_inM:  205.77641","Month: 2004 Mar<br />ltd_inM:  190.17310","Month: 2004 Apr<br />ltd_inM:  268.99456","Month: 2004 May<br />ltd_inM:  172.41426","Month: 2004 Jun<br />ltd_inM:  180.37745","Month: 2004 Jul<br />ltd_inM:  196.47939","Month: 2004 Aug<br />ltd_inM:  181.95417","Month: 2004 Sep<br />ltd_inM:  226.20904","Month: 2004 Oct<br />ltd_inM:  165.85644","Month: 2004 Nov<br />ltd_inM:  182.94934","Month: 2004 Dec<br />ltd_inM:  222.48578","Month: 2005 Jan<br />ltd_inM:  158.02321","Month: 2005 Feb<br />ltd_inM:  209.76870","Month: 2005 Mar<br />ltd_inM:  197.16671","Month: 2005 Apr<br />ltd_inM:  172.51739","Month: 2005 May<br />ltd_inM:  208.77706","Month: 2005 Jun<br />ltd_inM:  215.02488","Month: 2005 Jul<br />ltd_inM:  187.32872","Month: 2005 Aug<br />ltd_inM:  226.09447","Month: 2005 Sep<br />ltd_inM:  214.10689","Month: 2005 Oct<br />ltd_inM:  204.48497","Month: 2005 Nov<br />ltd_inM:  204.78737","Month: 2005 Dec<br />ltd_inM:  257.89444","Month: 2006 Jan<br />ltd_inM:  210.47269","Month: 2006 Feb<br />ltd_inM:  223.74968","Month: 2006 Mar<br />ltd_inM:  220.90201","Month: 2006 Apr<br />ltd_inM:  179.17404","Month: 2006 May<br />ltd_inM:  225.46021","Month: 2006 Jun<br />ltd_inM:  316.77408","Month: 2006 Jul<br />ltd_inM:  213.34589","Month: 2006 Aug<br />ltd_inM:  248.85740","Month: 2006 Sep<br />ltd_inM:  208.96168","Month: 2006 Oct<br />ltd_inM:  249.54858","Month: 2006 Nov<br />ltd_inM:  241.60708","Month: 2006 Dec<br />ltd_inM:  273.50162","Month: 2007 Jan<br />ltd_inM:  239.04359","Month: 2007 Feb<br />ltd_inM:  237.34765","Month: 2007 Mar<br />ltd_inM:  245.82638","Month: 2007 Apr<br />ltd_inM:  204.90182","Month: 2007 May<br />ltd_inM:  269.35861","Month: 2007 Jun<br />ltd_inM:  329.06556","Month: 2007 Jul<br />ltd_inM:  293.21792","Month: 2007 Aug<br />ltd_inM:  313.30400","Month: 2007 Sep<br />ltd_inM:  271.03621","Month: 2007 Oct<br />ltd_inM:  342.80151","Month: 2007 Nov<br />ltd_inM:  315.79912","Month: 2007 Dec<br />ltd_inM:  305.68842","Month: 2008 Jan<br />ltd_inM:  328.10573","Month: 2008 Feb<br />ltd_inM:  374.46166","Month: 2008 Mar<br />ltd_inM:  292.02079","Month: 2008 Apr<br />ltd_inM:  309.41986","Month: 2008 May<br />ltd_inM:  279.33692","Month: 2008 Jun<br />ltd_inM:  280.37101","Month: 2008 Jul<br />ltd_inM:  267.10109","Month: 2008 Aug<br />ltd_inM:  241.79691","Month: 2008 Sep<br />ltd_inM:  227.97817","Month: 2008 Oct<br />ltd_inM:  269.83398","Month: 2008 Nov<br />ltd_inM:  248.90304","Month: 2008 Dec<br />ltd_inM:  246.15558","Month: 2009 Jan<br />ltd_inM:  196.64206","Month: 2009 Feb<br />ltd_inM:  231.25634","Month: 2009 Mar<br />ltd_inM:  211.19045","Month: 2009 Apr<br />ltd_inM:  182.81257","Month: 2009 May<br />ltd_inM:  208.19552","Month: 2009 Jun<br />ltd_inM:  269.17070","Month: 2009 Jul<br />ltd_inM:  253.36818","Month: 2009 Aug<br />ltd_inM:  229.61408","Month: 2009 Sep<br />ltd_inM:  287.38705","Month: 2009 Oct<br />ltd_inM:  267.35039","Month: 2009 Nov<br />ltd_inM:  256.01505","Month: 2009 Dec<br />ltd_inM:  328.02774","Month: 2010 Jan<br />ltd_inM:  263.96473","Month: 2010 Feb<br />ltd_inM:  318.44357","Month: 2010 Mar<br />ltd_inM:  360.57436","Month: 2010 Apr<br />ltd_inM:  284.65780","Month: 2010 May<br />ltd_inM:  358.55632","Month: 2010 Jun<br />ltd_inM:  395.91108","Month: 2010 Jul<br />ltd_inM:  356.63608","Month: 2010 Aug<br />ltd_inM:  351.78276","Month: 2010 Sep<br />ltd_inM:  335.24397","Month: 2010 Oct<br />ltd_inM:  301.99757","Month: 2010 Nov<br />ltd_inM:  311.44335","Month: 2010 Dec<br />ltd_inM:  393.66015","Month: 2011 Jan<br />ltd_inM:  262.05531","Month: 2011 Feb<br />ltd_inM:  314.52851","Month: 2011 Mar<br />ltd_inM:  370.72125","Month: 2011 Apr<br />ltd_inM:  248.48532","Month: 2011 May<br />ltd_inM:  307.38376","Month: 2011 Jun<br />ltd_inM:  355.99122","Month: 2011 Jul<br />ltd_inM:  297.11396","Month: 2011 Aug<br />ltd_inM:  315.41404","Month: 2011 Sep<br />ltd_inM:  292.66691","Month: 2011 Oct<br />ltd_inM:  252.31774","Month: 2011 Nov<br />ltd_inM:  246.62745","Month: 2011 Dec<br />ltd_inM:  286.59220","Month: 2012 Jan<br />ltd_inM:  238.41175","Month: 2012 Feb<br />ltd_inM:  303.54640","Month: 2012 Mar<br />ltd_inM:  277.99817","Month: 2012 Apr<br />ltd_inM:  220.13906","Month: 2012 May<br />ltd_inM:  295.65009","Month: 2012 Jun<br />ltd_inM:  280.49178","Month: 2012 Jul<br />ltd_inM:  277.13806","Month: 2012 Aug<br />ltd_inM:  269.33078","Month: 2012 Sep<br />ltd_inM:  235.51918","Month: 2012 Oct<br />ltd_inM:  314.39036","Month: 2012 Nov<br />ltd_inM:  242.78333","Month: 2012 Dec<br />ltd_inM:  273.87497","Month: 2013 Jan<br />ltd_inM:  283.92556","Month: 2013 Feb<br />ltd_inM:  252.66616","Month: 2013 Mar<br />ltd_inM:  239.22720","Month: 2013 Apr<br />ltd_inM:  285.33414","Month: 2013 May<br />ltd_inM:  312.01883","Month: 2013 Jun<br />ltd_inM:  289.86528","Month: 2013 Jul<br />ltd_inM:  385.75139","Month: 2013 Aug<br />ltd_inM:  314.29915","Month: 2013 Sep<br />ltd_inM:  250.80791","Month: 2013 Oct<br />ltd_inM:  360.68388","Month: 2013 Nov<br />ltd_inM:  309.92218","Month: 2013 Dec<br />ltd_inM:  438.41098","Month: 2014 Jan<br />ltd_inM:  341.30016","Month: 2014 Feb<br />ltd_inM:  395.48376","Month: 2014 Mar<br />ltd_inM:  303.85539","Month: 2014 Apr<br />ltd_inM:  305.62116","Month: 2014 May<br />ltd_inM:  391.86534","Month: 2014 Jun<br />ltd_inM:  369.53263","Month: 2014 Jul<br />ltd_inM:  424.83958","Month: 2014 Aug<br />ltd_inM:  370.50749","Month: 2014 Sep<br />ltd_inM:  396.72109","Month: 2014 Oct<br />ltd_inM:  470.21374","Month: 2014 Nov<br />ltd_inM:  360.91837","Month: 2014 Dec<br />ltd_inM:  499.44291","Month: 2015 Jan<br />ltd_inM:  364.02750","Month: 2015 Feb<br />ltd_inM:  415.87725","Month: 2015 Mar<br />ltd_inM:  398.04299","Month: 2015 Apr<br />ltd_inM:  372.83674","Month: 2015 May<br />ltd_inM:  381.46423","Month: 2015 Jun<br />ltd_inM:  483.38805","Month: 2015 Jul<br />ltd_inM:  533.54461","Month: 2015 Aug<br />ltd_inM:  436.08751","Month: 2015 Sep<br />ltd_inM:  480.10618","Month: 2015 Oct<br />ltd_inM:  505.08186","Month: 2015 Nov<br />ltd_inM:  468.18057","Month: 2015 Dec<br />ltd_inM:  608.80093","Month: 2016 Jan<br />ltd_inM:  491.58940","Month: 2016 Feb<br />ltd_inM:  513.74243","Month: 2016 Mar<br />ltd_inM:  472.32049","Month: 2016 Apr<br />ltd_inM:  374.14715","Month: 2016 May<br />ltd_inM:  464.69032","Month: 2016 Jun<br />ltd_inM:  490.52248","Month: 2016 Jul<br />ltd_inM:  462.49080","Month: 2016 Aug<br />ltd_inM:  525.07210","Month: 2016 Sep<br />ltd_inM:  412.12837","Month: 2016 Oct<br />ltd_inM:  444.25347","Month: 2016 Nov<br />ltd_inM:  522.83946","Month: 2016 Dec<br />ltd_inM:  589.36927","Month: 2017 Jan<br />ltd_inM:  513.49407","Month: 2017 Feb<br />ltd_inM:  520.20669","Month: 2017 Mar<br />ltd_inM:  547.02281","Month: 2017 Apr<br />ltd_inM:  395.87759","Month: 2017 May<br />ltd_inM:  567.90471","Month: 2017 Jun<br />ltd_inM:  633.04539","Month: 2017 Jul<br />ltd_inM:  626.51127","Month: 2017 Aug<br />ltd_inM:  595.08379","Month: 2017 Sep<br />ltd_inM:  495.46225","Month: 2017 Oct<br />ltd_inM:  567.67421","Month: 2017 Nov<br />ltd_inM:  554.36374","Month: 2017 Dec<br />ltd_inM:  645.17399","Month: 2018 Jan<br />ltd_inM:  512.70912","Month: 2018 Feb<br />ltd_inM:  606.26729","Month: 2018 Mar<br />ltd_inM:  577.71004","Month: 2018 Apr<br />ltd_inM:  565.76502","Month: 2018 May<br />ltd_inM:  572.54857","Month: 2018 Jun<br />ltd_inM:  613.43441","Month: 2018 Jul<br />ltd_inM:  585.40869","Month: 2018 Aug<br />ltd_inM:  594.43457","Month: 2018 Sep<br />ltd_inM:  502.59240","Month: 2018 Oct<br />ltd_inM:  568.37818","Month: 2018 Nov<br />ltd_inM:  508.19542","Month: 2018 Dec<br />ltd_inM:  550.24152","Month: 2019 Jan<br />ltd_inM:  440.98188","Month: 2019 Feb<br />ltd_inM:  393.52553","Month: 2019 Mar<br />ltd_inM:  394.40084","Month: 2019 Apr<br />ltd_inM:  406.65113","Month: 2019 May<br />ltd_inM:  536.27274","Month: 2019 Jun<br />ltd_inM:  527.58282","Month: 2019 Jul<br />ltd_inM:  481.34412","Month: 2019 Aug<br />ltd_inM:  458.65260","Month: 2019 Sep<br />ltd_inM:  444.97759","Month: 2019 Oct<br />ltd_inM:  489.16146","Month: 2019 Nov<br />ltd_inM:  521.58680","Month: 2019 Dec<br />ltd_inM:  860.79171","Month: 2020 Jan<br />ltd_inM:  538.22379","Month: 2020 Feb<br />ltd_inM:  531.79619","Month: 2020 Mar<br />ltd_inM:  458.76888","Month: 2020 Apr<br />ltd_inM:  444.13933","Month: 2020 May<br />ltd_inM:  431.72468","Month: 2020 Jun<br />ltd_inM:  481.47965","Month: 2020 Jul<br />ltd_inM:  436.27179","Month: 2020 Aug<br />ltd_inM:  454.68963","Month: 2020 Sep<br />ltd_inM:  415.85969","Month: 2020 Oct<br />ltd_inM:  387.16193","Month: 2020 Nov<br />ltd_inM:  392.44166","Month: 2020 Dec<br />ltd_inM:  660.65953","Month: 2021 Jan<br />ltd_inM:  484.24713","Month: 2021 Feb<br />ltd_inM:  500.96316","Month: 2021 Mar<br />ltd_inM:  617.25191","Month: 2021 Apr<br />ltd_inM:  603.77812","Month: 2021 May<br />ltd_inM:  663.70609","Month: 2021 Jun<br />ltd_inM:  807.42531","Month: 2021 Jul<br />ltd_inM:  887.69972","Month: 2021 Aug<br />ltd_inM:  763.32707","Month: 2021 Sep<br />ltd_inM:  920.17444","Month: 2021 Oct<br />ltd_inM:  540.40822","Month: 2021 Nov<br />ltd_inM:  792.45141","Month: 2021 Dec<br />ltd_inM: 1036.04332","Month: 2022 Jan<br />ltd_inM:  908.50117","Month: 2022 Feb<br />ltd_inM:  879.11302","Month: 2022 Mar<br />ltd_inM: 1015.38706","Month: 2022 Apr<br />ltd_inM:  764.44721","Month: 2022 May<br />ltd_inM:  847.34264","Month: 2022 Jun<br />ltd_inM: 1006.16776","Month: 2022 Jul<br />ltd_inM:  877.73654","Month: 2022 Aug<br />ltd_inM:  815.53710","Month: 2022 Sep<br />ltd_inM:  812.99746","Month: 2022 Oct<br />ltd_inM:  664.80010","Month: 2022 Nov<br />ltd_inM:  733.61474","Month: 2022 Dec<br />ltd_inM:  767.22308","Month: 2023 Jan<br />ltd_inM:  575.45160","Month: 2023 Feb<br />ltd_inM:  572.14539","Month: 2023 Mar<br />ltd_inM:  767.13745","Month: 2023 Apr<br />ltd_inM:  562.76309","Month: 2023 May<br />ltd_inM:  776.15096","Month: 2023 Jun<br />ltd_inM:  812.51898","Month: 2023 Jul<br />ltd_inM:  644.79752","Month: 2023 Aug<br />ltd_inM:  693.35622","Month: 2023 Sep<br />ltd_inM:  662.10697","Month: 2023 Oct<br />ltd_inM:  635.61184","Month: 2023 Nov<br />ltd_inM:  707.46095","Month: 2023 Dec<br />ltd_inM:  908.48382","Month: 2024 Jan<br />ltd_inM:  649.61570","Month: 2024 Feb<br />ltd_inM:  669.43831","Month: 2024 Mar<br />ltd_inM:  601.97691"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":42.6666666666667,"r":7.30593607305936,"b":39.0867579908676,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Land Transfer Duty from 2010","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[10548.25,20222.75],"tickmode":"array","ticktext":["2000 Jan","2010 Jan","2020 Jan"],"tickvals":[10957,14610,18262],"categoryorder":"array","categoryarray":["2000 Jan","2010 Jan","2020 Jan"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[39.8863686364999,1083.4793611335],"tickmode":"array","ticktext":["250","500","750","1000"],"tickvals":[250,500,750,1000],"categoryorder":"array","categoryarray":["250","500","750","1000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Land Transfer Duty (in $million)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"9ec85dbe28b6":{"x":{},"y":{},"type":"scatter"}},"cur_data":"9ec85dbe28b6","visdat":{"9ec85dbe28b6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</center>
+</section>
+<section id="impact-of-ltd" class="slide level2">
+<h2>Impact of LTD</h2>
+<center>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>On property market</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>A 100 basis point cut in transfer duty could boost property transactions by 10%. (Source: <a href="https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf">NSW Treasury</a>)</p></li>
+<li><p>Victoria’s tax revenue is heavily dependent on land transfer duty</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9b97f7e8ef25297afe31" style="width:50%;height:288px;"></div>
+<script type="application/json" data-for="htmlwidget-9b97f7e8ef25297afe31">{"x":{"data":[{"x":[11869,11961,12053,12143,12234,12326,12418,12509,12600,12692,12784,12874,12965,13057,13149,13239,13330,13422,13514,13604,13695,13787,13879,13970,14061,14153,14245,14335,14426,14518,14610,14700,14791,14883,14975,15065,15156,15248,15340,15431,15522,15614,15706,15796,15887,15979,16071,16161,16252,16344,16436,16526,16617,16709,16801,16892,16983,17075,17167,17257,17348,17440,17532,17622,17713,17805,17897,17987,18078,18170,18262,18353,18444,18536,18628,18718,18809,18901,18993,19083,19174,19266,19358,19448,19539,19631,19723],"y":[23.1721273259018,25.2235361984425,19.4089305360598,24.5223956175482,25.1268824361428,26.7212345994799,20.1536160957042,26.4471949300328,23.9029018739622,22.6033630069238,19.1467010064726,24.7735770668882,24.4524978567532,26.1831881327996,21.0170035290343,27.1805885234166,24.6077137410177,28.1761238025055,21.1231354197134,28.27425996973,29.1097253549157,31.6964138973803,25.9165646090106,29.2823450134771,24.9957599810047,25.9693080736063,16.5065344284312,23.0710092256081,25.1091845381657,27.542701863354,22.1710201490607,31.2248332231504,29.65309543427,29.7747161778619,20.8010364287126,26.8103372240026,25.0963431201309,23.6567883387544,17.522865202154,23.2836257309941,21.4770261734091,23.3979051695011,16.190833959429,25.0169185653057,22.1113823973957,29.1588883338154,20.4323666280508,28.8051401112251,25.3062177595686,32.8251430826919,21.5098336407297,30.2003269648391,28.643970678311,34.280947325085,25.1896425344766,30.5366637715035,26.5843657443452,28.8380287009451,22.9757760793014,33.7603244775125,30.0083489773007,35.4421837996597,24.3066984131674,33.4263142179026,28.5341317356564,32.3430771491992,15.8311117127184,30.031875848567,23.7185902806287,33.6836850782601,20.2348251731605,32.1928469963229,25.6722675058934,31.0507519368188,20.0089892333433,35.3120242382653,36.6381967291703,39.906747422302,28.0480775837019,34.4531503224731,31.9584063749568,33.1184633523728,17.868340126096,29.6561704278695,24.3667798387788,30.3257587911178,14.8480177731861],"text":["Quarter: 2002 Q3<br />reliance: 23.17213","Quarter: 2002 Q4<br />reliance: 25.22354","Quarter: 2003 Q1<br />reliance: 19.40893","Quarter: 2003 Q2<br />reliance: 24.52240","Quarter: 2003 Q3<br />reliance: 25.12688","Quarter: 2003 Q4<br />reliance: 26.72123","Quarter: 2004 Q1<br />reliance: 20.15362","Quarter: 2004 Q2<br />reliance: 26.44719","Quarter: 2004 Q3<br />reliance: 23.90290","Quarter: 2004 Q4<br />reliance: 22.60336","Quarter: 2005 Q1<br />reliance: 19.14670","Quarter: 2005 Q2<br />reliance: 24.77358","Quarter: 2005 Q3<br />reliance: 24.45250","Quarter: 2005 Q4<br />reliance: 26.18319","Quarter: 2006 Q1<br />reliance: 21.01700","Quarter: 2006 Q2<br />reliance: 27.18059","Quarter: 2006 Q3<br />reliance: 24.60771","Quarter: 2006 Q4<br />reliance: 28.17612","Quarter: 2007 Q1<br />reliance: 21.12314","Quarter: 2007 Q2<br />reliance: 28.27426","Quarter: 2007 Q3<br />reliance: 29.10973","Quarter: 2007 Q4<br />reliance: 31.69641","Quarter: 2008 Q1<br />reliance: 25.91656","Quarter: 2008 Q2<br />reliance: 29.28235","Quarter: 2008 Q3<br />reliance: 24.99576","Quarter: 2008 Q4<br />reliance: 25.96931","Quarter: 2009 Q1<br />reliance: 16.50653","Quarter: 2009 Q2<br />reliance: 23.07101","Quarter: 2009 Q3<br />reliance: 25.10918","Quarter: 2009 Q4<br />reliance: 27.54270","Quarter: 2010 Q1<br />reliance: 22.17102","Quarter: 2010 Q2<br />reliance: 31.22483","Quarter: 2010 Q3<br />reliance: 29.65310","Quarter: 2010 Q4<br />reliance: 29.77472","Quarter: 2011 Q1<br />reliance: 20.80104","Quarter: 2011 Q2<br />reliance: 26.81034","Quarter: 2011 Q3<br />reliance: 25.09634","Quarter: 2011 Q4<br />reliance: 23.65679","Quarter: 2012 Q1<br />reliance: 17.52287","Quarter: 2012 Q2<br />reliance: 23.28363","Quarter: 2012 Q3<br />reliance: 21.47703","Quarter: 2012 Q4<br />reliance: 23.39791","Quarter: 2013 Q1<br />reliance: 16.19083","Quarter: 2013 Q2<br />reliance: 25.01692","Quarter: 2013 Q3<br />reliance: 22.11138","Quarter: 2013 Q4<br />reliance: 29.15889","Quarter: 2014 Q1<br />reliance: 20.43237","Quarter: 2014 Q2<br />reliance: 28.80514","Quarter: 2014 Q3<br />reliance: 25.30622","Quarter: 2014 Q4<br />reliance: 32.82514","Quarter: 2015 Q1<br />reliance: 21.50983","Quarter: 2015 Q2<br />reliance: 30.20033","Quarter: 2015 Q3<br />reliance: 28.64397","Quarter: 2015 Q4<br />reliance: 34.28095","Quarter: 2016 Q1<br />reliance: 25.18964","Quarter: 2016 Q2<br />reliance: 30.53666","Quarter: 2016 Q3<br />reliance: 26.58437","Quarter: 2016 Q4<br />reliance: 28.83803","Quarter: 2017 Q1<br />reliance: 22.97578","Quarter: 2017 Q2<br />reliance: 33.76032","Quarter: 2017 Q3<br />reliance: 30.00835","Quarter: 2017 Q4<br />reliance: 35.44218","Quarter: 2018 Q1<br />reliance: 24.30670","Quarter: 2018 Q2<br />reliance: 33.42631","Quarter: 2018 Q3<br />reliance: 28.53413","Quarter: 2018 Q4<br />reliance: 32.34308","Quarter: 2019 Q1<br />reliance: 15.83111","Quarter: 2019 Q2<br />reliance: 30.03188","Quarter: 2019 Q3<br />reliance: 23.71859","Quarter: 2019 Q4<br />reliance: 33.68369","Quarter: 2020 Q1<br />reliance: 20.23483","Quarter: 2020 Q2<br />reliance: 32.19285","Quarter: 2020 Q3<br />reliance: 25.67227","Quarter: 2020 Q4<br />reliance: 31.05075","Quarter: 2021 Q1<br />reliance: 20.00899","Quarter: 2021 Q2<br />reliance: 35.31202","Quarter: 2021 Q3<br />reliance: 36.63820","Quarter: 2021 Q4<br />reliance: 39.90675","Quarter: 2022 Q1<br />reliance: 28.04808","Quarter: 2022 Q2<br />reliance: 34.45315","Quarter: 2022 Q3<br />reliance: 31.95841","Quarter: 2022 Q4<br />reliance: 33.11846","Quarter: 2023 Q1<br />reliance: 17.86834","Quarter: 2023 Q2<br />reliance: 29.65617","Quarter: 2023 Q3<br />reliance: 24.36678","Quarter: 2023 Q4<br />reliance: 30.32576","Quarter: 2024 Q1<br />reliance: 14.84802"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[11476.3,20115.7],"y":[26.3406748599874,26.3406748599874],"text":"yintercept: 26.34067","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.2754946727549,"r":7.30593607305936,"b":39.6955859969559,"l":37.2602739726027},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Victoria tax revenue's reliance on LTD","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[11476.3,20115.7],"tickmode":"array","ticktext":["2005 Q1","2010 Q1","2015 Q1","2020 Q1","2025 Q1"],"tickvals":[12784,14610,16436,18262,20089],"categoryorder":"array","categoryarray":["2005 Q1","2010 Q1","2015 Q1","2020 Q1","2025 Q1"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[13.5950812907303,41.1596839047578],"tickmode":"array","ticktext":["15","20","25","30","35","40"],"tickvals":[15,20,25,30,35,40],"categoryorder":"array","categoryarray":["15","20","25","30","35","40"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Percentage","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"9ec85e72353d":{"x":{},"y":{},"type":"scatter"},"9ec81c05683c":{"yintercept":{}}},"cur_data":"9ec85e72353d","visdat":{"9ec85e72353d":["function (y) ","x"],"9ec81c05683c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</center>
+</section>
+<section id="current-forecasting-approach" class="slide level2">
+<h2>Current forecasting approach</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Model used by DTF</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Cointegration pattern between LTD, Sales, and Home Value Index (HVI)</p></li>
+<li><p>Vector Error Correction Model (VECM)</p></li>
+<li><p>RMSE: &gt;&gt;&gt;</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="applying-forecast-reconciliation" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Applying Forecast Reconciliation</h1>
+
+</section>
+<section id="hierarchical-time-series" class="slide level2">
+<h2>Hierarchical Time Series</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Limitations</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Characteristics of different levels may differ</p></li>
+<li><p>Include these features can improve forecast accuracy</p></li>
+</ul>
+</div>
+</div>
+</div>
+<center>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="htmlwidget-20cf1a85a1d148912275" style="width:750px;height:350px;" class="visNetwork html-widget "></div>
+<script type="application/json" data-for="htmlwidget-20cf1a85a1d148912275">{"x":{"nodes":{"label":["Total","Non-Residential","Residential","Industry","Commercial","Other"],"id":[1,2,3,4,5,6],"level":[0,1,1,2,2,2]},"edges":{"from":[1,1,2,2,2],"to":[2,3,4,5,6]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":16}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":750,"height":350,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</center>
+</section>
+<section id="notation" class="slide level2">
+<h2>Notation</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Hierarchy structure for LTD</strong></p>
+</div>
+<div class="callout-content">
+<p>Can be written in matrix form:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+  \text{Total}_{t} \\
+  \text{Non-residential}_{t} \\
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 1 \\
+  1 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+\end{bmatrix}
+\]</span> or in a more compact notation:</p>
+<p><span class="math display">\[
+\text{LTD}_{t} = \text{S}\text{b}_{t},
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="temporal-hierarchy" class="slide level2">
+<h2>Temporal hierarchy</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+A time series can be disaggregated by temporal frequencies
+<center>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="htmlwidget-54f19586d3f861f29c92" style="width:600px;height:200px;" class="visNetwork html-widget "></div>
+<script type="application/json" data-for="htmlwidget-54f19586d3f861f29c92">{"x":{"nodes":{"label":["Year","Q1","Q2","Q3","Q4","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"id":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"level":[0,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2]},"edges":{"from":[1,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5],"to":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":40}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":600,"height":200,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</center>
+</div>
+</div>
+</div>
+<div class="callout-paper">
+<p>Temporal reconciliation is described in Athanasopoulos et al.&nbsp;(2017).</p>
+</div>
+</section></section>
+<section>
+<section id="forecast-all-series" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Forecast ALL series</h1>
+
+</section>
+<section id="section-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<div style="margin-top: 200px; font-size: 3em; color: red;">
+<p>Forecast at different levels don’t add up!</p>
+</div>
+</section>
+<section id="section-3" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<div style="margin-top: 100px;">
+<p>Forecast at different levels don’t add up!</p>
+</div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Independently produced forecasts are <span class="danger"><strong>incoherent</strong></span>,</p>
+<p><span class="math inline">\(\text{LTD}_{T+h|T} \neq \text{Comm}_{T+h|T} + \text{Ind}_{T+h|T} + \text{Other}_{T+h|T} + \text{Residential}_{T+h|T}\)</span>.</p>
+<p>Or for temporal hierarchy</p>
+<p><span class="math inline">\(\text{Year}_{T+h|T} \neq \text{Jan}_{T+h|T} + \text{Feb}_{T+h|T} + \text{Mar}_{T+h|T} + ... + \text{Dec}_{T+h|T}\)</span>.</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="reconciliation" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Reconciliation</h1>
+
+</section>
+<section id="step-reconciliation-process" class="slide level2">
+<h2>2-step reconciliation process</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>First obtain a set of base forecast <span class="math inline">\(\hat{\text{y}}_{h}\)</span>,</p></li>
+<li><p>Then all coherent forecast can be represented as:</p>
+<center>
+<p><span class="math inline">\(\tilde{\text{y}}_{h} = \text{SG}\hat{\text{y}}_{h}\)</span>,</p>
+</center></li>
+</ul>
+<p>where <strong>G</strong> is a matrix that maps the base forecasts into the bottom level, and the summing matrix <strong>S</strong> sums these up using the aggregation structure to produce a set of <strong>coherent forecasts</strong> <span class="math inline">\(\tilde{\text{y}}_{h}\)</span></p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="minimize-variance" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Minimize variance</h1>
+
+</section>
+<section id="mintrace" class="slide level2">
+<h2>MinTrace</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Wickramasuriya et al.&nbsp;(2019)</strong> shows that the variance-covariance of the h-step-ahead coherent forecast errors is given by:</p>
+<center>
+<span class="math inline">\(\text{V}_{h} = Var[\text{y}_{T+h} - \tilde{\text{y}}_{h}] = SG\text{W}_{h}G'S'\)</span>,
+</center>
+<p>where <span class="math inline">\(\text{W}_{h} = Var[\text{y}_{T+h} - \hat{\text{y}}_{h}]\)</span> is the variance-covariance matrix of the corresponding base forecast errors.</p>
+<p>The objective is to find a matrix <strong>G</strong> that minimises the error variances of the coherent forecasts.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="foreco-package" class="slide level2">
+<h2>FoReco package</h2>
+<div class="rows">
+<center>
+<img data-src="images/logo.svg">
+</center>
+</div>
+<div class="rows">
+<div class="flex">
+<p><img data-src="images/Tommaso.jpeg"></p>
+<p><img data-src="images/Daniele.jpeg"></p>
+</div>
+</div>
+</section>
+<section id="results" class="slide level2">
+<h2>Results</h2>
+</section>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Summary</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+</section>
+<section id="addtional-resources" class="slide level2">
+<h2>Addtional Resources</h2>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Research Paper</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<div class="quarto-auto-generated-content">
+<p><img src="images/monash-one-line-black-rgb.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Department of Treasury and Finance</p>
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <link rel="stylesheet" href="assets/syntax-highlight.css">
+    <link rel="stylesheet" href="assets/monash-after-body.css">
+    <link rel="stylesheet" href="assets/fontawesome-free-6.1.1-web/css/all.css">
+    <script src="assets/fontawesome-free-6.1.1-web/js/all.js"></script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

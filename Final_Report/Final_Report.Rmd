@@ -1,5 +1,5 @@
 ---
-title: "Reconciliation Forecasting for Land Transfer Duty"
+title: "Forecast Reconciliation for Land Transfer Duty"
 author:
 - familyname: Do
   othernames: Hoang
@@ -14,7 +14,6 @@ biblio-style: authoryear-comp
 linestretch: 1.5
 output:
   monash::report:
-    branding: false
     fig_caption: yes
     fig_height: 5
     fig_width: 8
@@ -24,11 +23,50 @@ output:
     number_sections: yes
     citation_package: biblatex
     toc: true
+    extra_dependencies: ["float"]
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, cache=F, messages=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE, cache=TRUE, messages=FALSE, warning=FALSE)
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
 ```
+
+
+```{r, warning=F, message= F, include=F}
+library(FoReco)
+library(tidyverse)
+library(readxl)
+library(fpp3)
+library(urca)
+library(plotly)
+library(corrplot)
+library(knitr)
+library(here)
+
+source(here::here("Function/var_function.R"))
+source(here::here("Function/vecm_function.R"))
+source(here::here("Function/adjust_series_fun.R"))
+source(here::here("Function/test_extract_fun.R"))
+```
+
+```{r, warning=F, message= F}
+# Load ltd aggregate date
+ltd_agg <- read_excel(here("data/LTD_new.xlsx"), sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI) |>
+  dplyr::select(c(Date, ltd, sales, hvi))
+
+# Load ltd unit data and join with aggregate data
+ltd_unit <- read_excel(here("data/LTD_new.xlsx"), sheet = 2) |>
+  rename(Date = ...1) |>
+  dplyr::select(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
+  left_join(ltd_agg, by = c("Date")) |>
+  dplyr::select(-ltd)
+```
+
+
 
 # Abstract
 - Overview: Briefly summarize the purpose, methodology, key findings, and implications of the forecast.
@@ -57,19 +95,112 @@ Detail the sources of the LTD data, including collection methods, frequency, and
 Describe each variable used in the analysis, including dependent and independent variables.
 
 # Initial Data Analysis (IDA)
-## Data Preparation and Cleaning: 
+## Data Preparation and Cleaning:
 
-Since initial data for both aggregate and unit LTD is pre-processed and cleaned by LTD, not much further cleaning required. In this case, only missing values and data format check is required
+Since the initial data for LTD is pre-processed and cleaned by DTF, not much further cleaning required. In this case, only missing values and data format check is required
+
+As shown in table \ref{tab:missingval} and \ref{tab:dataformat}, there is no missing value in this dataset, as well as, all variables are already in appropriate format, and thus no further action required.
 
 ## Descriptive Statistics: 
-Basic statistics like mean, median, etc., and initial observations.
 
-## Data Integrity Checks: 
-Ensuring data completeness, accuracy, and consistency.
+Based on summary statistics results from table \ref{tab:statsumone} and table \ref{tab:statsumtwo},
+
+1. **Land Transfer Duty (LTD) Overview**:
+    - The total LTD collected has varied considerably, ranging from approximately 286.2 million to over 1.013 billion. This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.
+    - Residential transactions dominate the LTD collection, contributing between 238.1 million and 761.4 million. This suggests that residential real estate remains a vital part of the market, possibly reflecting trends in housing demand and price movements.
+    - Non-residential transactions, though smaller than residential, still make a substantial contribution, with LTD from this sector ranging from about 42.9 million to 357.2 million. Within this, the commercial sector is the most significant, followed by industrial and other sectors (such as agricultural).
+
+2. **Detailed Sector Analysis**:
+    - **Commercial Sector**: With LTD ranging from 22.1 million to 132.4 million, this sector shows substantial activity, possibly reflecting economic growth, investment trends, and business expansions.
+    - **Industrial Sector**: This sector has collected LTD between 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods.
+    - **Other Sectors**: Including smaller sectors like agricultural, contributions range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.
+
+3. **Residential Sector Analysis**:
+    - The residential sector consistently represents the largest portion of LTD, underscoring its importance to the overall property market. The variability in amounts likely mirrors the housing market dynamics, including fluctuations in home prices and the volume of transactions.
+
+4. **Economic Indicators**:
+    - **Sales**: The volume of sales has fluctuated from 4,629 to 15,177, indicating periods of both high and low market activity. The relatively close mean and median values suggest a fairly consistent level of transactions across the period.
+    - **Home Value Index (HVI)**: The HVI has ranged from 106.2 to 192.4, which is indicative of significant changes in home values. A higher HVI suggests increasing property values, which could contribute to higher LTD collections.
+
+This analysis suggests that while the property market is subject to cyclical changes reflected in LTD collections, the residential sector remains a cornerstone, significantly influencing overall market dynamics. Understanding these patterns can help in forecasting future trends and making informed decisions in real estate and financial sectors.
 
 # Exploratory Data Analysis (EDA)
-## Visualization: 
-Use plots (time series plots, histograms, etc.) to visualize trends, cycles, and outliers in LTD data.
+## Time series analysis: 
+
+```{r, message = FALSE, warning= FALSE}
+ltd_unit_ts <- ltd_unit %>%
+  mutate(Month = yearmonth(Date)) %>%
+  select(-Date) %>%
+  as_tsibble(index = Month) %>%
+  relocate(Month)
+```
+
+### Land Transfer Duty
+
+#### Trend
+
+```{r trend, fig.cap="Trend of Land Transfer Duty in Victoria over time", fig.align='center', fig.height= 3, fig.width = 4}
+
+ltd_unit_ts |>
+  mutate(ltd_tot_inM = ltd_total/1000000) |>
+autoplot(ltd_tot_inM) +
+  labs(title = "Land Transfer Duty over time", x = "Date", y = "Value (in $m)")
+```
+
+As spotted by the figure \ref{fig:trend}, `ltd_total` increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
+
+#### Seasonal Pattern
+
+```{r sspattern, fig.cap="Seasonal trend of Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
+
+ltd_unit_ts |>
+  mutate(ltd_tot_inM = ltd_total/1000000) |>
+  gg_season(ltd_tot_inM, labels = "both") +
+  theme(legend.position = "none") +
+  labs(x = "Date", y = "Value (in $m)", title= "Land Transfer Duty in Victoria")
+```
+
+Apart from there is a small hint of drop at the start of each quarter, figure \ref{fig:sspattern} shows that there is no clear sign for seasonal pattern
+
+```{r subseries, fig.cap="Subseries plot of Land Transfer Duty in Victoria over time", fig.align='center', fig.height= 3, fig.width = 4}
+ltd_unit_ts |>
+  mutate(ltd_tot_inM = ltd_total/1000000) |>
+  gg_subseries(ltd_tot_inM) +
+  labs(x = "Date", y = "Value (in $m)", title="Land Transfer Duty in Victoria")
+```
+
+However, in the figure \ref{fig:subseries}, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from figure \ref{fig:sspattern}.
+
+#### Decomposition
+
+```{r dcmp, fig.cap="Decomposition of Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
+dcmp <- ltd_unit_ts |>
+  model(stl = STL(ltd_total))
+
+## Plot all components
+components(dcmp) |>
+  autoplot()
+```
+
+```{r ssadj, fig.cap="Seasonal adjusted Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
+components(dcmp) |>
+  as_tsibble() |>
+  autoplot(ltd_total, colour = "gray") +
+  geom_line(aes(y=season_adjust), colour = "#0072B2") +
+  labs(x = "Date", y = "Value (in $)", title = "Seasonal adjusted Land Transfer Duty in Victoria")
+```
+
+Figure \ref{fig:dcmp} shows that there is no seasonal pattern for `ltd_total` and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
+
+Moreover, figure \ref{fig:dcmp} also shows that there is a sign of heterogeneity in `ltd` and thus log transformation may needed before model fitting.
+
+Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted `ltd_total` and the original `ltd_total`, which confirms the lack of seasonal pattern.
+
+### Sales
+
+
+### Home Value Index
+
 
 ## Correlation Analysis: 
 Identify relationships between LTD and potential predictors.
@@ -240,12 +371,30 @@ Recap the findings and their implications.
 ## Future Work: 
 Suggestions for improving future forecasts.
 
-# Appendices
-## Additional Data: 
-Any supplementary data or detailed tables.
+# Appendix
 
-## Code: 
-Include or reference the R scripts used for analysis.
+```{r missingval, message=FALSE, warning=FALSE}
+null_unit <- data.frame(colSums(is.na(ltd_unit)))
+colnames(null_unit) <- c( "Number of null values")
+kable(null_unit, booktabs = TRUE, caption = "Missing values check")
+
+```
+
+```{r dataformat, message=FALSE, warning=FALSE}
+kable(data.frame(sapply(ltd_unit, class))[1,], booktabs = TRUE, caption = "Date format check")
+```
+
+```{r statsumone, message=FALSE, warning=FALSE}
+stat_summary_one <- summary(ltd_unit[,c(2:5)])
+colnames(stat_summary_one) <- c("Total LTD", "Non-Residential LTD", "Commercial LTD", "Industrial LTD")
+kable(stat_summary_one, booktabs = TRUE, caption = "Summary Statistics of variables (Table 1)")
+```
+
+```{r statsumtwo, message=FALSE, warning=FALSE}
+stat_summary_two <- summary(ltd_unit[,c(6:9)])
+colnames(stat_summary_two) <- c("Other property LTD", "Residential LTD", "Sales", "HVI")
+kable(stat_summary_two, booktabs = TRUE, caption = "Summary Statistics of variables (Table 2)")
+```
 
 # References
 ## Bibliography: 
