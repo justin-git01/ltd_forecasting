@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  14 MAY 2024 15:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  15 MAY 2024 15:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1370,46 +1370,64 @@ File: Final_Report_files/figure-latex/ssadj-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/ssadj-1.pdf>
 Package pdftex.def Info: Final_Report_files/figure-latex/ssadj-1.pdf  used on input line 457.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-[8 <./Final_Report_files/figure-latex/dcmp-1.pdf> <./Final_Report_files/figure-latex/ssadj-1.pdf>] [9]
+[8 <./Final_Report_files/figure-latex/dcmp-1.pdf> <./Final_Report_files/figure-latex/ssadj-1.pdf>]
+<Final_Report_files/figure-latex/corrplot-1.pdf, id=300, 289.08pt x 216.81pt>
+File: Final_Report_files/figure-latex/corrplot-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/corrplot-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/corrplot-1.pdf  used on input line 478.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+<Final_Report_files/figure-latex/longtermlog-1.pdf, id=302, 289.08pt x 216.81pt>
+File: Final_Report_files/figure-latex/longtermlog-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/longtermlog-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/longtermlog-1.pdf  used on input line 489.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+[9 <./Final_Report_files/figure-latex/corrplot-1.pdf> <./Final_Report_files/figure-latex/longtermlog-1.pdf>]
+<Final_Report_files/figure-latex/s_plot-1.pdf, id=324, 289.08pt x 216.81pt>
+File: Final_Report_files/figure-latex/s_plot-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/s_plot-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/s_plot-1.pdf  used on input line 507.
+(pdftex.def)             Requested size: 227.62204pt x 170.7156pt.
+[10 <./Final_Report_files/figure-latex/s_plot-1.pdf>]
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 498.
+(Font)              scaled to size 7.68005pt on input line 538.
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 5.76004pt on input line 498.
-[10] [11] [12] [13] [14]
+(Font)              scaled to size 5.76004pt on input line 538.
+[11] [12] [13] [14] [15]
 LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
-(Font)              scaled to size 9.24173pt on input line 631.
-[15]
-Overfull \hbox (15.56905pt too wide) in paragraph at lines 702--709
+(Font)              scaled to size 9.24173pt on input line 671.
+[16]
+Overfull \hbox (15.56905pt too wide) in paragraph at lines 742--749
  [][] 
  []
 
+[17]
 
-LaTeX Warning: Empty bibliography on input line 757.
+LaTeX Warning: Empty bibliography on input line 797.
 
-[16] [17] (./Final_Report.aux)
+[18] (./Final_Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
  ***********
 Package rerunfilecheck Info: File `Final_Report.out' has not changed.
-(rerunfilecheck)             Checksum: B2A230422C0F9D5F7E512129E734D936;6160.
+(rerunfilecheck)             Checksum: C46CF1365912E8E664B89480883941AD;6110.
 Package logreq Info: Writing requests to 'Final_Report.run.xml'.
 \openout1 = `Final_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26565 strings out of 476010
- 458384 string characters out of 5790271
- 1941751 words of memory out of 5000000
- 47872 multiletter control sequences out of 15000+600000
- 681588 words of font info for 402 fonts, out of 8000000 for 9000
+ 26610 strings out of 476010
+ 460107 string characters out of 5790271
+ 1942751 words of memory out of 5000000
+ 47903 multiletter control sequences out of 15000+600000
+ 682457 words of font info for 411 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,14n,93p,1009b,854s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb>
-Output written on Final_Report.pdf (17 pages, 570304 bytes).
+</Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb>
+Output written on Final_Report.pdf (18 pages, 609783 bytes).
 PDF statistics:
- 424 PDF objects out of 1000 (max. 8388607)
- 359 compressed objects within 4 object streams
- 79 named destinations out of 1000 (max. 500000)
- 98651 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 457 PDF objects out of 1000 (max. 8388607)
+ 383 compressed objects within 4 object streams
+ 82 named destinations out of 1000 (max. 500000)
+ 98666 words of extra memory for PDF output out of 106986 (max. 10000000)
 

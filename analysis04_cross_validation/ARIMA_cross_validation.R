@@ -226,3 +226,7 @@ for (t in 1:folds){
     reconciled_arima[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
   }
 }
+
+save(base_arima_forecast, file = "data/base_arima_fc.RData")
+save(reconciled_arima, file = "data/rec_arima.RData")
+save(test_set, file = "data/test_set.RData")

@@ -190,7 +190,7 @@
 \DeclareDelimFormat[cbx@textcite]{nameyeardelim}{\addspace}
 \makeatother
 
-\author{\sf{\Large\textbf{Hoang Do}\\\large Nobel Prize, PhD\\[0.5cm]}}
+\author{\sf{\Large\textbf{Hoang Do}\\\large Monash University\\[0.5cm]}}
 
 \date{\sf\Date~\Month~\Year}
 \makeatletter
@@ -309,43 +309,43 @@
 
 \section{Introduction}\label{introduction}
 
-\subsection{Background:}\label{background}
+\subsection{Background}\label{background}
 
 Overview of LTD and its economic significance.
 
-\subsection{Objective:}\label{objective}
+\subsection{Objective}\label{objective}
 
 Purpose of forecasting LTD for DTF. Outline the specific goals of the project, such as predicting revenue from LTD or analyzing trends.
 
 \section{Rationale for the Forecast}\label{rationale-for-the-forecast}
 
-\subsection{Need for Forecasting:}\label{need-for-forecasting}
+\subsection{Need for Forecasting}\label{need-for-forecasting}
 
 Discuss why forecasting LTD is critical for budgetary planning and economic analysis at DTF.
 
-\subsection{Benefits:}\label{benefits}
+\subsection{Benefits}\label{benefits}
 
 How the forecasting results will aid in policy making, financial planning, etc.
 
 \section{Data Description}\label{data-description}
 
-\subsection{Data Source:}\label{data-source}
+\subsection{Data Source}\label{data-source}
 
 Detail the sources of the LTD data, including collection methods, frequency, and historical range.
 
-\subsection{Variables Description:}\label{variables-description}
+\subsection{Variables Description}\label{variables-description}
 
 Describe each variable used in the analysis, including dependent and independent variables.
 
 \section{Initial Data Analysis (IDA)}\label{initial-data-analysis-ida}
 
-\subsection{Data Preparation and Cleaning:}\label{data-preparation-and-cleaning}
+\subsection{Data Preparation and Cleaning}\label{data-preparation-and-cleaning}
 
 Since the initial data for LTD is pre-processed and cleaned by DTF, not much further cleaning required. In this case, only missing values and data format check is required
 
 As shown in table \ref{tab:missingval} and \ref{tab:dataformat}, there is no missing value in this dataset, as well as, all variables are already in appropriate format, and thus no further action required.
 
-\subsection{Descriptive Statistics:}\label{descriptive-statistics}
+\subsection{Descriptive Statistics}\label{descriptive-statistics}
 
 Based on summary statistics results from table \ref{tab:statsumone} and table \ref{tab:statsumtwo},
 
@@ -400,7 +400,7 @@ This analysis suggests that while the property market is subject to cyclical cha
 
 \section{Exploratory Data Analysis (EDA)}\label{exploratory-data-analysis-eda}
 
-\subsection{Time series analysis:}\label{time-series-analysis}
+\subsection{Time series analysis}\label{time-series-analysis}
 
 \subsubsection{Land Transfer Duty}\label{land-transfer-duty}
 
@@ -415,7 +415,7 @@ This analysis suggests that while the property market is subject to cyclical cha
 \caption{Trend of Land Transfer Duty in Victoria over time}\label{fig:trend}
 \end{figure}
 
-As spotted by the figure \ref{fig:trend}, \texttt{ltd\_total} increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
+As spotted by the figure \ref{fig:trend}, \texttt{ltd} increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
 
 \paragraph{Seasonal Pattern}\label{seasonal-pattern}
 
@@ -461,19 +461,59 @@ However, in the figure \ref{fig:subseries}, the blue lines, indicating the means
 \caption{Seasonal adjusted Land Transfer Duty in Victoria}\label{fig:ssadj}
 \end{figure}
 
-Figure \ref{fig:dcmp} shows that there is no seasonal pattern for \texttt{ltd\_total} and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
+Figure \ref{fig:dcmp} shows that there is no seasonal pattern for \texttt{ltd} and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
 
 Moreover, figure \ref{fig:dcmp} also shows that there is a sign of heterogeneity in \texttt{ltd} and thus log transformation may needed before model fitting.
 
-Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted \texttt{ltd\_total} and the original \texttt{ltd\_total}, which confirms the lack of seasonal pattern.
+Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted \texttt{ltd} and the original \texttt{ltd}, which confirms the lack of seasonal pattern.
 
 \subsubsection{Sales}\label{sales}
 
 \subsubsection{Home Value Index}\label{home-value-index}
 
-\subsection{Correlation Analysis:}\label{correlation-analysis}
+\subsection{Correlation Analysis}\label{correlation-analysis}
 
-Identify relationships between LTD and potential predictors.
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/corrplot-1} 
+
+}
+
+\caption{Correlation Plot}\label{fig:corrplot}
+\end{figure}
+
+The figure \ref{fig:corrplot} shows that LTD and HVI are highly mutually correlated. However, the sales is mostly non-correlated with other 2 variables
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Final_Report_files/figure-latex/longtermlog-1} 
+
+}
+
+\caption{Trend of log transformation of LTD, sales and HVI}\label{fig:longtermlog}
+\end{figure}
+
+The figure \ref{fig:longtermlog} shows that \textgreater\textgreater\textgreater{}
+
+For additional verification, we perform a Johansen cointegration test, positing the null hypothesis that no cointegration relationship exists.
+
+\begin{verbatim}
+## r <= 2 | r <= 1 | r = 0  | 
+##    FALSE     TRUE     TRUE
+\end{verbatim}
+
+The test results allow us to reject the null hypothesis that \(r \leq 1\), yet we fail to reject the null hypothesis that \(r \leq 2\). This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
+
+\includegraphics[width=0.5\linewidth,]{Final_Report_files/figure-latex/s_plot-1}
+
+\begin{verbatim}
+## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  linear_comb
+## Dickey-Fuller = -3.1846, Lag order = 5, p-value = 0.09361
+## alternative hypothesis: stationary
+\end{verbatim}
 
 \subsection{Preliminary Findings:}\label{preliminary-findings}
 
@@ -543,7 +583,7 @@ This leads to the need for estimating \(\text{W}_{h}\), the forecast error varia
 
 \subsection{Model Selection}\label{model-selection}
 
-As depicted in \emph{}, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
+As depicted in figure \ref{fig:corrplot}, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
 
 The Vector Autoregression (VAR) model, which predicts future values of multiple time series based on their historical data, is well-suited for capturing these complex interactions. Furthermore, as illustrated in \emph{}, the detection of cointegration patterns indicating a stable long-term equilibrium relationship among variables such as LTD, sales, and HVI, which necessitates the application of the Vector Error Correction Model (VECM). This highlights the pertinence of employing both VAR and VECM to adequately model these relationships.
 

@@ -323,3 +323,6 @@ score_ct1 <- df |>
 
 score_ct1
 
+save(base_vecm_forecast, file = "data/base_vecm_fc.RData")
+save(reconciled_vecm_tcs, file = "data/rec_vecm.RData")
+save(test_set, file = "data/test_set.RData")

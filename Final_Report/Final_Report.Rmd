@@ -4,7 +4,7 @@ author:
 - familyname: Do
   othernames: Hoang
   address: Monash University
-  qualifications: Nobel Prize, PhD
+  qualifications: Monash University
 email: vdoo0002@student.monash.edu
 phone: (03) 9905 2478
 department: Department of\newline Econometrics &\newline Business Statistics
@@ -42,6 +42,7 @@ library(plotly)
 library(corrplot)
 library(knitr)
 library(here)
+library(tseries)
 
 source(here::here("Function/var_function.R"))
 source(here::here("Function/vecm_function.R"))
@@ -74,34 +75,34 @@ ltd_unit <- read_excel(here("data/LTD_new.xlsx"), sheet = 2) |>
 
 
 # Introduction
-## Background: 
+## Background 
 Overview of LTD and its economic significance.
 
-## Objective: 
+## Objective
 Purpose of forecasting LTD for DTF. Outline the specific goals of the project, such as predicting revenue from LTD or analyzing trends.
 
 # Rationale for the Forecast
-## Need for Forecasting: 
+## Need for Forecasting 
 Discuss why forecasting LTD is critical for budgetary planning and economic analysis at DTF.
 
-## Benefits: 
+## Benefits 
 How the forecasting results will aid in policy making, financial planning, etc.
 
 # Data Description
-## Data Source: 
+## Data Source
 Detail the sources of the LTD data, including collection methods, frequency, and historical range.
 
-## Variables Description:
+## Variables Description
 Describe each variable used in the analysis, including dependent and independent variables.
 
 # Initial Data Analysis (IDA)
-## Data Preparation and Cleaning:
+## Data Preparation and Cleaning
 
 Since the initial data for LTD is pre-processed and cleaned by DTF, not much further cleaning required. In this case, only missing values and data format check is required
 
 As shown in table \ref{tab:missingval} and \ref{tab:dataformat}, there is no missing value in this dataset, as well as, all variables are already in appropriate format, and thus no further action required.
 
-## Descriptive Statistics: 
+## Descriptive Statistics
 
 Based on summary statistics results from table \ref{tab:statsumone} and table \ref{tab:statsumtwo},
 
@@ -125,9 +126,15 @@ Based on summary statistics results from table \ref{tab:statsumone} and table \r
 This analysis suggests that while the property market is subject to cyclical changes reflected in LTD collections, the residential sector remains a cornerstone, significantly influencing overall market dynamics. Understanding these patterns can help in forecasting future trends and making informed decisions in real estate and financial sectors.
 
 # Exploratory Data Analysis (EDA)
-## Time series analysis: 
+## Time series analysis
 
 ```{r, message = FALSE, warning= FALSE}
+ltd_agg_ts <- ltd_agg |>
+  mutate(Month = yearmonth(Date)) |>
+  select(-Date) |>
+  as_tsibble(index = Month) |>
+  relocate(Month)
+
 ltd_unit_ts <- ltd_unit %>%
   mutate(Month = yearmonth(Date)) %>%
   select(-Date) %>%
@@ -141,20 +148,20 @@ ltd_unit_ts <- ltd_unit %>%
 
 ```{r trend, fig.cap="Trend of Land Transfer Duty in Victoria over time", fig.align='center', fig.height= 3, fig.width = 4}
 
-ltd_unit_ts |>
-  mutate(ltd_tot_inM = ltd_total/1000000) |>
+ltd_agg_ts |>
+  mutate(ltd_tot_inM = ltd/1000000) |>
 autoplot(ltd_tot_inM) +
   labs(title = "Land Transfer Duty over time", x = "Date", y = "Value (in $m)")
 ```
 
-As spotted by the figure \ref{fig:trend}, `ltd_total` increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
+As spotted by the figure \ref{fig:trend}, `ltd` increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.
 
 #### Seasonal Pattern
 
 ```{r sspattern, fig.cap="Seasonal trend of Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
 
-ltd_unit_ts |>
-  mutate(ltd_tot_inM = ltd_total/1000000) |>
+ltd_agg_ts |>
+  mutate(ltd_tot_inM = ltd/1000000) |>
   gg_season(ltd_tot_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Value (in $m)", title= "Land Transfer Duty in Victoria")
@@ -163,8 +170,8 @@ ltd_unit_ts |>
 Apart from there is a small hint of drop at the start of each quarter, figure \ref{fig:sspattern} shows that there is no clear sign for seasonal pattern
 
 ```{r subseries, fig.cap="Subseries plot of Land Transfer Duty in Victoria over time", fig.align='center', fig.height= 3, fig.width = 4}
-ltd_unit_ts |>
-  mutate(ltd_tot_inM = ltd_total/1000000) |>
+ltd_agg_ts |>
+  mutate(ltd_tot_inM = ltd/1000000) |>
   gg_subseries(ltd_tot_inM) +
   labs(x = "Date", y = "Value (in $m)", title="Land Transfer Duty in Victoria")
 ```
@@ -174,8 +181,8 @@ However, in the figure \ref{fig:subseries}, the blue lines, indicating the means
 #### Decomposition
 
 ```{r dcmp, fig.cap="Decomposition of Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
-dcmp <- ltd_unit_ts |>
-  model(stl = STL(ltd_total))
+dcmp <- ltd_agg_ts |>
+  model(stl = STL(ltd))
 
 ## Plot all components
 components(dcmp) |>
@@ -185,16 +192,16 @@ components(dcmp) |>
 ```{r ssadj, fig.cap="Seasonal adjusted Land Transfer Duty in Victoria", fig.align='center', fig.height= 3, fig.width = 4}
 components(dcmp) |>
   as_tsibble() |>
-  autoplot(ltd_total, colour = "gray") +
+  autoplot(ltd, colour = "gray") +
   geom_line(aes(y=season_adjust), colour = "#0072B2") +
-  labs(x = "Date", y = "Value (in $)", title = "Seasonal adjusted Land Transfer Duty in Victoria")
+  labs(x = "Date", y = "Value (in $)", title = "Seasonal adjusted LTD in Victoria")
 ```
 
-Figure \ref{fig:dcmp} shows that there is no seasonal pattern for `ltd_total` and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
+Figure \ref{fig:dcmp} shows that there is no seasonal pattern for `ltd` and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
 
 Moreover, figure \ref{fig:dcmp} also shows that there is a sign of heterogeneity in `ltd` and thus log transformation may needed before model fitting.
 
-Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted `ltd_total` and the original `ltd_total`, which confirms the lack of seasonal pattern.
+Also the figure \ref{fig:ssadj} shows that there is not much difference between seasonally adjusted `ltd` and the original `ltd`, which confirms the lack of seasonal pattern.
 
 ### Sales
 
@@ -202,8 +209,70 @@ Also the figure \ref{fig:ssadj} shows that there is not much difference between 
 ### Home Value Index
 
 
-## Correlation Analysis: 
-Identify relationships between LTD and potential predictors.
+## Correlation Analysis
+
+```{r corrplot, fig.cap="Correlation Plot", fig.align='center', fig.height= 3, fig.width = 4}
+correlation <- ltd_unit |>
+  mutate(log_ltd = log(ltd_total), 
+         log_sales = log(sales),
+         log_hvi = log(hvi)) |> 
+  dplyr::select(c(log_ltd, log_sales, log_hvi)) |> 
+  cor()
+
+corrplot(correlation, method = 'number')
+```
+
+The figure \ref{fig:corrplot} shows that LTD and HVI are highly mutually correlated. However, the sales is mostly non-correlated with other 2 variables 
+
+
+```{r longtermlog, fig.cap="Trend of log transformation of LTD, sales and HVI", fig.align='center', fig.height= 3, fig.width = 4}
+ltd_unit_ts %>% 
+mutate(log_ltd = log(ltd_total), 
+       log_sales = log(sales),
+       log_hvi = log(hvi)) |> 
+dplyr::select(c(Month, log_ltd, log_sales, log_hvi)) |> 
+pivot_longer(cols = -Month, names_to = "Variable", values_to = "Value") |>
+ggplot(aes(x = Month, y = Value, color = Variable)) +
+geom_line() +
+labs(x = "Date", y = "Value", title = "Log transformation of LTD, sales and HVI") 
+```
+
+The figure \ref{fig:longtermlog} shows that >>> 
+
+For additional verification, we perform a Johansen cointegration test, positing the null hypothesis that no cointegration relationship exists.
+
+
+```{r}
+jtest <- ca.jo(log(ltd_unit_ts[,c(2,8,9)]), type="trace", K=2, ecdet="none", spec="longrun")
+
+jtest@teststat > jtest@cval[, "5pct"]
+```
+
+The test results allow us to reject the null hypothesis that \( r \leq 1 \), yet we fail to reject the null hypothesis that \( r \leq 2 \). This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
+
+
+```{r s_plot, fig.height = 3, fig.width = 4, out.width="50%"}
+s <- ltd_unit_ts |>
+mutate(log_ltd = log(ltd_total), 
+       log_sales = log(sales),
+       log_hvi = log(hvi)) |> 
+dplyr::select(c(log_ltd, log_sales, log_hvi)) |> 
+summarise(s = log_ltd*1.000 - 1.529098*log_sales - 1.417812*log_hvi) 
+
+df <- data.frame(Index = 1:nrow(s), Value = as.numeric(unlist(s[,2])))
+
+ggplot(df, aes(x = Index, y = Value)) + 
+  geom_line(color = "blue") + 
+  labs(y = "Value", x = "Index", title = "Linear combination of three time series") +
+theme_minimal()
+```
+
+
+```{r}
+linear_comb <- as.numeric(unlist(s[,2]))
+adf.test(linear_comb)
+```
+
 
 ## Preliminary Findings: 
 Summarize insights gained about the data and any implications for modeling.
@@ -268,7 +337,7 @@ This leads to the need for estimating $\text{W}_{h}$, the forecast error varianc
 
 ## Model Selection
 
-As depicted in *<cross-ref>*, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
+As depicted in figure \ref{fig:corrplot}, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.
 
 The Vector Autoregression (VAR) model, which predicts future values of multiple time series based on their historical data, is well-suited for capturing these complex interactions. Furthermore, as illustrated in *<cross-ref>*, the detection of cointegration patterns indicating a stable long-term equilibrium relationship among variables such as LTD, sales, and HVI, which necessitates the application of the Vector Error Correction Model (VECM). This highlights the pertinence of employing both VAR and VECM to adequately model these relationships.
 
