@@ -1,5 +1,5 @@
 ---
-pagetitle: "Reconciliation Forecasting"
+pagetitle: "Forecast Reconciliation" 
 subtitle: "Land Transfer Duty"
 author: "Hoang Do"
 email: "vdoo0002@student.monash.edu"
@@ -237,7 +237,7 @@ plot_total <- ltd_agg_ts |>
 filter(Month > yearmonth(as.POSIXct("2000-01-01"))) |>
 mutate(ltd_inM = ltd/1000000) |> 
 autoplot(ltd_inM, color = "blue") +
-labs(x = "Date", y = "Land Transfer Duty (in $million)", title = "Land Transfer Duty from 2010") +
+labs(x = "Date", y = "Land Transfer Duty (in $million)", title = "Land Transfer Duty from 2000") +
 theme_minimal()
 
 ggplotly(plot_total)
@@ -315,7 +315,7 @@ ggplotly(dtf_rmse)
 
 * Characteristics of different levels may differ
 
-* Include these features can improve forecast accuracy
+* Accounting for these features can improve forecast accuracy
 
 :::
 
@@ -367,7 +367,7 @@ $$
 or in a more compact notation:
 
 $$
-\text{LTD}_{t} = \text{S}\text{b}_{t},
+\textbf{y}_{t} = \textbf{S}\textbf{b}_{t},
 $$
 :::
 
@@ -426,11 +426,11 @@ Forecast at different levels don't add up!
 
 Independently produced forecasts are [**incoherent**]{.danger},
 
-$\text{LTD}_{T+h|T} \neq \text{Comm}_{T+h|T} + \text{Ind}_{T+h|T} + \text{Other}_{T+h|T} + \text{Residential}_{T+h|T}$.
+$\hat{LTD}_{T+h|T} \neq \hat{Comm}_{T+h|T} + \hat{Ind}_{T+h|T} + \hat{Other}_{T+h|T} + \hat{Residential}_{T+h|T}$.
 
 Or for temporal hierarchy
 
-$\text{Year}_{T+h|T} \neq \text{Jan}_{T+h|T} + \text{Feb}_{T+h|T} + \text{Mar}_{T+h|T} + ... + \text{Dec}_{T+h|T}$.
+$\hat{Year}_{T+h|T} \neq \hat{Jan}_{T+h|T} + \hat{Feb}_{T+h|T} + \hat{Mar}_{T+h|T} + ... + \hat{Dec}_{T+h|T}$.
 :::
 
 
@@ -448,56 +448,57 @@ linear constraints for a multivariate time series.
 
 ::: callout-note
 ## Hyndman et al. (2011)
-* First obtain a set of base forecast $\hat{\text{y}}_{h}$, 
+* First obtain a set of base forecast $\bf{\hat{y}}_{h}$, 
 
 * Then all coherent forecast can be represented as:
 <center>
-$\tilde{\text{y}}_{h} = \text{SG}\hat{\text{y}}_{h}$, 
+$\bf{\tilde{y}}_{h} = \bf{SG}\hat{\bf{y}}_{h}$, 
 </center>
 
-where **G** is a matrix that maps the base forecasts into the bottom level, and the summing matrix **S** sums these up using the aggregation structure to produce a set of **coherent forecasts** $\tilde{\text{y}}_\text{h}$
+where **G** is a matrix that maps the base forecasts into the bottom level, and the summing matrix **S** sums these up using the aggregation structure to produce a set of **coherent forecasts** $\bf{\tilde{y}}_\text{h}$
 
 :::
 
 # Minimize variance {background="#006DAE"}
 
-## MinTrace
+## MinT
 
 ::: callout-note
 [**Wickramasuriya et al. (2019)**]{.monash-blue} show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
 
 <center>
-$\text{V}_{h} = Var[\text{y}_{T+h} - \tilde{\text{y}}_{h}] = SG\text{W}_{h}G'S'$,
+$\textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'}$,
 </center>
 
-where $\text{W}_{h} = Var[\text{y}_{T+h} - \hat{\text{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
+where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
 
 The objective is to find a matrix **G** that minimises the error variances of the coherent forecasts.
 
 
 :::
 
-## MinTrace
+## MinT
 
 :::callout-note
 [**Wickramasuriya et al. (2019)**]{.monash-blue} show that: 
 
 <center>
-$G = (S'\text{W}_{h}^{-1}S)^{-1}S'\text{W}_{h}^{-1}$,
+$\textbf{G} = (\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1}$,
 </center>
 
-minimises the trace of $\text{V}_{h}$ subject to **S** **G** **S** = **S**
+minimises the trace of $\textbf{V}_{h}$ subject to **S** **G** **S** = **S**
 
 Therefore, the optimally reconciled forecasts are given by:
 
 <center>
-$\tilde{y}_{h} = S(S'\text{W}_{h}^{-1}S)^{-1}S'\text{W}_{h}^{-1}\hat{y}_{h}$,
+$\bf{\tilde{y}}_{h} = \textbf{S}(\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1}\bf{\hat{y}}_{h}$,
 </center>
 which refers as the **MinT**
 
-Now we need to estimate $\text{W}_{h}$, which is challenging.
+Now we need to estimate $\textbf{W}_{h}$, which is challenging.
 
-Assumption made to set **$\text{W}_{h} = \text{k}_{h}\text{I}_{n}$** to simplify the estimation ([**Hyndman et al. (2011)**]{.monash-blue}, [**Athanasopoulos et al. (2009)**]{.monash-blue}).
+Simplifying approximations made to set $\textbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$ for structural scaling, 
+where $\mathbf{\Lambda} = diag(\textbf{S1})$, and $\bf{1}$ is  unit vector [**(Hyndman & Athanasopoulos, 2021)**]{.monash-blue}.
 
 :::
 
@@ -509,28 +510,23 @@ Assumption made to set **$\text{W}_{h} = \text{k}_{h}\text{I}_{n}$** to simplify
 Heuristic first-temporal-then-cross-sectional reconciliation
 
 :::
-## 2-step approach
 
-<center>
-<img src="images/tcs.png" width = "70%" height = "60%">
+## 2-step approach 
 
-</center>
 
 ::: callout-note
 ## Kourentzes and Athanasopoulos (2019)
 * **Step 1**: reconciliation through temporal hierarchies for each single variable
-        --> **temporally coherence** forecast
+        --> **temporally coherence** forecast (**THieFs**)
         
-* **Step 2**: time-by-time cross-sectional reconciliation of the previously computed forecast
-        --> **cross-sectionally coherence** forecast
+* **Step 2**: From previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels
 
-* The final reconciled forecast are calculated starting from the step 1 forecasts through the average of the step 2 projection matrices
+This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level, 
+
+* Averaging across these, we compose a consesus reconciliation matrix **SG** , where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels
         --> **cross-temporally coherence** forecast
 :::
 
-::: aside
-Image from [**Daniele Girolimetto**'s talk for **F4SG**]{.monash-blue}
-:::
 
 ## FoReco package
 
@@ -554,95 +550,18 @@ More info on FoReco package can be found [here](https://cran.r-project.org/web/p
 ## {}
 
 ::: callout-note
-# Comparing base forecasts
+# Comparing forecasts RMSE
 
-* Cross-temporal VECM forecast performs much better
-
-:::
-
-<center>
-
-```{r base_vs_base, fig.height = 3, fig.width = 3, out.width="50%"}
-# Plotting RMSE of base forecast to choose the benchmark 
-## Node index (1: Total, 2: Non-residential, 3: Commercial, 4: Industrial, 5: Other, 5: Residential)
-i = 1
-## Create a data frame for plotting
-rmse_base_data <- data.frame(
-  h_step = 1:12,
-  RMSE_ARIMA_base = RMSE_arima_h_base[i,],
-  RMSE_VECM_base = RMSE_vecm_h_base[i,]
-)
-
-## Convert to long format
-rmse_data_long <- rmse_base_data %>% 
-  pivot_longer(cols = -h_step, names_to = "Method", values_to = "RMSE")
-
-
-## Create the plot
-ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = Method)) +
-  geom_line(linewidth = 1.1) +
-  labs(x = "h-step Forecast", y = "RMSE Value", title = "Total LTD base forecast RMSE by Method") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-## Convert ggplot to plotly
-ggplotly(ggplot_rmse)
-```
-
-</center>
-
-## {}
-
-::: callout-note
-## Reconciliation forecast efficiency
-
-* Not efficient enough from **1 to 3-step-ahead** forecasts
-
-* Performs much better for long-term forecast
+* RMSE constructed using **time series cross-validation** with *10 folds*
+* **VECM base forecast** performs much better
+* Overall, reconciliation **improves forecast accuracy** of base forecast
 
 :::
 
-<center>
-```{r prop_rmse, fig.height = 3, fig.width = 3, out.width="70%"}
-i = 1
-# Create a data frame for plotting
-prop_data <- data.frame(
-  h_step = 1:12,
-  reconciled_vecm = RMSE_vecm_tcs_prop[i,]
-)
-
-# Reshape for ggplot
-prop_data_long <- prop_data %>%
-  pivot_longer(cols = -h_step, names_to = "Method", values_to = "Proportion")
-
-# Create the plot
-ggplot_prop <- ggplot(prop_data, aes(x = h_step, y = reconciled_vecm)) +
-  geom_line(linewidth = 1.1, color = "red") +
-  geom_hline(yintercept = 1) +
-  labs(x = "h-step Forecast", y = "Reconciled/Base Forecast", title = "Proportion of Reconciled Forecast to Base VECM Forecast") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-# Display the plot
-ggplotly(ggplot_prop)
-
-```
-</center>
-
-
-## {}
-
-::: callout-note
-
-# Comparing against base forecasts
-* Cross-temporal forecasts do better from **1 to 4-step-ahead** forecast
-
-* From **5-step-ahead** forecasts onward, approach by used by DTF better
-:::
 
 <center>
 
-```{r dtf_vs_base, fig.height = 3, fig.width = 3, out.width="70%"}
+```{r}
 # Plotting RMSE of base forecast to choose the benchmark 
 ## Node index (1: Total, 2: Non-residential, 3: Commercial, 4: Industrial, 5: Other, 5: Residential)
 i = 1
@@ -651,65 +570,52 @@ rmse_base_data <- data.frame(
   h_step = 1:12,
   RMSE_ARIMA_base = RMSE_arima_h_base[i,],
   RMSE_VECM_base = RMSE_vecm_h_base[i,],
-  RMSE_DTF = fold_rmse$average_rmse
+  rmse_ARIMA_rec = RMSE_arima_h_rec[i,],
+  rmse_VECM_rec = RMSE_vecm_h_tcs_rec[i,],
+  rmse_DTF = fold_rmse$average_rmse
 )
 
 ## Convert to long format
 rmse_data_long <- rmse_base_data %>% 
   pivot_longer(cols = -h_step, names_to = "Method", values_to = "RMSE")
 
+## Add columns for line type and method
+rmse_data_long <- rmse_data_long %>%
+  mutate(
+    LineType = ifelse(grepl("rec", Method), "Reconciled", "Base"),
+    MethodGroup = case_when(
+      grepl("ARIMA", Method) ~ "ARIMA",
+      grepl("VECM", Method) ~ "VECM",
+      Method == "rmse_DTF" ~ "DTF"
+    )
+  )
 
-## Create the plot
-ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = Method)) +
+## Create the plot with specified colors and line types
+ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = MethodGroup, linetype = LineType)) +
   geom_line(linewidth = 1.1) +
-  labs(x = "h-step Forecast", y = "RMSE Value", title = "LTD base forecast RMSE against DTF approach") +
+  scale_color_manual(values = c(
+    "ARIMA" = "blue",
+    "VECM" = "red",
+    "DTF" = "green"
+  )) +
+  scale_linetype_manual(values = c(
+    "Base" = "solid",
+    "Reconciled" = "dashed"
+  )) +
+  labs(x = "h-step Forecast", y = "RMSE Value", title = "Monthly total LTD base and reconciled forecast RMSE by Method") +
   scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
+  theme_minimal() +
+  guides(
+    colour = guide_legend(title = "Colour: Model", override.aes = list(linetype = "solid")),
+    linetype = guide_legend(title = "Line type: Reconciled/Base")
+  )
 
 ## Convert ggplot to plotly
 ggplotly(ggplot_rmse)
+
 ```
 
 </center>
-
-## {}
-
-::: callout-note
-## Reconciled VECM and DTF approach against VECM base
-* Overall, cross-temporal reconciled forecasts do better (**1 to 5-step-head and 10 to 12**)
-
-* Not much difference at **6 to 9-step-head** forecasts
-
-:::
-
-<center>
-```{r}
-i=1
-prop_data_one <- data.frame(
-  h_step = 1:12,
-  TCS = RMSE_vecm_tcs_prop[i,],
-  dtf_base = fold_rmse$average_rmse/RMSE_vecm_h_base[i,]
-)
-
-# Reshape for ggplot
-prop_data_long_one <- prop_data_one %>%
-  pivot_longer(cols = -h_step, names_to = "Method", values_to = "Proportion")
-
-# Create the plot
-ggplot_prop_one <- ggplot(prop_data_long_one, aes(x = h_step, y = Proportion, colour = Method)) +
-  geom_line(linewidth = 1.1) +
-  geom_hline(yintercept = 1) +
-  labs(x = "h-step Forecast", y = "Proportion", title = "Reconciled Forecast and DTF apprach against Base VECM Forecast") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-# Display the plot
-ggplotly(ggplot_prop_one)
-```
-
-
-</center>
-
 
 ## {}
 
@@ -733,7 +639,7 @@ prop_data_vecm_dtf <- data.frame(
 ggplot_prop_vecm_dtf <- ggplot(prop_data_vecm_dtf, aes(x = h_step, y = rec_to_dtf)) +
   geom_line(linewidth = 1.1, color = "red") +
   geom_hline(yintercept = 1) +
-  labs(x = "h-step Forecast", y = "Reconciled/DTF Forecast", title = "Proportion of Reconciled Forecast to DTF approach") +
+  labs(x = "h-step Forecast", y = "RMSE Value", title = "Ratio of RMSE of reconciled forecast to DTF forecast") +
   scale_x_continuous(breaks = 1:12) +
   theme_minimal()
 
@@ -752,39 +658,37 @@ ggplotly(ggplot_prop_vecm_dtf)
 ::: callout-important
 
 ## Summary
-* Overall, cross-temporal reconciled forecast performs better (short-term forecast)
+* Overall, cross-temporal reconciled forecast performs better
 
-* Room for improvements for short-term reconciled forecast against base forecast
+* Reconciliation helps improving where the forecasts are poor
 
 * Accuracy improvement proves it is efficient enough to adopt forecast reconciliation
 :::
 
 ## References
 :::callout-tip
-## Research Paper
-Athanasopoulos, G., Ahmed, R. A., & Hyndman, R. J. (2009). Hierarchical forecasts for            Australian domestic tourism. International Journal of Forecasting, 25(1), 146-166.             [https://doi.org/10.1016/j.ijforecast.2008.07.004](https://doi.org/10.1016/j.ijforecast.2008.07.004)
+
+Hyndman, R. J., & Athanasopoulos, G. (2021). Forecasting: Principles and practice. Otexts. [https://otexts.com/fpp3/](https://otexts.com/fpp3/)
 
 Athanasopoulos, G., Hyndman, R. J., Kourentzes, N., & Petropoulos, F. (2017). Forecasting with
   temporal hierarchies. European Journal of Operational Research, 262(1), 60-74.                 [https://doi.org/10.1016/j.ejor.2017.02.046](https://doi.org/10.1016/j.ejor.2017.02.046)
 
-Forecasting for Social Good. (2023, April 1). Forecast Reconciliation for Hierarchically         Organized Data [Video]. YouTube. [https://www.youtube.com/watch?v=6BCjz6hG6P8&t=931s](https://www.youtube.com/watch?v=6BCjz6hG6P8&t=931s)
+Wickramasuriya, S. L., Athanasopoulos, G., & Hyndman, R. J. (2018). Optimal forecast                 reconciliation for hierarchical and grouped time series through trace minimization.            Journal of the American Statistical Association, 114(526), 804-819.                            [https://doi.org/10.1080/01621459.2018.1448825](https://doi.org/10.1080/01621459.2018.1448825)
 
-Hyndman, R. J., Ahmed, R. A., Athanasopoulos, G., & Shang, H. L. (2011). Optimal combination     forecasts for hierarchical time series. Computational Statistics & Data Analysis, 55(9),       2579-2589. [https://doi.org/10.1016/j.csda.2011.03.006](https://doi.org/10.1016/j.csda.2011.03.006)
-
+Girolimetto, D., G. Athanasopoulos, T. Di Fonzo, R.J. Hyndman, Cross-temporal probabilistic           forecast reconciliation: Methodological and practical issues, International Journal of         Forecasting, 2023.[https://doi.org/10.1016/j.ijforecast.2023.10.003.](https://www.sciencedirect.com/science/article/pii/S0169207023001024)
 :::
 
 ## References
 :::callout-tip
-## Research Paper
+
 Kourentzes, N., & Athanasopoulos, G. (2019). Cross-temporal coherent forecasts for Australian        tourism. Annals of Tourism Research, 75, 393-409.                                              [https://doi.org/10.1016/j.annals.2019.02.001](https://doi.org/10.1016/j.annals.2019.02.001)
 
 Malakellis, M., & Warlters, M. (2021). The economic costs of transfer duty: a literature             review. NSW Government.                                                                        [https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf](https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf)
 
-Wickramasuriya, S. L., Athanasopoulos, G., & Hyndman, R. J. (2018). Optimal forecast                 reconciliation for hierarchical and grouped time series through trace minimization.            Journal of the American Statistical Association, 114(526), 804-819.                            [https://doi.org/10.1080/01621459.2018.1448825](https://doi.org/10.1080/01621459.2018.1448825)
-
 Girolimetto, D. & Di Fonzo, T. (2022), FoReco: Point Forecast Reconciliation.
       [https://danigiro.github.io/FoReco/](https://danigiro.github.io/FoReco/)
 :::
+
 ## Addtional Resources
 
 <center>

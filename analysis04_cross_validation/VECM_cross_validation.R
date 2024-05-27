@@ -49,12 +49,13 @@ folds <- length(unique(ltd_cv$.id))
 # ARIMA 
 
 # Define array of data
-base_vecm_forecast <- reconciled_vecm_struc <- reconciled_vecm_tcs <- test_set <- array(, dim = c(6, 12, folds))
+base_vecm_forecast <- hts_reconciled_vecm <- thf_reconciled_vecm <- reconciled_vecm_tcs <- test_set <- array(, dim = c(6, 12, folds))
 
 # Add row names for the array
 rownames(base_vecm_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-rownames(reconciled_vecm_struc) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(reconciled_vecm_tcs) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(hts_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(thf_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 
 
@@ -249,15 +250,51 @@ for (t in 1:folds){
   Zt <- te_info$Zt
   
   # Reconciliation
+  
+  ## cross-sec
+  K <- c(1,2,3,4,6,12)
+  hts_recf_list <- NULL
+  for(h in 1:length(K)){
+    # base forecasts
+    id <- which(simplify2array(strsplit(colnames(FoReco_data$base),
+                                        split = "_"))[1, ] == paste("k", K[h], sep=""))
+    mbase <- t(FoReco_data$base[, id])
+    # residuals
+    id <- which(simplify2array(strsplit(colnames(FoReco_data$res),
+                                        split = "_"))[1, ] == "k1")
+    mres <- t(FoReco_data$res[, id])
+    hts_recf_list[[h]] <- htsrec(mbase, C = FoReco_data$C, comb = "shr",
+                                 res = mres, keep = "recf")
+  }
+  names(hts_recf_list) <- paste("k", K, sep="")
+  hts_recf <- t(do.call(rbind, hts_recf_list[rev(names(hts_recf_list))]))
+  colnames(hts_recf) <- paste("k", 
+                              rep(K, sapply(hts_recf_list[rev(names(hts_recf_list))], NROW)),
+                              colnames(hts_recf), sep="")
+
+  # temp
+  n <- NROW(FoReco_data$base)
+  thf_recf <- matrix(NA, n, NCOL(FoReco_data$base))
+  dimnames(thf_recf) <- dimnames(FoReco_data$base)
+  for(l in 1:n){
+    # ts base forecasts ([lowest_freq' ...  highest_freq']')
+    tsbase <- FoReco_data$base[l, ]
+    # ts residuals ([lowest_freq' ...  highest_freq']')
+    tsres <- FoReco_data$res[l, ]
+    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "ols",
+                           res = tsres, keep = "recf")
+  }
+  
   ## cross-temp
-  oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                           comb = "struc", res = FoReco_data$res, keep = "recf")
+  # optimal 
+  # oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+  #                          comb = "struc", res = FoReco_data$res, keep = "recf")
   
   # Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
   tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
                      thf_comb = "struc", hts_comb = "bu",
                      res = FoReco_data$res)$recf
-  
+
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
     cs <- max(abs(cs_info$Ut %*% x))
     te <- max(abs(te_info$Zt %*% t(x)))
@@ -269,8 +306,9 @@ for (t in 1:folds){
   
   for (j in 1:nrow(base)){
     base_vecm_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_vecm_struc[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    hts_reconciled_vecm[j, , t] <- t(as.matrix(hts_recf[j, -c(1:16)]))
     reconciled_vecm_tcs[j, , t] <- t(as.matrix(tcs_recf[j, -c(1:16)]))
+    thf_reconciled_vecm[j, , t] <- t(as.matrix(thf_recf[j, -c(1:16)]))
   }
 }
 
@@ -279,21 +317,27 @@ df <- NULL
 for (i in 1:10) {
   # Extract Total values for each .id and each array
   vecm_base <- base_vecm_forecast["Total", , i]
-  vecm_struc_reconciled <- reconciled_vecm_struc["Total", , i]
+  vecm_hts_reconciled <- hts_reconciled_vecm["Total", , i]
   vecm_tcs_reconciled <- reconciled_vecm_tcs["Total", , i]
+  vecm_thf_reconciled <- thf_reconciled_vecm["Total", , i]
   total_observed <- test_set["Total", , i]
-  #arima_base <- base_arima_forecast["Total", , i]
-  #arima_reconciled <- reconciled_arima["Total", , i]
+  arima_base <- base_arima_forecast["Total", , i]
+  arima_reconciled <- reconciled_arima["Total", , i]
+  arima_temp_reconciled <- temp_rec_arima["Total", , i]
+  arima_cross_sec_reconciled <- cross_rec_arima["Total", , i]
   
   # Create a dataframe for the current .id
   df1 <- data.frame(
     Date = seq(from=as.POSIXct("2023-04-01 00:00:00", tz="UTC"), by="month", length.out = 12),
     vecm_base = as.numeric(vecm_base),
-    vecm_struc_reconciled = as.numeric(vecm_struc_reconciled),
+    vecm_hts_reconciled = as.numeric(hts_reconciled_vecm),
     vecm_tcs_reconciled = as.numeric(vecm_tcs_reconciled),
+    vecm_thf_reconciled = as.numeric(thf_reconciled_vecm),
     observations = as.numeric(total_observed),
-    #arima_base = as.numeric(arima_base),
-    #arima_reconciled = as.numeric(arima_reconciled),
+    arima_base = as.numeric(arima_base),
+    arima_reconciled = as.numeric(arima_reconciled),
+    arima_temp_reconciled = as.numeric(arima_temp_reconciled),
+    arima_cross_sec_reconciled = as.numeric(arima_cross_sec_reconciled),
     id = as.factor(i)
   )
   
@@ -304,7 +348,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 10) |>
+  filter(id == 7) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -315,7 +359,7 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 score_ct1 <- df |>
-  filter(id == 10) |>
+  filter(id == 7) |>
   select(-id) |>
   pivot_longer(-c(Date, observations), names_to = "Approach") |>
   group_by(Approach) |>

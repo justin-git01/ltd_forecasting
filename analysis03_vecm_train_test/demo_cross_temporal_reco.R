@@ -266,7 +266,7 @@ thf_recf <- matrix(NA, n, NCOL(FoReco_data$base))
 dimnames(thf_recf) <- dimnames(FoReco_data$base)
 for(i in 1:n){
   # ts base forecasts ([lowest_freq' ...  highest_freq']')
-  tsbase <- FoReco_data$base[1, ]
+  tsbase <- FoReco_data$base[i, ]
   # ts residuals ([lowest_freq' ...  highest_freq']')
   tsres <- FoReco_data$res[i, ]
   thf_recf[i,] <- thfrec(tsbase, m = 12, comb = "struc",
@@ -308,7 +308,7 @@ ite_recf <- iterec(FoReco_data$base,
 # Visualise result
 
 data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
-                  #temp = as.numeric(thf_recf[1, -c(1:16)]),
+                  temp = as.numeric(thf_recf[1, -c(1:16)]),
                   #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),
                   tcs_recf = as.numeric(tcs_recf[1, -c(1:16)]),
