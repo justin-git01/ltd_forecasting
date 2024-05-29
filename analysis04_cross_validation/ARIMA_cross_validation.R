@@ -270,4 +270,5 @@ for (t in 1:folds){
 
 save(base_arima_forecast, file = "data/base_arima_fc.RData")
 save(reconciled_arima, file = "data/rec_arima.RData")
+save(temp_rec_arima, file = "data/temp_rec_arima.RData")
 save(test_set, file = "data/test_set.RData")
