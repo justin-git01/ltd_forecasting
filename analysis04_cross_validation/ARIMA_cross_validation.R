@@ -46,7 +46,7 @@ folds <- length(unique(ltd_cv$.id))
 # ARIMA 
 
 # Define set of data
-base_arima_forecast <- reconciled_arima <- cross_rec_arima <- temp_rec_arima <-  test_set <- array(, dim = c(6, 12, folds))
+base_arima_forecast <- reconciled_arima <- cross_sec_arima <- temp_rec_arima <-  test_set <- array(, dim = c(6, 12, folds))
 
 # Add row names for the array
 rownames(base_arima_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -263,7 +263,7 @@ for (t in 1:folds){
   for (j in 1:nrow(base)){
     base_arima_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
     reconciled_arima[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
-    cross_rec_arima[j, , t] <- t(as.matrix(hts_recf[j, -c(1:16)]))
+    cross_sec_arima[j, , t] <- t(as.matrix(hts_recf[j, -c(1:16)]))
     temp_rec_arima[j, , t] <- t(as.matrix(thf_recf[j, -c(1:16)]))
   }
 }
@@ -271,4 +271,5 @@ for (t in 1:folds){
 save(base_arima_forecast, file = "data/base_arima_fc.RData")
 save(reconciled_arima, file = "data/rec_arima.RData")
 save(temp_rec_arima, file = "data/temp_rec_arima.RData")
+save(cross_sec_arima, file = "data/cross_sec_rec_arima.RData")
 save(test_set, file = "data/test_set.RData")
