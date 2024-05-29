@@ -51,6 +51,8 @@ load(here::here("data/rmse_cross_temp_arima.RData"))
 load(here::here("data/rmse_cross_temp_vecm.RData"))
 load(here::here("data/rmse_temp_arima.RData"))
 load(here::here("data/rmse_temp_vecm.RData"))
+load(here::here("data/rmse_cross_sec_arima.RData"))
+load(here::here("data/rmse_cross_sec_vecm.RData"))
 
 # Load mape RDA file
 load(here::here("data/mape_base_arima.RData"))
@@ -59,7 +61,8 @@ load(here::here("data/mape_cross_temp_arima.RData"))
 load(here::here("data/mape_cross_temp_vecm.RData"))
 load(here::here("data/mape_temp_arima.RData"))
 load(here::here("data/mape_temp_vecm.RData"))
-
+load(here::here("data/mape_cross_sec_arima.RData"))
+load(here::here("data/mape_cross_sec_vecm.RData"))
 
 ```
 
@@ -768,7 +771,9 @@ rmse_base_data <- data.frame(
   rmse_ARIMA_rec = RMSE_arima_h_rec[i,],
   rmse_VECM_rec = RMSE_vecm_h_tcs_rec[i,],
   rmse_ARIMA_temp = RMSE_arima_h_temp_rec[i,],
-  rmse_VECM_temp = RMSE_vecm_h_thf_rec[i,]
+  rmse_VECM_temp = RMSE_vecm_h_thf_rec[i,],
+  rmse_ARIMA_cross_sec = RMSE_arima_h_cross_rec[i,],
+  rmse_VECM_cross_sec = RMSE_vecm_h_hts_rec[i,]
 )
 
 ## Convert to long format
@@ -781,6 +786,7 @@ rmse_data_long <- rmse_data_long %>%
     LineType = case_when(
       grepl("rec", Method) ~ "Cross-temporal Reconciled",
       grepl("temp", Method) ~ "Temporal Reconciled",
+      grepl("cross_sec", Method) ~ "Cross-sectionally Reconciled",
       TRUE ~ "Base"
     ),
     MethodGroup = case_when(
@@ -799,7 +805,8 @@ ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = MethodG
   scale_linetype_manual(values = c(
     "Base" = "solid",
     "Cross-temporal Reconciled" = "dashed",
-    "Temporal Reconciled" = "dotted"
+    "Temporal Reconciled" = "dotted",
+    "Cross-sectionally Reconciled" = "twodash"
   )) +
   labs(x = "h-step Forecast", y = "RMSE Value", title = " ") +
   scale_x_continuous(breaks = 1:12) +
@@ -813,11 +820,15 @@ ggplot_rmse
 
 ```
 
-@fig-rmse presents the RMSE of reconciled forecasts against base forecast for VECM and ARIMA model. The blue lines represent ARIMA model and the red lines represent VECM. Straight lines represent base forecast, dotted lines represent temporally reconciled forecasts and dashed lines represent cross-temporally reconciled forecasts. 
+@fig-rmse illustrates the Root Mean Square Error (RMSE) of reconciled forecasts in comparison to base forecasts for both VECM and ARIMA models. The blue lines denote the ARIMA model, while the red lines represent the VECM. The line types are differentiated as follows: solid lines for base forecasts, dotted lines for temporally reconciled forecasts, two-dash lines for cross-sectionally reconciled forecasts, and dashed lines for cross-temporally reconciled forecasts.
 
-At the first glance, in overall, fitting VECM generates higher accuracy forecast compared to fitting ARIMA, which agrees with the *Department of Treasury and Finance* on model selection. Additionally, since there is a huge discrepancy between reconciled forecasts and base forecast, especially from 4-step head forecasts onwards for both models, we can also conclude that the forecast reconciliation significantly improves the forecast accuracy. Finally, for both models, lines representing RMSE of temporally reconciled forecasts lie very close to ones representing RMSE of cross-temporally reconciled forecasts, which indicates that 
+Upon initial examination, it is evident that the VECM model consistently produces more accurate forecasts compared to the ARIMA model, aligning with the model selection by the Department of Treasury and Finance. Furthermore, the significant disparity between reconciled forecasts and base forecasts, particularly from the four-step-ahead forecasts onwards for both models, suggests that forecast reconciliation markedly enhances forecast accuracy. Notably, for both models, the RMSE lines of temporally reconciled forecasts are closer to those of cross-temporally reconciled forecasts, compared to the RMSE lines of cross-sectionally reconciled forecasts. This indicates that temporal hierarchies play a more substantial role in improving forecast accuracy compared to cross-sectional hierarchies.
+
+It is also noteworthy that for one to three-step-ahead forecasts, the base forecasts already exhibit high performance, hence the improvements from applying forecast reconciliation are not evident.
 
 ## MAPE 
+
+Using the Mean Absolute Percentage Error (MAPE), we anticipate results consistent with those obtained from the Root Mean Square Error (RMSE), which is indeed the case as demonstrated in Figure @fig-mape.
 
 ```{r}
 #| message: False
@@ -836,7 +847,9 @@ mape_base_data <- data.frame(
   mape_arima_rec = mape_arima_cross_temp[i,],
   mape_vecm_rec = mape_vecm_cross_temp[i,],
   mape_arima_temp = mape_arima_temp[i,],
-  mape_vecm_temp = mape_vecm_temp[i,]
+  mape_vecm_temp = mape_vecm_temp[i,],
+  mape_arima_cross_sec = mape_arima_cross_sec[i,],
+  mape_vecm_cross_sec = mape_vecm_cross_sec[i,]
 )
 
 ## Convert to long format
@@ -849,6 +862,7 @@ mape_data_long <- mape_data_long %>%
     LineType = case_when(
       grepl("rec", Method) ~ "Cross-temporal Reconciled",
       grepl("temp", Method) ~ "Temporal Reconciled",
+      grepl("cross_sec", Method) ~ "Cross-sectionally Reconciled",
       TRUE ~ "Base"
     ),
     MethodGroup = case_when(
@@ -867,7 +881,8 @@ ggplot_mape <- ggplot(mape_data_long, aes(x = h_step, y = MAPE, colour = MethodG
   scale_linetype_manual(values = c(
     "Base" = "solid",
     "Cross-temporal Reconciled" = "dashed",
-    "Temporal Reconciled" = "dotted"
+    "Temporal Reconciled" = "dotted",
+    "Cross-sectionally Reconciled" = "twodash"
   )) +
   labs(x = "h-step Forecast", y = "MAPE Value", title = " ") +
   scale_x_continuous(breaks = 1:12) +
@@ -882,7 +897,12 @@ ggplot_mape
 
 ```
 
-@fig-mape 
+In conclusion, four key insights can be derived from Figures @fig-rmse and @fig-mape:
+
+1. The VECM model is more suitable than the ARIMA model.
+2. Forecast reconciliation significantly enhances forecast accuracy, with cross-temporally reconciled forecasts exhibiting the best performance.
+3. The majority of the improvement is attributable to temporal hierarchies.
+4. Forecast reconciliation is particularly effective in improving forecasts that initially perform poorly.
 
 ## Comparing against DTF forecast
 

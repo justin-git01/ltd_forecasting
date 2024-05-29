@@ -45,7 +45,7 @@ mape_arima_base <- apply((percent_errors_arima_base), c(1,2), mean)
 
 ## Reconciled forecast
 ### cross-sec (hts)
-errors_arima_cross_sec <- cross_rec_arima - test_set
+errors_arima_cross_sec <- cross_sec_arima - test_set
 percent_errors_arima_cross_sec <- abs(errors_arima_cross_sec / test_set)*100
 mape_arima_cross_sec <- apply((percent_errors_arima_cross_sec), c(1,2), mean)
 
