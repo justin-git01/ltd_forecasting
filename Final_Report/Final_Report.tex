@@ -205,7 +205,7 @@
 \def\telephone#1{\gdef\@telephone{#1}}
 \def\email#1{\gdef\@email{#1}}
 \makeatother
-  \organization{Department of Treasury and Finance}
+  \organization{The Department of Treasury and Finance}
 
   \def\name{Department of\newline Econometrics \&\newline Business Statistics}
 
@@ -297,6 +297,11 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+\end{verbatim}
+
 \section{Abstract}\label{abstract}
 
 \begin{itemize}
@@ -307,25 +312,26 @@
   Key Recommendations: High-level actionable recommendations based on the forecast results.
 \end{itemize}
 
-\section{Introduction}\label{introduction}
+\section{Introduction and background}\label{introduction-and-background}
 
-\subsection{Background}\label{background}
+The property sector plays a pivotal role in Australia's economy, accounting for 1 in 4 jobs indirectly and contributing around 13\% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately \$350 billion (Real Estate Institute of Australia, 2021). Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A literature published by the New South Wales Treasury found that a 100 basis point (1\%) cut in land transfer duty could boost property transactions by 10\% (Malakellis \& Warlters, 2021).
 
-Overview of LTD and its economic significance.
+Land transfer duty is a tax applied to the ``dutiable value'' of a property being purchased or acquired, whether it is a first home or an investment property. The dutiable value is determined as either the property's purchase price or its market value, whichever is greater. Several factors influence the amount of duty paid, including the buyer's intended use of the property, foreign purchaser status, and eligibility for exemptions.
 
-\subsection{Objective}\label{objective}
+\begin{figure}[H]
 
-Purpose of forecasting LTD for DTF. Outline the specific goals of the project, such as predicting revenue from LTD or analyzing trends.
+{\centering \includegraphics{Final_Report_files/figure-latex/taxrevenue-1} 
 
-\section{Rationale for the Forecast}\label{rationale-for-the-forecast}
+}
 
-\subsection{Need for Forecasting}\label{need-for-forecasting}
+\caption{Dependence of Victoria's Tax Revenue on Land Transfer Duty}\label{fig:taxrevenue}
+\end{figure}
 
-Discuss why forecasting LTD is critical for budgetary planning and economic analysis at DTF.
+Additionally, Victoria's tax revenue heavily relies on land transfer duty. As can be seen from Figure \ref{fig:taxrevenue}, over the past 20 years, on average, land transfer duty accounts for 27\% of Victoria's tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty is removed, the government will need to introduce one or more new taxes to generate equivalent revenue.
 
-\subsection{Benefits}\label{benefits}
+To balance the need for sufficient tax income without discouraging property transactions, the Department of Treasury has been closely working with the government on policy adjustments, subsidies, exemptions, and restrictions. Accurate forecasts of land transfer duty, both short-term (1 to 3 months) and long-term (12 months), are essential for these decisions.
 
-How the forecasting results will aid in policy making, financial planning, etc.
+This report introduces a new forecasting methodology aimed at improving the accuracy of these predictions. By employing forecast reconciliation and combining cross-sectional and temporal hierarchies, we aim to provide the Department of Treasury and Finance with more reliable forecasts to inform policy-making.
 
 \section{Data Description}\label{data-description}
 
@@ -353,12 +359,12 @@ Based on summary statistics results from table \ref{tab:statsumone} and table \r
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Land Transfer Duty (LTD) Overview}:
+  \textbf{Land Transfer Duty Overview}:
 
   \begin{itemize}
   \tightlist
   \item
-    The total LTD collected has varied considerably, ranging from approximately 286.2 million to over 1.013 billion. This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.
+    The total land transfer duty reported has varied considerably, ranging from approximately 286.2 million to over 1.013 billion over past . This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.
   \item
     Residential transactions dominate the LTD collection, contributing between 238.1 million and 761.4 million. This suggests that residential real estate remains a vital part of the market, possibly reflecting trends in housing demand and price movements.
   \item
@@ -793,6 +799,10 @@ POSIXct & numeric & numeric & numeric & numeric & numeric & numeric & numeric & 
 Cite all data sources, literature, and software used in the report the insights generated by your work.
 
 Hyndman, R.J., \& Athanasopoulos, G. (2021) Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Accessed on .
+
+\url{https://treasury.gov.au/sites/default/files/2022-03/258735_real_estate_institute_of_australia.pdf}
+
+\url{https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf}
 
 \printbibliography
 

@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hoang Do">
+
+<title>Forecast Reconciliation for Land Transfer Duty</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Report_files/libs/quarto-html/quarto.js"></script>
+<script src="Report_files/libs/quarto-html/popper.min.js"></script>
+<script src="Report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Forecast Reconciliation for Land Transfer Duty</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hoang Do </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load ltd aggregate date</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ltd_agg <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">here</span>(<span class="st">"data/LTD_new.xlsx"</span>), <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Date =</span> ...<span class="dv">1</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ltd =</span> LTD,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">sales =</span> SALES,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">hvi =</span> HVI) <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(Date, ltd, sales, hvi))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Load ltd unit data and join with aggregate data</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ltd_unit <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">here</span>(<span class="st">"data/LTD_new.xlsx"</span>), <span class="at">sheet =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Date =</span> ...<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ltd_agg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Date"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>ltd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tax revenue data </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tax_rev <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/tax_rev.xlsx"</span>), <span class="at">sheet =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Date =</span> ...<span class="dv">1</span>)<span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">reliance =</span> <span class="st">`</span><span class="at">Reliance on stamp duty</span><span class="st">`</span> <span class="sc">*</span><span class="dv">100</span> ) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Date, reliance) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Quarter =</span> <span class="fu">yearquarter</span>(Date)) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Date)  <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Quarter) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Quarter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="abstract" class="level1">
+<h1>Abstract</h1>
+<ul>
+<li>Overview: Briefly summarize the purpose, methodology, key findings, and implications of the forecast.</li>
+<li>Key Recommendations: High-level actionable recommendations based on the forecast results.</li>
+</ul>
+</section>
+<section id="introduction-and-background" class="level1">
+<h1>Introduction and background</h1>
+<p>The property sector plays a pivotal role in Australia’s economy, accounting for 1 in 4 jobs indirectly and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion (Real Estate Institute of Australia, 2021). Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A literature published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (Malakellis &amp; Warlters, 2021).</p>
+<p>Land transfer duty is a tax applied to the “dutiable value” of a property being purchased or acquired, whether it is a first home or an investment property. The dutiable value is determined as either the property’s purchase price or its market value, whichever is greater. Several factors influence the amount of duty paid, including the buyer’s intended use of the property, foreign purchaser status, and eligibility for exemptions.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-taxrevenue" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-taxrevenue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-taxrevenue-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-taxrevenue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Dependence of Victoria’s Tax Revenue on Land Transfer Duty
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Additionally, Victoria’s tax revenue heavily relies on land transfer duty. As can be seen from Figure <a href="#fig-taxrevenue" class="quarto-xref">Figure&nbsp;1</a>, over the past 20 years, on average, land transfer duty accounts for 27% of Victoria’s tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty is removed, the government will need to introduce one or more new taxes to generate equivalent revenue.</p>
+<p>To balance the need for sufficient tax income without discouraging property transactions, the Department of Treasury has been closely working with the government on policy adjustments, subsidies, exemptions, and restrictions. Accurate forecasts of land transfer duty, both short-term (1 to 3 months) and long-term (12 months), are essential for these decisions.</p>
+<p>This report introduces a new forecasting methodology aimed at improving the accuracy of these predictions. By employing forecast reconciliation and combining cross-sectional and temporal hierarchies, we aim to provide the Department of Treasury and Finance with more reliable forecasts to inform policy-making.</p>
+</section>
+<section id="data-description" class="level1">
+<h1>Data Description</h1>
+<section id="data-source" class="level2">
+<h2 class="anchored" data-anchor-id="data-source">Data Source</h2>
+<p>Detail the sources of the LTD data, including collection methods, frequency, and historical range.</p>
+</section>
+<section id="variables-description" class="level2">
+<h2 class="anchored" data-anchor-id="variables-description">Variables Description</h2>
+<p>Describe each variable used in the analysis, including dependent and independent variables.</p>
+</section>
+</section>
+<section id="initial-data-analysis-ida" class="level1">
+<h1>Initial Data Analysis (IDA)</h1>
+<section id="data-cleaning-and-manipulation" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning-and-manipulation">Data Cleaning and Manipulation</h2>
+</section>
+<section id="descriptive-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h2>
+<p>Based on summary statistics results from table <span class="math inline">\(\ref{tab:statsumone}\)</span> and table <span class="math inline">\(\ref{tab:statsumtwo}\)</span>,</p>
+<ol type="1">
+<li><strong>Land Transfer Duty Overview</strong>:
+<ul>
+<li>The total land transfer duty reported has varied considerably, ranging from approximately 286.2 million to over 1.013 billion over past . This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.</li>
+<li>Residential transactions dominate the LTD collection, contributing between 238.1 million and 761.4 million. This suggests that residential real estate remains a vital part of the market, possibly reflecting trends in housing demand and price movements.</li>
+<li>Non-residential transactions, though smaller than residential, still make a substantial contribution, with LTD from this sector ranging from about 42.9 million to 357.2 million. Within this, the commercial sector is the most significant, followed by industrial and other sectors (such as agricultural).</li>
+</ul></li>
+<li><strong>Detailed Sector Analysis</strong>:
+<ul>
+<li><strong>Commercial Sector</strong>: With LTD ranging from 22.1 million to 132.4 million, this sector shows substantial activity, possibly reflecting economic growth, investment trends, and business expansions.</li>
+<li><strong>Industrial Sector</strong>: This sector has collected LTD between 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods.</li>
+<li><strong>Other Sectors</strong>: Including smaller sectors like agricultural, contributions range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.</li>
+</ul></li>
+<li><strong>Residential Sector Analysis</strong>:
+<ul>
+<li>The residential sector consistently represents the largest portion of LTD, underscoring its importance to the overall property market. The variability in amounts likely mirrors the housing market dynamics, including fluctuations in home prices and the volume of transactions.</li>
+</ul></li>
+<li><strong>Economic Indicators</strong>:
+<ul>
+<li><strong>Sales</strong>: The volume of sales has fluctuated from 4,629 to 15,177, indicating periods of both high and low market activity. The relatively close mean and median values suggest a fairly consistent level of transactions across the period.</li>
+<li><strong>Home Value Index (HVI)</strong>: The HVI has ranged from 106.2 to 192.4, which is indicative of significant changes in home values. A higher HVI suggests increasing property values, which could contribute to higher LTD collections.</li>
+</ul></li>
+</ol>
+<p>This analysis suggests that while the property market is subject to cyclical changes reflected in LTD collections, the residential sector remains a cornerstone, significantly influencing overall market dynamics. Understanding these patterns can help in forecasting future trends and making informed decisions in real estate and financial sectors.</p>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level1">
+<h1>Exploratory Data Analysis (EDA)</h1>
+<section id="time-series-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-analysis">Time series analysis</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ltd_agg_ts <span class="ot">&lt;-</span> ltd_agg <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">yearmonth</span>(Date)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Date) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Month) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Month)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ltd_unit_ts <span class="ot">&lt;-</span> ltd_unit <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">yearmonth</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Date) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Month) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="land-transfer-duty" class="level3">
+<h3 class="anchored" data-anchor-id="land-transfer-duty">Land Transfer Duty</h3>
+<section id="trend" class="level4">
+<h4 class="anchored" data-anchor-id="trend">Trend</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-trend" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-trend-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Trend of Land Transfer Duty in Victoria over time
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As spotted by the figure <a href="#fig-trend" class="quarto-xref">Figure&nbsp;2</a>, <code>ltd</code> increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal pattern.</p>
+</section>
+<section id="seasonal-pattern" class="level4">
+<h4 class="anchored" data-anchor-id="seasonal-pattern">Seasonal Pattern</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sspattern" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sspattern-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-sspattern-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sspattern-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Seasonal trend of Land Transfer Duty in Victoria
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Apart from there is a small hint of drop at the start of each quarter, figure <a href="#fig-sspattern" class="quarto-xref">Figure&nbsp;3</a> shows that there is no clear sign for seasonal pattern</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-subseries" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-subseries-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Subseries plot of Land Transfer Duty in Victoria over time
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>However, in the figure <a href="#fig-subseries" class="quarto-xref">Figure&nbsp;4</a>, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from figure <span class="math inline">\(\ref{fig:sspattern}\)</span>.</p>
+</section>
+<section id="decomposition" class="level4">
+<h4 class="anchored" data-anchor-id="decomposition">Decomposition</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-dcmp" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dcmp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-dcmp-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dcmp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Decomposition of Land Transfer Duty in Victoria
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ssadj" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssadj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-ssadj-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssadj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Seasonal adjusted Land Transfer Duty in Victoria
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure <a href="#fig-dcmp" class="quarto-xref">Figure&nbsp;5</a> shows that there is no seasonal pattern for <code>ltd</code> and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.</p>
+<p>Moreover, figure <a href="#fig-dcmp" class="quarto-xref">Figure&nbsp;5</a> also shows that there is a sign of heterogeneity in <code>ltd</code> and thus log transformation may needed before model fitting.</p>
+<p>Also the figure <a href="#fig-ssadj" class="quarto-xref">Figure&nbsp;6</a> shows that there is not much difference between seasonally adjusted <code>ltd</code> and the original <code>ltd</code>, which confirms the lack of seasonal pattern.</p>
+</section>
+</section>
+<section id="sales" class="level3">
+<h3 class="anchored" data-anchor-id="sales">Sales</h3>
+</section>
+<section id="home-value-index" class="level3">
+<h3 class="anchored" data-anchor-id="home-value-index">Home Value Index</h3>
+</section>
+</section>
+<section id="correlation-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-analysis">Correlation Analysis</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-corrplot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-corrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-corrplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Correlation Plot
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The figure <a href="#fig-corrplot" class="quarto-xref">Figure&nbsp;7</a> shows that LTD and HVI are highly mutually correlated. However, the sales is mostly non-correlated with other 2 variables</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-longtermlog" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-longtermlog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Report_files/figure-html/fig-longtermlog-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-longtermlog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Trend of log transformation of LTD, sales and HVI
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The figure <a href="#fig-longtermlog" class="quarto-xref">Figure&nbsp;8</a> shows that &gt;&gt;&gt;</p>
+<p>For additional verification, we perform a Johansen cointegration test, positing the null hypothesis that no cointegration relationship exists.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>jtest <span class="ot">&lt;-</span> <span class="fu">ca.jo</span>(<span class="fu">log</span>(ltd_unit_ts[,<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">9</span>)]), <span class="at">type=</span><span class="st">"trace"</span>, <span class="at">K=</span><span class="dv">2</span>, <span class="at">ecdet=</span><span class="st">"none"</span>, <span class="at">spec=</span><span class="st">"longrun"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>jtest<span class="sc">@</span>teststat <span class="sc">&gt;</span> jtest<span class="sc">@</span>cval[, <span class="st">"5pct"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>r &lt;= 2 | r &lt;= 1 | r = 0  | 
+   FALSE     TRUE     TRUE </code></pre>
+</div>
+</div>
+<p>The test results allow us to reject the null hypothesis that <span class="math inline">\(r \leq 1\)</span>, yet we fail to reject the null hypothesis that <span class="math inline">\(r \leq 2\)</span>. This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> ltd_unit_ts <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">log_ltd =</span> <span class="fu">log</span>(ltd_total), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">log_sales =</span> <span class="fu">log</span>(sales),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">log_hvi =</span> <span class="fu">log</span>(hvi)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(log_ltd, log_sales, log_hvi)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(<span class="at">s =</span> log_ltd<span class="sc">*</span><span class="fl">1.000</span> <span class="sc">-</span> <span class="fl">1.529098</span><span class="sc">*</span>log_sales <span class="sc">-</span> <span class="fl">1.417812</span><span class="sc">*</span>log_hvi) </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Index =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(s), <span class="at">Value =</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(s[,<span class="dv">2</span>])))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Index, <span class="at">y =</span> Value)) <span class="sc">+</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Value"</span>, <span class="at">x =</span> <span class="st">"Index"</span>, <span class="at">title =</span> <span class="st">"Linear combination of three time series"</span>) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Report_files/figure-html/s_plot-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linear_comb <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(s[,<span class="dv">2</span>]))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">adf.test</span>(linear_comb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Augmented Dickey-Fuller Test
+
+data:  linear_comb
+Dickey-Fuller = -3.1846, Lag order = 5, p-value = 0.09361
+alternative hypothesis: stationary</code></pre>
+</div>
+</div>
+</section>
+<section id="preliminary-findings" class="level2">
+<h2 class="anchored" data-anchor-id="preliminary-findings">Preliminary Findings:</h2>
+<p>Summarize insights gained about the data and any implications for modeling.</p>
+</section>
+</section>
+<section id="methodology" class="level1">
+<h1>Methodology</h1>
+<section id="hierarchical-time-series" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchical-time-series">Hierarchical time series</h2>
+<p>Upon analyzing the data characteristics and the disaggregation of LTD, it becomes evident that a three-level hierarchy structure can be established. There is utility in generating forecasts at various levels of aggregation, driven by diverse reasons and objectives. For instance, forecasting solely at the total or top level may lead to inaccuracies due to the limited number of time series encompassed. Additionally, each level of aggregation may exhibit distinct characteristics; for instance, transactions involving residential properties might vary from those involving non-residential properties due to differences in market dynamics or market size for each property type.</p>
+<p>In an ideal scenario, forecasts from different levels of aggregation could seamlessly sum up to the top level. However, practical implementation often reveals incoherent among independently produced forecasts. Consequently, it becomes vital for forecasts to align and aggregate according to the hierarchical structure organizing the array of time series. As a solution to this challenge, reconciliation forecasting emerges as one of the most prevalent and effective methodologies employed today.</p>
+<p>Within the domain of hierarchical time series forecasting, there are three traditional single level approaches for generating forecasts for hierarchical time series. The first, known as the bottom-up approach, initiates by producing forecasts for each series at the lowest level and subsequently aggregates these to generate forecasts for the upper levels of the hierarchy. Conversely, the top-down approach starts with a forecast at the highest level, which is then disaggregated to lower levels using predetermined proportions—typically based on historical data distributions. Lastly, the middle-out approach amalgamates elements of both the bottom-up and top-down methods.</p>
+</section>
+<section id="forecast-reconciliation" class="level2">
+<h2 class="anchored" data-anchor-id="forecast-reconciliation">Forecast reconciliation</h2>
+<p>Recall from the data structure and insights from EDA section, we can construct this hierarchical structure for LTD:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+  \text{Total}_{t} \\
+  \text{Non-residential}_{t} \\
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 1 \\
+  1 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+\end{bmatrix}
+\]</span> or in a more compact notation: <span class="math display">\[
+\text{LTD}_{t} = \text{S}\text{b}_{t},
+\]</span> where S represents the summing matrix defining how bottom-level series are aggregated.</p>
+<p>As indicated by Hyndman and Athanasopoulos (2021), reconciliation forecasting involves the introduction of a mapping matrix, denoted as <strong>G</strong>, to the base forecast, which is determined by the adopted methodology. This matrix, when multiplied by <strong>SG</strong>, yields a coherent set of forecasts.</p>
+<p>However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, Wickramasuriya et al.&nbsp;(2019) introduced the <em>MinT</em> (Minimum Trace) optimal reconciliation methodology, which devises a <strong>G</strong> matrix aimed at minimizing the total forecast variance within the coherent forecast set.</p>
+<p>This leads to the need for estimating <span class="math inline">\(\text{W}_{h}\)</span>, the forecast error variance of h-step-ahead base forecasts. There are four simplifying approximations in place that have been shown to work well:</p>
+<ul>
+<li><p><strong>OLS</strong>: <span class="math inline">\(\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}\)</span></p></li>
+<li><p><strong>Variance Scaling</strong>: <span class="math inline">\(\mathbf{W}_{h} = \text{k}_{h}\text{diag(}\mathbf{\hat{W}}_{1}\text{)}\)</span></p></li>
+<li><p><strong>Structural Scaling</strong>: <span class="math inline">\(\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}\)</span></p></li>
+<li><p><strong>MinT Shrinkage</strong>: <span class="math inline">\(\mathbf{W}_{h} = \text{k}_{h}\mathbf{W}_{1}\)</span></p></li>
+</ul>
+</section>
+<section id="model-selection" class="level2">
+<h2 class="anchored" data-anchor-id="model-selection">Model Selection</h2>
+<p>As depicted in figure <span class="math inline">\(\ref{fig:corrplot}\)</span>, land transfer duty (LTD) exhibits mutual correlations with variables such as sales and the home value index (HVI). It is important to note that these relationships are not unidirectional; factors like sales and HVI may influence LTD, but changes in LTD can reciprocally impact these variables. This dynamic interaction is also observed with economic indicators like inflation and interest rates.</p>
+<p>The Vector Autoregression (VAR) model, which predicts future values of multiple time series based on their historical data, is well-suited for capturing these complex interactions. Furthermore, as illustrated in <em><cross-ref></cross-ref></em>, the detection of cointegration patterns indicating a stable long-term equilibrium relationship among variables such as LTD, sales, and HVI, which necessitates the application of the Vector Error Correction Model (VECM). This highlights the pertinence of employing both VAR and VECM to adequately model these relationships.</p>
+<p>One limitation of these models is their reliance on ample data to produce reliable parameters. Monthly data spanning over a decade for LTD has been found to be sufficient. Nevertheless, the subsequent section on cross-validation will elaborate on the precise sizing of the training dataset required to ensure compatibility with the VAR and VECM models.</p>
+<p>In addition to VAR and VECM, the Autoregressive Integrated Moving Average (ARIMA) model has also been employed, primarily for purposes of comparison and validation of improvements. The efficacy of this comparison will be assessed through time series cross-validation, utilizing various accuracy metrics such as the Root Mean Square Error (RMSE), Mean Absolute Percentage Error (MAPE), and the Mean Absolute Scaled Error (MASE).</p>
+</section>
+</section>
+<section id="time-series-cross-validation" class="level1">
+<h1>Time Series Cross-Validation</h1>
+<section id="definition-and-rationale" class="level2">
+<h2 class="anchored" data-anchor-id="definition-and-rationale">Definition and rationale</h2>
+<p>Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by Hyndman and Athanasopoulos (2021). This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques.</p>
+<p>In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the b base forecasts. Another critical application of time series cross-validation in this context is to generate rolling forecasts over a 12-month period for various time intervals. This is essential for the Department of Treasury and Finance (DTF) to analyze the effects of market dynamics or policy changes on land transfer duty (LTD).</p>
+</section>
+<section id="forecasting" class="level2">
+<h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
+<p>To create folds for the time series cross-validation procedure, we will use <code>stretch_tsibble()</code> function with user defined value for two arguments, <code>.init</code> for size of initial training set, and <code>.step</code> to define how many steps training sets will roll forward each time.</p>
+<p>For example, <code>stretch_tsibble(.init = 10, .step = 1)</code> produces series of training sets, where first training set has size of 10 observations and will roll 1 step forward each time, i.e.&nbsp;the size of second set and third set will be 11 and 12, respectively. Each folds will be denoted by a unique <code>.id</code> value.</p>
+<section id="generating-forecast" class="level3">
+<h3 class="anchored" data-anchor-id="generating-forecast">Generating forecast</h3>
+<p>To enhance forecast accuracy, this methodology extends beyond a cross-sectional hierarchical structure to incorporate a temporal dimension, culminating in cross-temporal reconciliation forecasting. This approach integrates forecasts across different time structures, and its efficacy is evaluated by comparing it with cross-sectional and temporal reconciliation forecasts individually to determine any improvements.</p>
+<p>Given the monthly frequency of the data, additional aggregation levels such as bi-monthly, quarterly, four-monthly, semi-annually, and annually are established, with the annual aggregation representing the top level of the temporal hierarchy.</p>
+<p>Models are fitted at each cross-sectional level across these varying temporal frequencies. A <code>for</code> loop is utilized to generate forecasts and residuals, which are subsequently organized into a matrix for each temporal frequency: monthly (denoted as k1), bi-monthly (k2), quarterly (k3), four-monthly (k4), semi-annually (k6), and annually (k12). These matrices are then collectively stored within a list.</p>
+<p>This structured approach facilitates the fitting of different models tailored to each temporal frequency, allowing for adjustments in argument values as necessary. Moreover, if a distinct model is required for various cross-sectional levels, an <code>if</code> condition is employed within each temporal frequency loop to ensure this customization. The forecasts and residuals are then allocated to <code>base</code> and <code>res</code> data structures, respectively.</p>
+<section id="arima" class="level4">
+<h4 class="anchored" data-anchor-id="arima">ARIMA</h4>
+<p>The ARIMA model will be implemented across all levels of the temporal hierarchical structure and at every cross-sectional level using the <code>auto.arima()</code> function from the <code>forecast</code> package. This function efficiently determines the optimal parameters for the autoregressive lag, differencing, and moving average components of the model by automatically adjusting them for the error terms.</p>
+<p>Forecasts will be generated up to one year, or 12 months into the future, utilizing the <code>forecast()</code> function. This function is designed to produce both the mean point forecasts and the associated residuals, thereby providing a comprehensive output that includes predictions and their accuracy measures.</p>
+</section>
+<section id="varvecm" class="level4">
+<h4 class="anchored" data-anchor-id="varvecm">VAR/VECM</h4>
+<p>Fitting VAR and VECM models to complex hierarchical structured data necessitates a more intricate approach, as there is no standard method readily available for this specific application. Additionally, these models require the incorporation of external variables, such as sales and the home value index (HVI). To address these challenges, the chosen strategy involves the creation of two separate user-defined functions for VAR and VECM. These functions are designed to process the input data and output both the mean point forecasts and residuals, mirroring the functionality provided by the <code>auto.arima()</code> function. Given the significant differences in the scales of sales, HVI, and LTD data, it is advisable to employ logarithmic transformations prior to model fitting, followed by re-transformation to their original scales. This method will be embedded within both functions to ensure accurate scale representation.</p>
+<section id="vector-autoregression-var-model" class="level5">
+<h5 class="anchored" data-anchor-id="vector-autoregression-var-model">Vector Autoregression (VAR) Model</h5>
+<p>The VAR fitting function, designated as <code>var_forecast_fun()</code>, accepts six parameters:</p>
+<ul>
+<li><code>train</code>: A series representing LTD data across various hierarchical levels.</li>
+<li><code>sales</code>: The time series data for sales.</li>
+<li><code>hvi</code>: The time series data for the Home Value Index (HVI).</li>
+<li><code>period</code>: The temporal frequency for generating nested Date variables, such as <code>month</code>, <code>2 months</code>, <code>quarter</code>, etc.</li>
+<li><code>length</code>: The total number of rows in the input data.</li>
+<li><code>fc_range</code>: The forecast range, which may include 12 months for monthly data, or 6 two-month periods for bimonthly data, etc.</li>
+</ul>
+<p>The input data is consolidated into a single dataframe, or <code>tibble</code> object, with an appropriately nested Date variable. This <code>tibble</code> is subsequently transformed into a <code>tsibble</code> object utilizing the <code>as_tsibble()</code> function from the <code>tsibble</code> package. A VAR model is then applied to this <code>tsibble</code> using the <code>VAR(vars(train, sales, hvi))</code> syntax, where parameters such as lag are automatically determined by the function. However, temporal aggregation results in insufficient observations for semi-annual and annual frequencies if the lag exceeds two. To address this limitation, an <code>if</code> condition restricts the chosen lag for these data frequencies to one.</p>
+<p>Post model fitting, forecasts and residuals are computed as standard. Nevertheless, due to the lag configuration, there might be instances of missing residual values. Given that the <code>FoReco</code> package does not support missing values in the residual input matrices, these missing values are substituted with the calculated mean of the residuals. Since the number of these substituted values ranges from one to three, their impact on the reconciled results is anticipated to be minimal.</p>
+<p>Ultimately, the function is structured to output both the mean point forecast and residuals, aggregated into a list format for subsequent extraction.</p>
+</section>
+<section id="vector-error-correction-model-vecm" class="level5">
+<h5 class="anchored" data-anchor-id="vector-error-correction-model-vecm">Vector Error Correction Model (VECM)</h5>
+<p>The VECM fitting function, denoted as <code>vecm_forecast_fun</code>, accepts the same parameters as <code>var_forecast_fun</code> along with an additional <code>lag</code> parameter. This parameter facilitates the selection of varying lag lengths. The procedure for transforming the input data into a <code>tsibble</code> object remains consistent with that of the VAR model.</p>
+<p>A distinct feature that differentiates VECM from VAR is its accommodation for non-stationary variables or those exhibiting cointegration patterns. The Johansen test, executed via the <code>ca.jo()</code> function from the <code>urca</code> package, assesses the presence of cointegration. The <code>K</code> parameter of <code>ca.jo()</code>, which determines the lag order in the VAR model employed within the Johansen procedure, is specified by the <code>lag</code> argument. This parameter can also be chosen using cross-validation to ascertain the optimal value for each temporal frequency or cross-sectional level, employing information criteria such as Akaike (AIC) or Bayesian (BIC).</p>
+<p>Subsequent to the cointegration test, a significance level of 5% helps determine the value of <code>r</code>, representing the number of cointegrating relationships to be included in the VECM model. Should the Johansen test indicate an absence of a cointegration pattern, particularly in annual frequency data due to insufficient observations, a VAR model is utilized instead. If cointegration is confirmed, the VECM fitting function used is <code>vec2var()</code> from the <code>vars</code> package.</p>
+<p>Similar to the VAR model, the VECM procedure also involves the generation of forecasts and residuals. Additionally, it addresses missing residual values caused by lag length, in a manner analogous to the <code>var_forecast_fun</code> procedure. The output of this function comprises a list containing the mean point forecast and residuals.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="reconciliation-process" class="level2">
+<h2 class="anchored" data-anchor-id="reconciliation-process">Reconciliation Process</h2>
+<p>The reconciliation procedure is consistent across ARIMA and VAR/VECM cross-validation models. Initially, forecasts and residuals from all cross-sectional levels and temporal frequencies are amalgamated into <code>base</code> and <code>res</code> datasets. The <code>FoReco</code> package facilitates the reconciliation process, offering integrated solutions for cross-sectional, temporal, and cross-temporal reconciliation.</p>
+<ul>
+<li><strong><code>htsrec()</code></strong>: Implements cross-sectional reconciliation utilizing <code>shr</code>, which denotes the use of a shrunk covariance matrix—specifically MinT-shr.</li>
+<li><strong><code>thfrec()</code></strong>: Facilitates temporal reconciliation employing <code>struc</code> for the computation of structural variances.</li>
+<li><strong><code>octrec()</code></strong>: Conducts optimal cross-temporal reconciliation, using <code>struc</code> to calculate cross-temporal structural variances.</li>
+<li><strong><code>tcsrec()</code></strong>: Executes heuristic first-temporal-then-cross-sectional reconciliation, combining structural variances for temporal aggregation with a bottom-up approach for cross-sectional aggregation.</li>
+</ul>
+<p>The output of this reconciliation process is a matrix where rows represent different cross-sectional levels, and columns span from a 1-step to a 12-step-ahead forecast, reflecting the original scale of land transfer duty (LTD).</p>
+<p>Subsequently, this matrix is integrated into a nested structure within an array corresponding to its designated <code>.id</code> value. This entire forecasting and reconciliation process is then repeated for subsequent folds or <code>.id</code> values.</p>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="model-performance" class="level2">
+<h2 class="anchored" data-anchor-id="model-performance">Model Performance:</h2>
+<p>Presentation of model accuracy and comparison.</p>
+</section>
+<section id="forecast-results" class="level2">
+<h2 class="anchored" data-anchor-id="forecast-results">Forecast Results:</h2>
+<p>Detailed discussion of the forecasted values and their confidence intervals.</p>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<section id="interpretation-of-results" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-of-results">Interpretation of Results:</h2>
+<p>Analysis of what this forecasts mean for DTF.</p>
+</section>
+<section id="limitations-and-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-and-assumptions">Limitations and Assumptions:</h2>
+<p>Any limitations encountered during the forecasting process.</p>
+</section>
+</section>
+<section id="conclusion-and-recommendations" class="level1">
+<h1>Conclusion and Recommendations</h1>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary:</h2>
+<p>Recap the findings and their implications.</p>
+</section>
+<section id="future-work" class="level2">
+<h2 class="anchored" data-anchor-id="future-work">Future Work:</h2>
+<p>Suggestions for improving future forecasts.</p>
+</section>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out numerical variables from train dataset and set it into a new df</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>numerical_dat <span class="ot">&lt;-</span> ltd_unit_ts[, <span class="fu">sapply</span>(ltd_unit_ts, is.numeric)]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty dataframe to store results</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>numerical_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Min =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Quartile_1 =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mean =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Quartile_3 =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Max =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary statistics table for numerical variables</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(numerical_dat)) {</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> numerical_dat[, i]</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate summary statistics using summary()</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  summary_result <span class="ot">&lt;-</span> <span class="fu">summary</span>(x)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define a regular expression pattern to match the numeric value</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="st">"-?</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*"</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a data frame for the current numerical variable</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  result_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">names</span>(x),</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">1</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">1</span>], <span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]],</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quartile_1 =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">2</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">2</span>],<span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]][<span class="dv">2</span>],</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">3</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">3</span>], <span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]],</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">4</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">4</span>], <span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]],</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quartile_3 =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">5</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">5</span>],<span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]][<span class="dv">2</span>],</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">regmatches</span>(summary_result[<span class="dv">6</span>], <span class="fu">gregexpr</span>(pattern, summary_result[<span class="dv">6</span>], <span class="at">perl=</span><span class="cn">TRUE</span>))[[<span class="dv">1</span>]],</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bind the result to the summary dataframe</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  numerical_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(numerical_summary, result_df)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Set row names to be the names of the numerical variables</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(numerical_summary) <span class="ot">&lt;-</span> numerical_summary<span class="sc">$</span>Variable</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>numerical_summary <span class="ot">&lt;-</span> numerical_summary[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a scrollable HTML table</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>html_numerical_table <span class="ot">&lt;-</span> <span class="fu">kable</span>(numerical_summary, <span class="st">"html"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>()</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating scrollable div</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>html_numerical_output <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>  <span class="st">'&lt;div style="max-height: 400px; overflow-y: auto;" id="NumericVar"&gt;'</span>,</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>  <span class="st">'&lt;p&gt;Summary statistics of numerical features&lt;/p&gt;'</span>,</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  html_numerical_table,</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  <span class="st">'&lt;/div&gt;'</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(html_numerical_output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="NumericVar" style="max-height: 400px; overflow-y: auto;">
+<p>
+Summary statistics of numerical features
+</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Min
+</th>
+<th style="text-align:left;">
+Quartile_1
+</th>
+<th style="text-align:left;">
+Median
+</th>
+<th style="text-align:left;">
+Mean
+</th>
+<th style="text-align:left;">
+Quartile_3
+</th>
+<th style="text-align:left;">
+Max
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ltd_nonres
+</td>
+<td style="text-align:left;">
+42909678
+</td>
+<td style="text-align:left;">
+76682419
+</td>
+<td style="text-align:left;">
+97505851
+</td>
+<td style="text-align:left;">
+109079081
+</td>
+<td style="text-align:left;">
+135555977
+</td>
+<td style="text-align:left;">
+357222264
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ltd_comm
+</td>
+<td style="text-align:left;">
+22106375
+</td>
+<td style="text-align:left;">
+42135408
+</td>
+<td style="text-align:left;">
+54959990
+</td>
+<td style="text-align:left;">
+59467363
+</td>
+<td style="text-align:left;">
+70539203
+</td>
+<td style="text-align:left;">
+132405000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ltd_ind
+</td>
+<td style="text-align:left;">
+5229382
+</td>
+<td style="text-align:left;">
+17094782
+</td>
+<td style="text-align:left;">
+24748954
+</td>
+<td style="text-align:left;">
+31256622
+</td>
+<td style="text-align:left;">
+37482400
+</td>
+<td style="text-align:left;">
+214372653
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ltd_other
+</td>
+<td style="text-align:left;">
+3325394
+</td>
+<td style="text-align:left;">
+9464705
+</td>
+<td style="text-align:left;">
+14776865
+</td>
+<td style="text-align:left;">
+18252446
+</td>
+<td style="text-align:left;">
+24363583
+</td>
+<td style="text-align:left;">
+74469171
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ltd_res
+</td>
+<td style="text-align:left;">
+238100812
+</td>
+<td style="text-align:left;">
+346798966
+</td>
+<td style="text-align:left;">
+406948825
+</td>
+<td style="text-align:left;">
+433146031
+</td>
+<td style="text-align:left;">
+489072115
+</td>
+<td style="text-align:left;">
+761393438
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sales
+</td>
+<td style="text-align:left;">
+4629
+</td>
+<td style="text-align:left;">
+8414
+</td>
+<td style="text-align:left;">
+9697
+</td>
+<td style="text-align:left;">
+9680
+</td>
+<td style="text-align:left;">
+11158
+</td>
+<td style="text-align:left;">
+15177
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hvi
+</td>
+<td style="text-align:left;">
+106.2
+</td>
+<td style="text-align:left;">
+132.5
+</td>
+<td style="text-align:left;">
+155.0
+</td>
+<td style="text-align:left;">
+152.9
+</td>
+<td style="text-align:left;">
+178.4
+</td>
+<td style="text-align:left;">
+192.4
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<section id="bibliography" class="level2">
+<h2 class="anchored" data-anchor-id="bibliography">Bibliography:</h2>
+<p>Cite all data sources, literature, and software used in the report the insights generated by your work.</p>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2021) Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Accessed on <current date="">.</current></p>
+<p>https://treasury.gov.au/sites/default/files/2022-03/258735_real_estate_institute_of_australia.pdf</p>
+<p>https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

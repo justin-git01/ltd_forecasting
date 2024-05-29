@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  15 MAY 2024 15:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.3)  28 MAY 2024 13:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1057,27 +1057,27 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-<AACSB.png, id=152, 1204.5pt x 406.51875pt>
+<AACSB.png, id=132, 1204.5pt x 406.51875pt>
 File: AACSB.png Graphic file (type png)
 <use AACSB.png>
 Package pdftex.def Info: AACSB.png  used on input line 294.
 (pdftex.def)             Requested size: 50.57945pt x 17.07182pt.
-<EQUIS.png, id=153, 619.56468pt x 380.92313pt>
+<EQUIS.png, id=133, 619.56468pt x 380.92313pt>
 File: EQUIS.png Graphic file (type png)
 <use EQUIS.png>
 Package pdftex.def Info: EQUIS.png  used on input line 294.
 (pdftex.def)             Requested size: 27.76575pt x 17.07182pt.
-<AMBA.png, id=154, 276.03125pt x 83.31125pt>
+<AMBA.png, id=134, 276.03125pt x 83.31125pt>
 File: AMBA.png Graphic file (type png)
 <use AMBA.png>
 Package pdftex.def Info: AMBA.png  used on input line 294.
 (pdftex.def)             Requested size: 56.5615pt x 17.07182pt.
-<monash2.png, id=156, 2730.2pt x 791.95876pt>
+<monash2.png, id=136, 2730.2pt x 791.95876pt>
 File: monash2.png Graphic file (type png)
 <use monash2.png>
 Package pdftex.def Info: monash2.png  used on input line 294.
 (pdftex.def)             Requested size: 170.71652pt x 49.50938pt.
-<MBSportrait.jpg, id=157, 621.32124pt x 503.8825pt>
+<MBSportrait.jpg, id=137, 621.32124pt x 503.8825pt>
 File: MBSportrait.jpg Graphic file (type jpg)
 <use MBSportrait.jpg>
 Package pdftex.def Info: MBSportrait.jpg  used on input line 294.
@@ -1330,104 +1330,114 @@ LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
 \tf@toc=\write5
 \openout5 = `Final_Report.toc'.
 
-LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 305.
+LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
+(Font)              scaled to size 9.24173pt on input line 300.
+LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 310.
 (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/ts1mdbch.fd
 File: ts1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for TS1/mdbch.
 )
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 10.51207pt on input line 305.
-[3] [4] [5]
-LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
-(Font)              scaled to size 9.24173pt on input line 405.
-<Final_Report_files/figure-latex/trend-1.pdf, id=238, 289.08pt x 216.81pt>
-File: Final_Report_files/figure-latex/trend-1.pdf Graphic file (type pdf)
-<use Final_Report_files/figure-latex/trend-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/trend-1.pdf  used on input line 411.
+(Font)              scaled to size 10.51207pt on input line 310.
+<Final_Report_files/figure-latex/taxrevenue-1.pdf, id=188, 289.08pt x 216.81pt>
+File: Final_Report_files/figure-latex/taxrevenue-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/taxrevenue-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/taxrevenue-1.pdf  used on input line 323.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
-(Font)              scaled to size 10.51207pt on input line 415.
-LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 9.24173pt on input line 418.
-<Final_Report_files/figure-latex/sspattern-1.pdf, id=240, 289.08pt x 216.81pt>
+(Font)              scaled to size 10.51207pt on input line 327.
+[3] [4 <./Final_Report_files/figure-latex/taxrevenue-1.pdf>] [5]
+LaTeX Font Info:    Font shape `T1/fvs/b/n' will be
+(Font)              scaled to size 9.24173pt on input line 411.
+<Final_Report_files/figure-latex/trend-1.pdf, id=221, 289.08pt x 216.81pt>
+File: Final_Report_files/figure-latex/trend-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/trend-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/trend-1.pdf  used on input line 417.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+[6]
+<Final_Report_files/figure-latex/sspattern-1.pdf, id=230, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/sspattern-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/sspattern-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/sspattern-1.pdf  used on input line 424.
+Package pdftex.def Info: Final_Report_files/figure-latex/sspattern-1.pdf  used on input line 430.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-[6 <./Final_Report_files/figure-latex/trend-1.pdf>]
-<Final_Report_files/figure-latex/subseries-1.pdf, id=257, 289.08pt x 216.81pt>
+<Final_Report_files/figure-latex/subseries-1.pdf, id=232, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/subseries-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/subseries-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/subseries-1.pdf  used on input line 435.
+Package pdftex.def Info: Final_Report_files/figure-latex/subseries-1.pdf  used on input line 441.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-<Final_Report_files/figure-latex/dcmp-1.pdf, id=260, 289.08pt x 216.81pt>
+[7 <./Final_Report_files/figure-latex/trend-1.pdf> <./Final_Report_files/figure-latex/sspattern-1.pdf>]
+<Final_Report_files/figure-latex/dcmp-1.pdf, id=254, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/dcmp-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/dcmp-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/dcmp-1.pdf  used on input line 448.
+Package pdftex.def Info: Final_Report_files/figure-latex/dcmp-1.pdf  used on input line 454.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-[7 <./Final_Report_files/figure-latex/sspattern-1.pdf> <./Final_Report_files/figure-latex/subseries-1.pdf>]
-<Final_Report_files/figure-latex/ssadj-1.pdf, id=279, 289.08pt x 216.81pt>
+<Final_Report_files/figure-latex/ssadj-1.pdf, id=255, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/ssadj-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/ssadj-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/ssadj-1.pdf  used on input line 457.
+Package pdftex.def Info: Final_Report_files/figure-latex/ssadj-1.pdf  used on input line 463.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-[8 <./Final_Report_files/figure-latex/dcmp-1.pdf> <./Final_Report_files/figure-latex/ssadj-1.pdf>]
-<Final_Report_files/figure-latex/corrplot-1.pdf, id=300, 289.08pt x 216.81pt>
+[8 <./Final_Report_files/figure-latex/subseries-1.pdf> <./Final_Report_files/figure-latex/dcmp-1.pdf>]
+<Final_Report_files/figure-latex/corrplot-1.pdf, id=276, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/corrplot-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/corrplot-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/corrplot-1.pdf  used on input line 478.
+Package pdftex.def Info: Final_Report_files/figure-latex/corrplot-1.pdf  used on input line 484.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-<Final_Report_files/figure-latex/longtermlog-1.pdf, id=302, 289.08pt x 216.81pt>
+[9 <./Final_Report_files/figure-latex/ssadj-1.pdf>]
+<Final_Report_files/figure-latex/longtermlog-1.pdf, id=290, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/longtermlog-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/longtermlog-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/longtermlog-1.pdf  used on input line 489.
+Package pdftex.def Info: Final_Report_files/figure-latex/longtermlog-1.pdf  used on input line 495.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-[9 <./Final_Report_files/figure-latex/corrplot-1.pdf> <./Final_Report_files/figure-latex/longtermlog-1.pdf>]
-<Final_Report_files/figure-latex/s_plot-1.pdf, id=324, 289.08pt x 216.81pt>
+[10 <./Final_Report_files/figure-latex/corrplot-1.pdf> <./Final_Report_files/figure-latex/longtermlog-1.pdf>]
+<Final_Report_files/figure-latex/s_plot-1.pdf, id=311, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/s_plot-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/s_plot-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/s_plot-1.pdf  used on input line 507.
+Package pdftex.def Info: Final_Report_files/figure-latex/s_plot-1.pdf  used on input line 513.
 (pdftex.def)             Requested size: 227.62204pt x 170.7156pt.
-[10 <./Final_Report_files/figure-latex/s_plot-1.pdf>]
+[11 <./Final_Report_files/figure-latex/s_plot-1.pdf>]
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 538.
+(Font)              scaled to size 7.68005pt on input line 544.
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 5.76004pt on input line 538.
-[11] [12] [13] [14] [15]
+(Font)              scaled to size 5.76004pt on input line 544.
+[12] [13] [14] [15] [16]
 LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
-(Font)              scaled to size 9.24173pt on input line 671.
-[16]
-Overfull \hbox (15.56905pt too wide) in paragraph at lines 742--749
+(Font)              scaled to size 9.24173pt on input line 677.
+[17]
+Overfull \hbox (15.56905pt too wide) in paragraph at lines 748--755
  [][] 
  []
 
-[17]
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 805--806
+[][][]$\T1/mdbch/m/n/10.95 (+20) https : / / www . treasury . nsw . gov . au / sites / default / ^^\les / 2021 -[] 06 / the _ economic _ costs _ of _ transfer _
+ []
 
-LaTeX Warning: Empty bibliography on input line 797.
 
-[18] (./Final_Report.aux)
+LaTeX Warning: Empty bibliography on input line 807.
+
+[19] (./Final_Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
  ***********
 Package rerunfilecheck Info: File `Final_Report.out' has not changed.
-(rerunfilecheck)             Checksum: C46CF1365912E8E664B89480883941AD;6110.
+(rerunfilecheck)             Checksum: 941E6AFDDE0699E2A89704BF71E91B6A;5415.
 Package logreq Info: Writing requests to 'Final_Report.run.xml'.
 \openout1 = `Final_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26610 strings out of 476010
- 460107 string characters out of 5790271
+ 26607 strings out of 476010
+ 460441 string characters out of 5790271
  1942751 words of memory out of 5000000
  47903 multiletter control sequences out of 15000+600000
  682457 words of font info for 411 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,14n,93p,1009b,854s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/bera/fvsr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb>
-Output written on Final_Report.pdf (18 pages, 609783 bytes).
+Output written on Final_Report.pdf (19 pages, 617828 bytes).
 PDF statistics:
- 457 PDF objects out of 1000 (max. 8388607)
- 383 compressed objects within 4 object streams
- 82 named destinations out of 1000 (max. 500000)
- 98666 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 448 PDF objects out of 1000 (max. 8388607)
+ 371 compressed objects within 4 object streams
+ 79 named destinations out of 1000 (max. 500000)
+ 98631 words of extra memory for PDF output out of 106986 (max. 10000000)
 

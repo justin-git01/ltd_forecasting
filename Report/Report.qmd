@@ -1,0 +1,804 @@
+---
+title: "Forecast Reconciliation for Land Transfer Duty"
+author:
+- name: Hoang Do
+email: vdoo0002@student.monash.edu
+organization: The Department of Treasury and Finance
+bibliography: references.bib
+format: report-pdf
+output:
+  monash::report:
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+    number_sections: yes
+    citation_package: biblatex
+    toc: true
+    extra_dependencies: ["float"]
+---
+
+
+```{r, warning=F, message= F, include=F}
+# Load libraries
+library(FoReco)
+library(tidyverse)
+library(readxl)
+library(fpp3)
+library(urca)
+library(plotly)
+library(knitr)
+library(here)
+library(tseries)
+library(ggplot2)
+
+# Load UDF
+source(here::here("Function/var_function.R"))
+source(here::here("Function/vecm_function.R"))
+source(here::here("Function/adjust_series_fun.R"))
+source(here::here("Function/test_extract_fun.R"))
+
+# Load RDA file
+load(here::here("data/dtf_mape.RData"))
+load(here::here("data/dtf_rmse.RData"))
+
+```
+
+```{r, warning=F, message= F}
+# Load ltd aggregate date
+ltd_agg <- read_excel(here("data/LTD_new.xlsx"), sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI) |>
+  dplyr::select(c(Date, ltd, sales, hvi))
+
+# Load ltd unit data and join with aggregate data
+ltd_unit <- read_excel(here("data/LTD_new.xlsx"), sheet = 2) |>
+  rename(Date = ...1) |>
+  dplyr::select(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
+  left_join(ltd_agg, by = c("Date")) |>
+  dplyr::select(-ltd)
+```
+
+
+```{r, warning=F, message= F}
+# Tax revenue data 
+tax_rev <- read_excel(here::here("data/tax_rev.xlsx"), sheet = 2) |>
+  rename(Date = ...1)|>
+  mutate(reliance = `Reliance on stamp duty` *100 ) |>
+  dplyr::select(Date, reliance) |>
+  mutate(Quarter = yearquarter(Date)) |>
+  dplyr::select(-Date)  |>
+  as_tsibble(index = Quarter) |>
+  relocate(Quarter)
+```
+
+# Abstract
+- Overview: Briefly summarize the purpose, methodology, key findings, and implications of the forecast.
+- Key Recommendations: High-level actionable recommendations based on the forecast results.
+
+# Introduction and background
+
+The property sector plays a pivotal role in Australia's economy, accounting for 1 in 4 jobs indirectly and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion (**Real Estate Institute of Australia, 2021**). Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A literature published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (**Malakellis & Warlters, 2021**).
+
+Land transfer duty is a tax applied to the "dutiable value" of a property being purchased or acquired, whether it is a first home or an investment property. The dutiable value is determined as either the property's purchase price or its market value, whichever is greater. Several factors influence the amount of duty paid, including the buyer's intended use of the property, foreign purchaser status, and eligibility for exemptions.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-taxrevenue
+#| fig-cap: "Dependence of Victoria's Tax Revenue on Land Transfer Duty"
+#| fig-height: 3
+#| fig-width: 4
+tax_rev |> 
+autoplot(reliance, color = "blue") +
+geom_hline(yintercept = mean(tax_rev$reliance), color = "red") +
+labs(x = "Date", y = "Percentage", title = " ") +
+theme_minimal()
+```
+
+Additionally, Victoria’s tax revenue heavily relies on land transfer duty. As can be seen from Figure @fig-taxrevenue, over the past 20 years, on average, land transfer duty accounts for **27%** of Victoria's tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty is removed, the government will need to introduce one or more new taxes to generate equivalent revenue.
+
+To balance the need for sufficient tax income without discouraging property transactions, *the Department of Treasury and Finance* (**DTF**) has been closely working with the government on policy adjustments, subsidies, exemptions, and restrictions. Accurate forecasts of land transfer duty, both short-term (*1 to 3 months*) and long-term (*12 months*), are essential for these decisions. 
+
+This report introduces a new forecasting methodology aimed at improving the accuracy of these predictions. By employing forecast reconciliation and combining cross-sectional and temporal hierarchies, we aim to provide the *Department of Treasury and Finance* with more reliable forecasts to inform policy-making.
+
+# Data Description
+## Data Source
+Detail the sources of the LTD data, including collection methods, frequency, and historical range.
+
+## Variables Description
+Describe each variable used in the analysis, including dependent and independent variables.
+
+# Initial Data Analysis (IDA)
+## Data Cleaning and Manipulation
+
+## Descriptive Statistics
+
+Based on summary statistics results from @tbl-sumstat, 
+
+1. **Land Transfer Duty Overview**:
+    - The total land transfer duty (**LTD**) reported has varied considerably over the past decade, ranging from approximately 286.2 million to over 1.013 billion over past . This variability indicates significant fluctuations in the real estate market activity and property value changes over the years.
+    - Residential transactions dominate the LTD collection, contributing between 238.1 million and 761.4 million, representing the largest portion of land transfer duty. This suggests that residential real estate remains a vital part of the market, possibly reflecting trends in housing demand and price movements.
+    - Non-residential transactions, though smaller than residential, still make a substantial contribution, with LTD from this sector ranging from about 42.9 million to 357.2 million. Within this, the commercial sector is the most significant, followed by industrial and other sectors (such as agricultural).
+
+2. **Detailed Sector Analysis**:
+    - **Commercial Sector**: With LTD ranging from 22.1 million to 132.4 million, this sector shows substantial activity, possibly reflecting economic growth, investment trends, and business expansions.
+    - **Industrial Sector**: This sector has collected LTD between 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods.
+    - **Other Sectors**: Including smaller sectors like agricultural, contributions range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.
+
+3. **Economic Indicators**:
+    - **Sales**: The volume of sales has fluctuated from 4,629 to 15,177, indicating periods of both high and low market activity. 
+    
+    - **Home Value Index (HVI)**: The HVI has ranged from 106.2 to 192.4 point, which is indicative of significant changes in home values. A higher HVI suggests increasing property values, which could contribute to higher LTD collections.
+
+
+# Exploratory Data Analysis (EDA)
+## Time series analysis
+
+```{r, message = FALSE, warning= FALSE}
+ltd_agg_ts <- ltd_agg |>
+  mutate(Month = yearmonth(Date)) |>
+  select(-Date) |>
+  as_tsibble(index = Month) |>
+  relocate(Month)
+
+ltd_unit_ts <- ltd_unit %>%
+  mutate(Month = yearmonth(Date)) %>%
+  select(-Date) %>%
+  as_tsibble(index = Month) %>%
+  relocate(Month)
+```
+
+### Total Land Transfer Duty
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-trend
+#| fig-cap: "Time plot of Land Transfer Duty in Victoria over time"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+
+ltd_unit_ts |>
+  mutate(ltd_tot_inM = ltd_total/1000000) |>
+autoplot(ltd_tot_inM, color = "red") +
+  labs(title = " ", x = "Date", y = "Amount (in $m)") +
+  theme_minimal()
+```
+
+@fig-trend demonstrates an upward, non-linear trend, showing that the value of land transfer duty has generally increased over the ten-year period. Additionally, there is a noticeable increase in variability, particularly in recent years, indicating more pronounced fluctuations in the values. This increasing volatility suggests that a transformation of the data may be necessary to better analyze and model these trends.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-sspattern
+#| fig-cap: "Seasonal trend of Land Transfer Duty in Victoria"
+#| fig-align: 'center'
+
+ltd_unit_ts |>
+  mutate(ltd_tot_inM = ltd_total/1000000) |>
+  gg_season(ltd_tot_inM, labels = "both") +
+  theme(legend.position = "none") +
+  labs(x = "Date", y = "Amount (in $m)", title= " ")+
+  theme_minimal()
+```
+
+Considering the seasonal patterns of land transfer duty, @fig-sspattern reveals that, apart from slight increases in June and December, there is no clear indication of a prominent seasonal pattern.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-dcmp
+#| fig-cap: "Decomposition of log of Land Transfer Duty in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+#| 
+log_ltd_ts <- ltd_unit_ts |>
+  mutate(log_ltd = log(ltd_total))
+
+dcmp <- log_ltd_ts |>
+  model(stl = STL(log_ltd))
+
+## Plot all components
+components(dcmp) |>
+  autoplot() +
+  theme_minimal()
+```
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-ssadj
+#| fig-cap: "Seasonally adjusted of log Land Transfer Duty in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+components(dcmp) |>
+  as_tsibble() |>
+  autoplot(log_ltd, colour = "gray") +
+  geom_line(aes(y=season_adjust), colour = "#0072B2") +
+  labs(x = "Date", y = "Amount", title = " ") +
+  theme_minimal()
+```
+
+@fig-dcmp shows that there is a seasonal pattern for log transformed land transfer duty but the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.
+
+Moreover, @fig-dcmp demonstrates that after applying a log transformation, the variability becomes more consistent, although some heterogeneity still remains.
+
+The grey line in @fig-ssadj represents the original log-transformed total land transfer duty, while the blue line represents the seasonally adjusted log-transformed total land transfer duty. @fig-ssadj suggests that by adjusting for the seasonal pattern, some local peaks and troughs have been smoothed out, resulting in a more consistent series.
+
+### Sales
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-salestrend
+#| fig-cap: "Time plot of Sales in Victoria over time"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+ltd_unit_ts |>
+  autoplot(sales, color = "red") +
+  labs(title = " ", x = "Date", y = "Unit") +
+  theme_minimal()
+```
+
+@fig-salestrend illustrates a non-linear trend, showing fluctuations in sales units over the ten-year period from January 2014 to January 2024. The plot exhibits considerable variability with both high and low peaks scattered throughout the timeline. The values range from approximately 5000 to over 15000, indicating significant changes in sales units.
+
+In recent years, there is a noticeable increase in variability, particularly around 2020 and onwards. This increasing volatility indicates that a transformation of the data may be necessary to better analyze and model these trends.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-salessspattern
+#| fig-cap: "Seasonal trend of Sales in Victoria"
+#| fig-align: 'center'
+
+ltd_unit_ts |>
+  gg_season(sales, labels = "both") +
+  theme(legend.position = "none") +
+  labs(x = "Date", y = "Amount", title= " ") +
+  theme(
+    axis.text.y = element_text(size = 10, hjust = 1),
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5),
+    legend.position = "right"
+  ) +
+  theme_minimal()
+```
+
+@fig-salessspattern depicts a noticeable peaks in the month of March, indicating higher sales during this month @fig-salessspattern also shows variability in the amount collected each year, with some years exhibiting more pronounced peaks and troughs. 
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-salesdcmp
+#| fig-cap: "Decomposition of log of sales in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+log_ltd_ts <- ltd_unit_ts |>
+  mutate(log_sales = log(sales))
+
+dcmp <- log_ltd_ts |>
+  model(stl = STL(log_sales))
+
+## Plot all components
+components(dcmp) |>
+  autoplot() +
+  theme_minimal()
+```
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-salesssadj
+#| fig-cap: "Seasonally adjusted of log of sales in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+components(dcmp) |>
+  as_tsibble() |>
+  autoplot(log_sales, colour = "gray") +
+  geom_line(aes(y=season_adjust), colour = "#0072B2") +
+  labs(x = "Date", y = "Amount", title = " ") +
+  theme_minimal()
+```
+
+@fig-salesdcmp indicates a seasonal pattern for log-transformed sales. However, the large grey bar in the seasonal panel demonstrates that the variation in the seasonal component is the smallest compared to the overall variation in the data.
+
+Moreover, @fig-salesdcmp demonstrates that after applying a log transformation, the variability becomes more consistent, although some heterogeneity still remains.
+
+The grey line in @fig-salesssadj represents the original log-transformed sales, while the blue line represents the seasonally adjusted log-transformed sales. @fig-salesssadj suggests that there is a huge difference between seasonally adjusted sales and original sales, especially in periodic drops.
+
+
+### Home Value Index
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-hvitrend
+#| fig-cap: "Time plot of Home Value Index in Victoria over time"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+ltd_unit_ts |>
+  autoplot(hvi, color = "red") +
+  labs(title = " ", x = "Date", y = "Index Point") +
+  theme_minimal()
+```
+
+@fig-hvitrend illustrates an increasing trend, with some considerable variability throughout the timeline. 
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-hvisspattern
+#| fig-cap: "Seasonal trend of Home Value Index in Victoria"
+#| fig-align: 'center'
+
+ltd_unit_ts |>
+  gg_season(hvi, labels = "both") +
+  theme(legend.position = "none") +
+  labs(x = "Date", y = "Index Point", title= " ") +
+  theme(
+    axis.text.y = element_text(size = 10, hjust = 1),
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5),
+    legend.position = "right"
+  ) +
+  theme_minimal()
+```
+
+@fig-hvisspattern depicts no clear sign of seasonal pattern in home value index, suggesting a stable index point maintained throughout the period.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-hvidcmp
+#| fig-cap: "Decomposition of log of home value index in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+log_ltd_ts <- ltd_unit_ts |>
+  mutate(log_hvi = log(hvi))
+
+dcmp <- log_ltd_ts |>
+  model(stl = STL(log_hvi))
+
+## Plot all components
+components(dcmp) |>
+  autoplot() +
+  theme_minimal()
+```
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-hvissadj
+#| fig-cap: "Seasonally adjusted of log of home value index in Victoria"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+components(dcmp) |>
+  as_tsibble() |>
+  autoplot(log_hvi, colour = "gray") +
+  geom_line(aes(y=season_adjust), colour = "#0072B2") +
+  labs(x = "Date", y = "Amount", title = " ") +
+  theme_minimal()
+```
+
+@fig-hvidcmp indicates a seasonal pattern, but the large grey bar in the seasonal panel shows that the variation in the seasonal component is minimal, similar to the pattern observed in sales and land transfer duty.
+
+In @fig-hvissadj, the blue and grey lines completely overlap, indicating that there is no seasonal pattern in the home value index.
+
+
+## Cointegration Analysis {#sec-coint}
+
+Based on the observations from @fig-trend, which shows the trend and increasing variance pattern in land transfer duty, @fig-salestrend, which exhibits an increasing pattern and a somewhat seasonal pattern in sales, and @fig-hvitrend, which illustrates the trend in the home value index, we can conclude that these three series are not stationary.
+
+Furthermore, to justify the use of the Vector Error Correction Model (VECM) by the *Department of Treasury and Finance*, it is essential to test for the presence of cointegration patterns (or long-term equilibrium relationships) among these three series.
+
+The Johansen procedure will be employed to test for cointegration between log transformed of  land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
+
+```{r, echo = F, warning = F, message = F}
+jtest <- ca.jo(log(ltd_unit_ts[,c(2,8,9)]), type="trace", K=3, ecdet="none", spec="longrun")
+
+jtest_sum <- summary(jtest)
+
+jtest_sum
+```
+
+The test results, using 3 lags as chosen by the DTF, allow us to reject the null hypothesis that $r \leq 1$, yet we fail to reject the null hypothesis that $r \leq 2$ at 5% level of significance. This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
+
+Furthermore, a rank of 2 implies that we need a combination of at least two time series to form a stationary series.
+
+To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r jtest_sum@lambda[1]`. This corresponds to the eigenvectors under the column `ltd_total.l3`, which is approximately equal to (`r jtest_sum@V[,1]`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-splot
+#| fig-cap: "Stationary series formed via a linear combination of 3 time series"
+#| fig-align: 'center'
+#| fig-height: 3
+#| fig-width: 4
+
+eigenvectors <- as.numeric(jtest_sum@V[,1])
+
+s <- ltd_unit_ts |>
+mutate(log_ltd = log(ltd_total), 
+       log_sales = log(sales),
+       log_hvi = log(hvi)) |> 
+dplyr::select(c(log_ltd, log_sales, log_hvi)) |> 
+summarise(s1 = log_ltd*eigenvectors[1] + eigenvectors[2]*log_sales + eigenvectors[3]*log_hvi) 
+
+df <- data.frame(Date = s$Month, Value = as.numeric(unlist(s[,2])))
+
+ggplot(df, aes(x = Date, y = Value)) + 
+  geom_line(color = "red") + 
+  labs(y = "Value", x = "Date", title = " ") +
+theme_minimal()
+
+```
+
+As shown in @fig-splot, the linear combination appears to be more stationary, although there remains a slight indication of varying variances over time.
+
+We can further evaluate this by applying the Augmented Dickey-Fuller (ADF) test:
+
+```{r}
+linear_comb <- as.numeric(unlist(s[,2]))
+adf.test(linear_comb)
+```
+
+The ADF test statistic indicates that we can reject the null hypothesis of a unit root, providing evidence of a stationary series formed from the linear combination at the 10% level of significance. Therefore, we can conclude that it is appropriate to fit a Vector Error Correction Model (VECM) to these three time series.
+
+
+# Methodology
+## Cross-sectional, temporal and cross-temporal hierarchies
+
+Upon analyzing the data characteristics and the disaggregation of LTD, it becomes evident that a three-level hierarchical structure can be established. There is utility in generating forecasts at various levels of aggregation, driven by diverse reasons and objectives. For example, each level of aggregation may exhibit distinct characteristics; for instance, transactions involving residential properties might vary from those involving non-residential properties due to differences in market dynamics or market size for each property type.
+
+In this context, total land transfer duty is divided into two categories: residential and non-residential properties. Non-residential properties are further disaggregated into three sub-categories: commercial, industrial, and other, which predominantly includes agricultural properties. In addition to the total land transfer duty for all property types, the government and the *Department of Treasury and Finance* may also be interested in forecasts for each category and sub-category. @fig-crosssec illustrates the cross-sectional hierarchical structure of land transfer duty as discussed.
+
+![Cross-sectional hierarchy](image/cross_sec.png){#fig-crosssec fig-alt="Cross-sectional hierarchy" fig-align="center" width=65%} 
+
+Given that this is a straightforward cross-sectional hierarchical structure, we will also consider temporal hierarchies to further enhance forecast accuracy. Land transfer duty is collected monthly, and forecasts can be generated at bi-monthly, quarterly, four-monthly, semi-annual, and annual frequencies. Various temporal hierarchies can be constructed with monthly land transfer duty treated as the bottom level. @fig-temp presents an example of temporal hierarchies with monthly land transfer duty as the bottom level.
+
+![Temporal hierarchy](image/temp.png){#fig-temp fig-align="center"}
+
+Although forecasts using cross-sectional and temporal hierarchies have demonstrated substantial improvements (**Kourentzes & Athanasopoulos, 2019**), these approaches have typically been used separately. By combining cross-sectional hierarchies and temporal hierarchies, referred to as cross-temporal hierarchies, forecast accuracy can be further improved. @fig-crosstemp from **Kourentzes and Athanasopoulos, 2019** shows an example of a cross-temporal hierarchical structure.
+
+![Cross-temporal hierarchy](image/cross-temporal.png){#fig-crosstemp fig-align="center"}
+
+## Forecast reconciliation
+
+From the cross-temporal hierarchies, forecasts can be produced at all levels for every nodes. And in an ideal scenario, forecasts from different levels of aggregation could seamlessly sum up to the top level. However, practical implementation often reveals incoherent among independently produced forecasts. Consequently, it becomes vital for forecasts to align and aggregate according to the hierarchical structure organizing the array of time series. As a solution to this challenge, forecast reconciliation emerges as one of the most effective methodologies employed today.
+
+We first consider cross-sectional forecast reconciliation. Recall from @fig-crosssec, we can construct this hierarchical structure for LTD in a matrix form like this:
+
+$$
+\begin{bmatrix}
+  \text{Total}_{t} \\
+  \text{Non-residential}_{t} \\
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  1 & 1 & 1 & 1 \\
+  0 & 1 & 1 & 1 \\
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+\end{bmatrix}
+$$
+
+or in a more compact notation:
+
+$$
+\textbf{y}_{t} = \textbf{S}\textbf{b}_{t},
+$$
+
+where S represents the summing matrix defining how bottom-level series are aggregated.
+
+Then for any set of base forecast, denoted as $\bf{\hat{y}}_{h}$, where h is the forecast horizon, all coherent forecasting approaches, denoted as $\bf{\tilde{y}}_{h}$, can be represented as:
+
+$$
+\bf{\tilde{y}}_{h} = \bf{SG}\hat{\bf{y}}_{h},
+$$
+where $\bf{G}$ is a matrix that maps the base forecasts into the bottom level (**Hyndman & Athanasopoulos, 2021**).
+
+The equation shows that pre-multiplying any set of base forecasts with $\bf{SG}$ will return a set of coherent forecasts. So the idea is to find that matrix $\bf{G}$ in such a way that it minimises the variance between your reconciled forecast and your original forecast
+
+Within the domain of hierarchical time series forecasting, there are three traditional single level approaches for generating forecasts for hierarchical time series. The first, known as the *bottom-up* approach, initiates by producing forecasts for each series at the lowest level and subsequently aggregates these to generate forecasts for the upper levels of the hierarchy. For this approach, $\bf{G}$ can be defined as:
+
+<!-- $$ -->
+<!-- \bf{G} -->
+<!-- = -->
+<!-- \begin{bmatrix} -->
+<!--   0 & 0 & 1 & 0 & 0 & 0 \\ -->
+<!--   0 & 0 & 0 & 1 & 0 & 0 \\ -->
+<!--   0 & 0 & 0 & 0 & 1 & 0 \\ -->
+<!--   0 & 0 & 0 & 0 & 0 & 1 \\ -->
+<!-- \end{bmatrix} -->
+
+<!-- $$ -->
+where the first 2 columns zero out the base forecast of the series above the bottom level. 
+
+Conversely, the *top-down* approach starts with a forecast at the highest level, which is then disaggregated to lower levels using predetermined proportions—typically based on historical data distributions (**Gross & Sohl, 1990**). For this approach, $\bf{G}$ can be defined as:
+
+<!-- $$ -->
+<!-- \bf{G} -->
+<!-- = -->
+<!-- \begin{bmatrix} -->
+<!--   \text{p}_{1} & 0 & 0 & 0 & 0 & 0 \\ -->
+<!--   \text{p}_{2} & 0 & 0 & 0 & 0 & 0 \\ -->
+<!--   \text{p}_{3} & 0 & 0 & 0 & 0 & 0 \\ -->
+<!--   \text{p}_{4} & 0 & 0 & 0 & 0 & 0 \\ -->
+<!-- \end{bmatrix} -->
+
+<!-- $$ -->
+where the first column includes the set of proportions that distribute the base forecasts of the top level to the bottom level
+
+Lastly, the *middle-out* approach is a combination of both the bottom-up and top-down methods. 
+However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, **Wickramasuriya et al., 2019** introduced the *MinT* (Minimum Trace) optimal reconciliation methodology, which devises a **G** matrix aimed at minimizing the total forecast variance within the coherent forecast set.
+
+**Wickramasuriya et al., 2019** show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
+
+$$
+\textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'} ,
+$$
+
+where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
+
+**Wickramasuriya et al., 2019** also show that: 
+
+$$
+\textbf{G} = (\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1},
+$$
+
+minimises the trace of $\textbf{V}_{h}$ subject to **S** **G** **S** = **S**
+
+Therefore, the optimally reconciled forecasts are given by:
+
+$$
+\bf{\tilde{y}}_{h} = \textbf{S}(\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1}\bf{\hat{y}}_{h}
+$$
+which refers as the **MinT**
+
+Now, a challenge with G is that it requires an estimation of $\textbf{W}_{h}$, the forecast error variance of h-step-ahead base forecasts. There are four simplifying approximations in place that have been shown to work well:
+
+1. **OLS (Hyndman et al., 2011)**: 
+    $\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$ for all h, where $\text{k}_{h} > 0$ 
+
+2. $\bf{WLS}_{S}$  **(Athanasopoulos et al. 2017)**:
+    $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$ for all h, where $\text{k}_{h} > 0$, $\mathbf{\Lambda} = diag(\textbf{S1})$, and $\bf{1}$ is  unit vector of dimension $\it{m}$ (the number of bottom-level series)
+    
+3. $\bf{WLS}_{V}$ **(Hyndman et al. 2016)**: 
+    $\mathbf{W}_{h} = \text{k}_{h}\text{diag(}\mathbf{\hat{W}}_{1}\text{)}$ for all h, where $\text{k}_{h} > 0$,
+
+$$
+\mathbf{\hat{W}}_{1} = \frac{1}{T}\sum_{t=1}^{T}\textbf{e}_{t}\textbf{e'}_{t},
+$$
+and $\textbf{e}_{t}$ is an $\it{n}$-dimensional vector of residuals of the models that generated the base forecasts stacked in the same order as the data.
+
+4. $\bf{MinT}_{S}$ **(Wickramasuriya et al., 2019)**: 
+  $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\hat{W}^{*}}_{1, D}$ for all h, where $\text{k}_{h} > 0$, and $\mathbf{\hat{W}^{*}}_{1, D} = \mathit{\lambda}\mathbf{\hat{W}^{*}}_{1, D} + \text{(1-} \mathit{\lambda})\mathbf{\hat{W}}_{1}$ is a shrinkage estimator with diagonal target $\mathbf{\hat{W}^{*}}_{1, D}$, a diagonal matrix comprising the diagonal entries of $\mathbf{\hat{W}}_{1}$, and $\mathit{\lambda}$ the shrinkage intensity parameter. 
+  
+By following the above procedure, we will get cross-sectionally coherent forecasts. Moreover, this procedure extends to temporal reconciliation and cross-temporal reconciliation.
+  
+### Cross-sectional reconciliation
+For cross-sectional reconciliation, there are two main challenges, as stated by **Kourentzes and Athanasopoulos, 2019**: 
+
+1. the size of the cross-sectional dimension of the hierarchy; and 
+2. the heterogeneity of the series across, but also within levels. 
+
+The size relates directly with estimation of $\mathbf{W}_{h}$, and therefore very large hierarchies, estimation of $\mathbf{W}_{h}$ can be computationally expensive. However, this is not the case for this hierarchical structure in @fig-crosssec. On the other hand, it is expected that there will be heterogeneity between each cross-sectional levels. Therefore, in this case, we choose not to apply structural scaling since it assumes that each of the bottom-level base forecasts has errors with equal variance $\text{k}_{h}$. 
+
+### Temporal reconciliation
+
+On the other hand, for temporal hierarchies, forecasts across all levels are for the same series, therefore it is safe to assume homogeneity between each level. On the other hand, following the arguments by Athanasopoulos et al. (2017). Therefore, the approximations for $\mathbf{W}_{h}$ for temporal reconciliation chosen will be *structural scaling*.
+
+### Cross-temporal reconciliation
+
+The cross-temporal reconciliation methodology used in this context is heuristic first-temporal-then-cross-sectional reconciliation, proposed by **Kourentzes and Athanasopoulos, 2019**. It is a 2-step approach, where step 1 includes reconciliation through temporal hierarchies for each single variable to achieve temporally coherence forecast (**THieFs**). Then for step 2, from previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels. This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level. And by averaging across these, we compose a consesus reconciliation matrix **SG**, where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels. The outcome are cross-temporally reconciled forecasts, which are coherent across both dimensions, at all scales.
+
+## Model Selection
+
+As depicted in @sec-coint, it highlights the pertinence of employing both VAR and VECM to adequately model these relationships.
+
+One limitation of these models is their reliance on ample data to produce reliable parameters. Monthly data spanning over a decade for LTD has been found to be sufficient. Nevertheless, the subsequent section on cross-validation will elaborate on the precise sizing of the training dataset required to ensure compatibility with the VAR and VECM models.
+
+In addition to VAR and VECM, the Autoregressive Integrated Moving Average (ARIMA) model has also been employed, primarily for purposes of comparison and validation of improvements. The efficacy of this comparison will be assessed through time series cross-validation, utilizing various accuracy metrics such as the Root Mean Square Error (RMSE), Mean Absolute Percentage Error (MAPE).
+
+# Time Series Cross-Validation
+
+## Definition and rationale
+
+Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by **Hyndman and Athanasopoulos, 2021**. This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques. 
+
+In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the b base forecasts. Another critical application of time series cross-validation in this context is to generate rolling forecasts over a 12-month period for various time intervals. This is essential for the *Department of Treasury and Finance* to analyze the effects of market dynamics or policy changes on land transfer duty. 
+
+The initial training set will start with 108 monthly observations, equating to 9 years of data, and will roll forward by 1 month for each subsequent step. This process will generate 10 folds of training sets. While the number of observations in the initial training set can be lower, 108 months were chosen for code efficiency.
+
+### Generating forecast
+
+To enhance forecast accuracy, this methodology extends beyond a cross-sectional hierarchical structure to incorporate a temporal dimension, culminating in cross-temporal reconciliation forecasting. This approach integrates forecasts across different time structures, and its efficacy is evaluated by comparing it with cross-sectional and temporal reconciliation forecasts individually to determine any improvements.
+
+Given the monthly frequency of the data, additional aggregation levels such as bi-monthly, quarterly, four-monthly, semi-annually, and annually are established, with the annual aggregation representing the top level of the temporal hierarchy.
+
+Models are fitted at each cross-sectional level across these varying temporal frequencies. A `for` loop is utilized to generate forecasts and residuals, which are subsequently organized into a matrix for each temporal frequency: monthly (denoted as k1), bi-monthly (k2), quarterly (k3), four-monthly (k4), semi-annually (k6), and annually (k12). These matrices are then collectively stored within a list.
+
+This structured approach facilitates the fitting of different models tailored to each temporal frequency, allowing for adjustments in argument values as necessary. Moreover, if a distinct model is required for various cross-sectional levels, an `if` condition is employed within each temporal frequency loop to ensure this customization. The forecasts and residuals are then allocated to `base` and `res` data structures, respectively.
+
+#### ARIMA
+
+The ARIMA model will be implemented across all levels of the temporal hierarchical structure and at every cross-sectional level using the `auto.arima()` function from the `forecast` package. This function efficiently determines the optimal parameters for the autoregressive lag, differencing, and moving average components of the model by automatically adjusting them for the error terms.
+
+Forecasts will be generated up to one year, or 12 months into the future, utilizing the `forecast()` function. This function is designed to produce both the mean point forecasts and the associated residuals, thereby providing a comprehensive output that includes predictions and their accuracy measures.
+
+#### VAR/VECM
+
+Fitting VAR and VECM models to complex hierarchical structured data necessitates a more intricate approach, as there is no standard method readily available for this specific application. Additionally, these models require the incorporation of external variables, such as sales and the home value index (HVI). To address these challenges, the chosen strategy involves the creation of two separate user-defined functions for VAR and VECM. These functions are designed to process the input data and output both the mean point forecasts and residuals, mirroring the functionality provided by the `auto.arima()` function. Given the significant differences in the scales of sales, HVI, and LTD data, it is advisable to employ logarithmic transformations prior to model fitting, followed by re-transformation to their original scales. This method will be embedded within both functions to ensure accurate scale representation.
+
+##### Vector Autoregression (VAR) Model
+
+The VAR fitting function, designated as `var_forecast_fun()`, accepts six parameters:
+
+- `train`: A series representing LTD data across various hierarchical levels.
+- `sales`: The time series data for sales.
+- `hvi`: The time series data for the Home Value Index (HVI).
+- `period`: The temporal frequency for generating nested Date variables, such as `month`, `2 months`, `quarter`, etc.
+- `length`: The total number of rows in the input data.
+- `fc_range`: The forecast range, which may include 12 months for monthly data, or 6 two-month periods for bimonthly data, etc.
+
+The input data is consolidated into a single dataframe, or `tibble` object, with an appropriately nested Date variable. This `tibble` is subsequently transformed into a `tsibble` object utilizing the `as_tsibble()` function from the `tsibble` package. A VAR model is then applied to this `tsibble` using the `VAR(vars(train, sales, hvi))` syntax, where parameters such as lag are automatically determined by the function. However, temporal aggregation results in insufficient observations for semi-annual and annual frequencies if the lag exceeds two. To address this limitation, an `if` condition restricts the chosen lag for these data frequencies to one.
+
+Post model fitting, forecasts and residuals are computed as standard. Nevertheless, due to the lag configuration, there might be instances of missing residual values. Given that the `FoReco` package does not support missing values in the residual input matrices, these missing values are substituted with the calculated mean of the residuals. Since the number of these substituted values ranges from one to three, their impact on the reconciled results is anticipated to be minimal.
+
+Ultimately, the function is structured to output both the mean point forecast and residuals, aggregated into a list format for subsequent extraction.
+
+##### Vector Error Correction Model (VECM)
+
+The VECM fitting function, denoted as `vecm_forecast_fun`, accepts the same parameters as `var_forecast_fun` along with an additional `lag` parameter. This parameter facilitates the selection of varying lag lengths. The procedure for transforming the input data into a `tsibble` object remains consistent with that of the VAR model.
+
+A distinct feature that differentiates VECM from VAR is its accommodation for non-stationary variables or those exhibiting cointegration patterns. The Johansen test, executed via the `ca.jo()` function from the `urca` package, assesses the presence of cointegration. The `K` parameter of `ca.jo()`, which determines the lag order in the VAR model employed within the Johansen procedure, is specified by the `lag` argument. This parameter can also be chosen using cross-validation to ascertain the optimal value for each temporal frequency or cross-sectional level, employing information criteria such as Akaike (AIC) or Bayesian (BIC).
+
+Subsequent to the cointegration test, a significance level of 5% helps determine the value of `r`, representing the number of cointegrating relationships to be included in the VECM model. Should the Johansen test indicate an absence of a cointegration pattern, particularly in annual frequency data due to insufficient observations, a VAR model is utilized instead. If cointegration is confirmed, the VECM fitting function used is `vec2var()` from the `vars` package.
+
+Similar to the VAR model, the VECM procedure also involves the generation of forecasts and residuals. Additionally, it addresses missing residual values caused by lag length, in a manner analogous to the `var_forecast_fun` procedure. The output of this function comprises a list containing the mean point forecast and residuals.
+
+## Reconciliation Process
+
+The reconciliation procedure is consistent across ARIMA and VAR/VECM cross-validation models. Initially, forecasts and residuals from all cross-sectional levels and temporal frequencies are amalgamated into `base` and `res` datasets. The `FoReco` package facilitates the reconciliation process, offering integrated solutions for cross-sectional, temporal, and cross-temporal reconciliation.
+
+* **`htsrec()`**: Implements cross-sectional reconciliation utilizing `shr`, which denotes the use of a shrunk covariance matrix—specifically MinT-shr.
+* **`thfrec()`**: Facilitates temporal reconciliation employing `struc` for the computation of structural variances.
+* **`octrec()`**: Conducts optimal cross-temporal reconciliation, using `struc` to calculate cross-temporal structural variances.
+* **`tcsrec()`**: Executes heuristic first-temporal-then-cross-sectional reconciliation, combining structural variances for temporal aggregation with a bottom-up approach for cross-sectional aggregation.
+
+The output of this reconciliation process is a matrix where rows represent different cross-sectional levels, and columns span from a 1-step to a 12-step-ahead forecast, reflecting the original scale of land transfer duty (LTD).
+
+Subsequently, this matrix is integrated into a nested structure within an array corresponding to its designated `.id` value. This entire forecasting and reconciliation process is then repeated for subsequent folds or `.id` values.
+
+# Results
+## Model Performance: 
+Presentation of model accuracy and comparison.
+
+## Forecast Results: 
+Detailed discussion of the forecasted values and their confidence intervals.
+
+# Discussion
+## Interpretation of Results: 
+Analysis of what this forecasts mean for DTF.
+
+## Limitations and Assumptions: 
+Any limitations encountered during the forecasting process.
+
+# Conclusion and Recommendations
+## Summary: 
+Recap the findings and their implications.
+
+## Future Work: 
+Suggestions for improving future forecasts.
+
+# Appendix
+
+
+
+```{r}
+#| label: tbl-sumstat
+#| tbl-cap: "Summary Statistics of variables"
+#| echo: False
+#| message: false
+#| warning: false
+#| 
+# Create an empty dataframe to store results
+numerical_summary <- data.frame(
+  Variable = character(0),
+  Min = numeric(0),
+  Quartile_1 = numeric(0),
+  Median = numeric(0),
+  Mean = numeric(0),
+  Quartile_3 = numeric(0),
+  Max = numeric(0),
+  stringsAsFactors = FALSE
+)
+
+options(scipen = 999)
+
+# Create summary statistics table for numerical variables
+for (i in 2:ncol(ltd_unit_ts)) {
+  x <- ltd_unit_ts[, i]
+  
+  # Calculate summary statistics using summary()
+  summary_result <- summary(x)
+  
+  # Define a regular expression pattern to match the numeric value
+  pattern <- "-?\\d+\\.?\\d*"
+  
+  # Create a data frame for the current numerical variable
+  result_df <- data.frame(
+    Variable = names(x),
+    Min = format(as.numeric(regmatches(summary_result[1], gregexpr(pattern, summary_result[1], perl=TRUE))[[1]]), big.mark = ","),
+    Quartile_1 = format(as.numeric(regmatches(summary_result[2], gregexpr(pattern, summary_result[2],perl=TRUE))[[1]][2]), big.mark = ","),
+    Median = format(as.numeric(regmatches(summary_result[3], gregexpr(pattern, summary_result[3], perl=TRUE))[[1]]), big.mark = ","),
+    Mean = format(as.numeric(regmatches(summary_result[4], gregexpr(pattern, summary_result[4], perl=TRUE))[[1]]), big.mark = ","),
+    Quartile_3 = format(as.numeric(regmatches(summary_result[5], gregexpr(pattern, summary_result[5],perl=TRUE))[[1]][2]), big.mark = ","),
+    Max = format(as.numeric(regmatches(summary_result[6], gregexpr(pattern, summary_result[6], perl=TRUE))[[1]]), big.mark = ","),
+    stringsAsFactors = FALSE
+  )
+  
+  # Bind the result to the summary dataframe
+  numerical_summary <- rbind(numerical_summary, result_df)
+}
+
+# Set row names to be the names of the numerical variables
+rownames(numerical_summary) <- numerical_summary$Variable
+numerical_summary <- numerical_summary[,-1]
+
+# Creating a scrollable HTML table
+kable(numerical_summary, booktabs = TRUE)
+```
+
+
+# References
+## Bibliography: 
+Cite all data sources, literature, and software used in the report the insights generated by your work.
+
+Hyndman, R.J., & Athanasopoulos, G. (2021) Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Accessed on <current date>.
+
+
+https://treasury.gov.au/sites/default/files/2022-03/258735_real_estate_institute_of_australia.pdf
+
+https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf
