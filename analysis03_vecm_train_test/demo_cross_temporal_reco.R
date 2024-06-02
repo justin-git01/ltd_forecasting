@@ -307,7 +307,7 @@ ite_recf <- iterec(FoReco_data$base,
                    res = FoReco_data$res, start_rec = "thf")$recf
 # Visualise result
 
-data_ct <- tibble(#cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
+data_ct <- tibble(cross_sec = as.numeric(hts_recf[1, -c(1:16)]),
                   temp = as.numeric(thf_recf[1, -c(1:16)]),
                   #cross_temp_t_struc = as.numeric(oct_recf_t_struc[1, -c(1:16)]),
                   cross_temp_struc = as.numeric(oct_recf_struc[1, -c(1:16)]),

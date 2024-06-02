@@ -281,7 +281,7 @@ for (t in 1:folds){
     tsbase <- FoReco_data$base[l, ]
     # ts residuals ([lowest_freq' ...  highest_freq']')
     tsres <- FoReco_data$res[l, ]
-    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "ols",
+    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "struc",
                            res = tsres, keep = "recf")
   }
   
@@ -301,7 +301,7 @@ for (t in 1:folds){
     cat("cs discrepancy:", ifelse(cs>tol, sprintf("%.8f", cs), 0),
         "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
   }
-  discrepancy(oct_recf_struc)
+  discrepancy(tcs_recf)
   
   
   for (j in 1:nrow(base)){
@@ -321,23 +321,23 @@ for (i in 1:10) {
   vecm_tcs_reconciled <- reconciled_vecm_tcs["Total", , i]
   vecm_thf_reconciled <- thf_reconciled_vecm["Total", , i]
   total_observed <- test_set["Total", , i]
-  arima_base <- base_arima_forecast["Total", , i]
-  arima_reconciled <- reconciled_arima["Total", , i]
-  arima_temp_reconciled <- temp_rec_arima["Total", , i]
-  arima_cross_sec_reconciled <- cross_rec_arima["Total", , i]
+  # arima_base <- base_arima_forecast["Total", , i]
+  # arima_reconciled <- reconciled_arima["Total", , i]
+  # arima_temp_reconciled <- temp_rec_arima["Total", , i]
+  # arima_cross_sec_reconciled <- cross_rec_arima["Total", , i]
   
   # Create a dataframe for the current .id
   df1 <- data.frame(
     Date = seq(from=as.POSIXct("2023-04-01 00:00:00", tz="UTC"), by="month", length.out = 12),
     vecm_base = as.numeric(vecm_base),
-    vecm_hts_reconciled = as.numeric(hts_reconciled_vecm),
+    vecm_hts_reconciled = as.numeric(vecm_hts_reconciled),
     vecm_tcs_reconciled = as.numeric(vecm_tcs_reconciled),
-    vecm_thf_reconciled = as.numeric(thf_reconciled_vecm),
+    vecm_thf_reconciled = as.numeric(vecm_thf_reconciled),
     observations = as.numeric(total_observed),
-    arima_base = as.numeric(arima_base),
-    arima_reconciled = as.numeric(arima_reconciled),
-    arima_temp_reconciled = as.numeric(arima_temp_reconciled),
-    arima_cross_sec_reconciled = as.numeric(arima_cross_sec_reconciled),
+    # arima_base = as.numeric(arima_base),
+    # arima_reconciled = as.numeric(arima_reconciled),
+    # arima_temp_reconciled = as.numeric(arima_temp_reconciled),
+    # arima_cross_sec_reconciled = as.numeric(arima_cross_sec_reconciled),
     id = as.factor(i)
   )
   
@@ -348,7 +348,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 7) |>
+  filter(id == 5) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -359,7 +359,7 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 score_ct1 <- df |>
-  filter(id == 7) |>
+  filter(id == 5) |>
   select(-id) |>
   pivot_longer(-c(Date, observations), names_to = "Approach") |>
   group_by(Approach) |>
