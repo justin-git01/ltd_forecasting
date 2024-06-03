@@ -97,7 +97,7 @@ This report presents a novel forecasting methodology for land transfer duty (LTD
 
 # Introduction and background
 
-The property sector plays a pivotal role in Australia's economy, accounting for 1 in 4 jobs indirectly and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion (**Real Estate Institute of Australia, 2021**). Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A study published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (**Malakellis & Warlters, 2021**).
+The property sector plays a pivotal role in Australia's economy, accounting for 1 in 4 jobs indirectly and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion as stated in @reia_2022. Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A study published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (@nsw_treasury_2021).
 
 Land transfer duty is a tax applied to the "dutiable value" of a property being purchased or acquired, whether it is a first home or an investment property. The dutiable value is determined as either the property's purchase price or its market value, whichever is greater. Several factors influence the amount of duty paid, including the buyer's intended use of the property, foreign purchaser status, and eligibility for exemptions.
 
@@ -537,7 +537,12 @@ Furthermore, to justify the use of the Vector Error Correction Model (VECM) by t
 
 The Johansen procedure will be employed to test for cointegration between log transformed of  land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
 
-```{r, echo = F, warning = F, message = F}
+```{r}
+#| label: tbl-jotest
+#| tbl-cap: "Johansen test result"
+#| echo: False
+#| message: false
+#| warning: false
 jtest <- ca.jo(log(ltd_unit_ts[,c(2,8,9)]), type="trace", K=3, ecdet="none", spec="longrun")
 
 jtest_sum <- summary(jtest)
@@ -594,7 +599,7 @@ kable(weights_table, col.names = c("Variable", "ltd_total.l3", "sales.l3", "hvi.
 
 ```
 
-The test results, using 3 lags as chosen by the DTF, allow us to reject the null hypothesis that $r \leq 1$, yet we fail to reject the null hypothesis that $r \leq 2$ at 5% level of significance. This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
+The test results, as shown in @tbl-jotest, using 3 lags as chosen by the DTF, allow us to reject the null hypothesis that $r \leq 1$, yet we fail to reject the null hypothesis that $r \leq 2$ at 5% level of significance. This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
 
 Furthermore, a rank of 2 implies that we need a combination of at least two time series to form a stationary series.
 
@@ -634,7 +639,7 @@ We can further evaluate this by applying the Augmented Dickey-Fuller (ADF) test:
 
 ```{r}
 #| label: tbl-adf
-#| tbl-cap: "Augmented Dickey-Fuller (ADF) test"
+#| tbl-cap: "Augmented Dickey-Fuller (ADF) test for total_ltd"
 #| echo: False
 #| message: false
 #| warning: false
@@ -666,7 +671,7 @@ Since we will fit VECM to all the variables in the hierarchy, including resident
 
 ```{r}
 #| label: tbl-adftest
-#| tbl-cap: "Johansen and ADF test"
+#| tbl-cap: "Johansen and ADF test for other type ltd"
 #| echo: False
 #| message: false
 #| warning: false
@@ -707,7 +712,7 @@ kable(p_values, col.names = c("Variable", "Johansen p-value", "ADF p-value")) %>
 
 ```
 
-As demonstrated in @tbl-adftest, the null hypothesis that the linear combination is non-stationary cannot be rejected for the variables `ltd_nonres`, `ltd_comm`, `ltd_ind`, and `ltd_other`. This finding suggests that alternative variables may be required to appropriately fit the Vector Error Correction Model (VECM) for these specific property categories in land transfer duty.
+As shown in @tbl-adftest, the null hypothesis that the linear combination is non-stationary cannot be rejected for the variables `ltd_nonres`, `ltd_comm`, `ltd_ind`, and `ltd_other`. This finding suggests that alternative variables may be required to appropriately fit the Vector Error Correction Model (VECM) for these specific property categories in land transfer duty.
 
 # Methodology
 ## Cross-sectional, temporal and cross-temporal hierarchies
@@ -722,7 +727,7 @@ Given that this is a straightforward cross-sectional hierarchical structure, we 
 
 ![Temporal hierarchy](image/temp.png){#fig-temp fig-align="center"}
 
-Although forecasts using cross-sectional and temporal hierarchies have demonstrated substantial improvements (**Kourentzes & Athanasopoulos, 2019**), these approaches have typically been used separately. By combining cross-sectional hierarchies and temporal hierarchies, referred to as cross-temporal hierarchies, forecast accuracy can be further improved. Moveover, another advantage of cross-temporal reconciled forecasts is that it provides aligned short-term and long-term decision. If cross-sectionally or temporally coherent forecasts are used disjointedly, some outputs may not be directly useful, such as very long-term forecasts at very disaggregate level, which is 2 years of forecasts at other type of property land transfer duty level. Therefore, one would have to post-process the forecasts further, for example combining together multiple long-term disaggregate bottom level forecasts (commerical, industrial, other) to produce long-term total land transfer duty forecasts, which would then break the desired coherence across all levels and time periods. @fig-crosstemp from **Kourentzes and Athanasopoulos, 2019** shows an example of a cross-temporal hierarchical structure.
+Although forecasts using cross-sectional and temporal hierarchies have demonstrated substantial improvements (@kourentzes2019cross), these approaches have typically been used separately. By combining cross-sectional hierarchies and temporal hierarchies, referred to as cross-temporal hierarchies, forecast accuracy can be further improved. Moveover, another advantage of cross-temporal reconciled forecasts is that it provides aligned short-term and long-term decision. If cross-sectionally or temporally coherent forecasts are used disjointedly, some outputs may not be directly useful, such as very long-term forecasts at very disaggregate level, which is 2 years of forecasts at other type of property land transfer duty level. Therefore, one would have to post-process the forecasts further, for example combining together multiple long-term disaggregate bottom level forecasts (commerical, industrial, other) to produce long-term total land transfer duty forecasts, which would then break the desired coherence across all levels and time periods. @fig-crosstemp from @kourentzes2019cross shows an example of a cross-temporal hierarchical structure.
 
 ![Cross-temporal hierarchy](image/cross-temporal.png){#fig-crosstemp fig-align="center"}
 
@@ -771,7 +776,7 @@ Then for any set of base forecast, denoted as $\bf{\hat{y}}_{h}$, where h is the
 $$
 \bf{\tilde{y}}_{h} = \bf{SG}\hat{\bf{y}}_{h},
 $$
-where $\bf{G}$ is a matrix that maps the base forecasts into the bottom level (**Hyndman & Athanasopoulos, 2021**).
+where $\bf{G}$ is a matrix that maps the base forecasts into the bottom level (@hyndman2021forecasting).
 
 The equation shows that pre-multiplying any set of base forecasts with $\bf{SG}$ will return a set of coherent forecasts.
 
@@ -789,7 +794,7 @@ $$
 $$
 where the first 2 columns zero out the base forecast of the series above the bottom level. 
 
-Conversely, the *top-down* approach starts with a forecast at the highest level, which is then disaggregated to lower levels using predetermined proportions—typically based on historical data distributions (**Gross & Sohl, 1990**). For this approach, $\bf{G}$ can be defined as:
+Conversely, the *top-down* approach starts with a forecast at the highest level, which is then disaggregated to lower levels using predetermined proportions—typically based on historical data distributions (@gross1990disaggregation). For this approach, $\bf{G}$ can be defined as:
 
 $$
 \textbf{G}
@@ -805,15 +810,15 @@ where the first column includes the set of proportions that distribute the base 
 
 Lastly, the *middle-out* approach is a combination of both the bottom-up and top-down methods. 
 
-However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, **Wickramasuriya et al. (2019)** introduced the *MinT* (Minimum Trace) optimal reconciliation methodology, which is based on the finding of a **G** matrix that minimises the total forecast variance within the set of coherent forecasts.
+However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, @wickramasuriya2018optimal introduced the *MinT* (Minimum Trace) optimal reconciliation methodology, which is based on the finding of a **G** matrix that minimises the total forecast variance within the set of coherent forecasts.
 
-**Wickramasuriya et al., 2019** show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
+@wickramasuriya2018optimal show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
 $$
 \textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'} ,
 $$
 where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
 
-**Wickramasuriya et al., 2019** also show that: 
+@wickramasuriya2018optimal also show that: 
 $$
 \textbf{G} = (\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1},
 $$
@@ -827,19 +832,19 @@ which refers as the **MinT**
 
 Now, a challenge with G is that it requires an estimation of $\textbf{W}_{h}$, the forecast error variance of h-step-ahead base forecasts. There are four simplifying approximations in place that have been shown to work well:
 
-1. **OLS (Hyndman et al., 2011)**: 
+1. **OLS** (@hyndman2011optimal): 
     $\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$ for all h, where $\text{k}_{h} > 0$.
 
 This is the most simplifying assumption to make, and means that $\bf{G}$ is independent of the data, providing substantial computational savings. The disadvantage, however, is that this specification does not account for the differences in scale between the levels of the structure, or for relationships between series.
 
 This is the simplest assumption to adopt, implying that $\bf{G}$ is independent of the data, which significantly reduces computational costs. However, this approach does not account for the varying scales across different levels of the structure or for the relationships between series.
 
-2. $\bf{WLS}_{S}$  **(Athanasopoulos et al. 2017)**:
+2. $\bf{WLS}_{S}$  (@athanasopoulos2017forecasting):
     $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$ for all h, where $\text{k}_{h} > 0$, $\mathbf{\Lambda} = diag(\textbf{S1})$, and $\bf{1}$ is  unit vector of dimension $\it{m}$ (the number of bottom-level series).
 
 Applying structural scaling is particularly useful in cases where residuals are not available, and so the variance scaling cannot be applied; for example, in cases where the base forecasts are generated by judgemental forecasting.
     
-3. $\bf{WLS}_{V}$ **(Hyndman et al. 2016)**: 
+3. $\bf{WLS}_{V}$ (@hyndman2016fast): 
     $\mathbf{W}_{h} = \text{k}_{h}\text{diag(}\mathbf{\hat{W}}_{1}\text{)}$ for all h, where $\text{k}_{h} > 0$,
 
 $$
@@ -847,7 +852,7 @@ $$
 $$
 and $\textbf{e}_{t}$ is an $\it{n}$-dimensional vector of residuals of the models that generated the base forecasts stacked in the same order as the data.
 
-4. $\bf{MinT}_{S}$ **(Wickramasuriya et al., 2019)**: 
+4. $\bf{MinT}_{S}$ (@wickramasuriya2018optimal): 
   $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\hat{W}^{*}}_{1, D}$ for all h, where $\text{k}_{h} > 0$, and $\mathbf{\hat{W}^{*}}_{1, D} = \mathit{\lambda}\mathbf{\hat{W}^{*}}_{1, D} + \text{(1-} \mathit{\lambda})\mathbf{\hat{W}}_{1}$ is a shrinkage estimator with diagonal target $\mathbf{\hat{W}^{*}}_{1, D}$, a diagonal matrix comprising the diagonal entries of $\mathbf{\hat{W}}_{1}$, and $\mathit{\lambda}$ the shrinkage intensity parameter. 
 
 In contrast to earlier estimators of variance and structural scaling, this method captures strong interrelationships between time series in the hierarchy, while the use of shrinkage helps to manage the complexity of the estimation due to the size of $\mathbf{W}_{h}$.
@@ -855,7 +860,7 @@ In contrast to earlier estimators of variance and structural scaling, this metho
 By following the above procedure, we will get cross-sectionally coherent forecasts. Moreover, this procedure extends to temporal reconciliation and cross-temporal reconciliation.
   
 ### Cross-sectional reconciliation
-For cross-sectional reconciliation, there are two main challenges, as stated by **Kourentzes and Athanasopoulos, 2019**: 
+For cross-sectional reconciliation, there are two main challenges, as stated by @kourentzes2019cross: 
 
 1. the size of the cross-sectional dimension of the hierarchy; and 
 2. the heterogeneity of the series across, but also within levels. 
@@ -864,11 +869,11 @@ The size relates directly with estimation of $\mathbf{W}_{h}$, and therefore ver
 
 ### Temporal reconciliation
 
-On the other hand, for temporal hierarchies, forecasts across all levels are for the same series, therefore it is safe to assume homogeneity between each level. On the other hand, following the arguments by **Athanasopoulos et al. (2017)**, since the covariances in $\mathbf{W}_{h}$ would be between series of different sampling frequencies due to the temporal aggregation, we do not implement the MinT shrinkage estimator.
+On the other hand, for temporal hierarchies, forecasts across all levels are for the same series, therefore it is safe to assume homogeneity between each level. On the other hand, following the arguments by @athanasopoulos2017forecasting, since the covariances in $\mathbf{W}_{h}$ would be between series of different sampling frequencies due to the temporal aggregation, we do not implement the MinT shrinkage estimator.
 
 ### Cross-temporal reconciliation
 
-The cross-temporal reconciliation methodology used in this context is heuristic first-temporal-then-cross-sectional reconciliation, proposed by **Kourentzes and Athanasopoulos, 2019**. It is a 2-step approach, where step 1 includes reconciliation through temporal hierarchies for each single variable to achieve temporally coherence forecast (**THieFs**). Then for step 2, from previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels. This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level. And by averaging across these, we compose a consesus reconciliation matrix **SG**, where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels. The outcome are cross-temporally reconciled forecasts, which are coherent across both dimensions, at all scales. 
+The cross-temporal reconciliation methodology used in this context is heuristic first-temporal-then-cross-sectional reconciliation, proposed by @kourentzes2019cross. It is a 2-step approach, where step 1 includes reconciliation through temporal hierarchies for each single variable to achieve temporally coherence forecast (**THieFs**). Then for step 2, from previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels. This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level. And by averaging across these, we compose a consesus reconciliation matrix **SG**, where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels. The outcome are cross-temporally reconciled forecasts, which are coherent across both dimensions, at all scales. 
 
 ## Model Selection
 
@@ -892,7 +897,7 @@ $\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| 100 \times \frac{y_t - \hat{y}_
 
 ## Definition and rationale
 
-Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by **Hyndman and Athanasopoulos, 2021**. This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques. 
+Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by @hyndman2021forecasting. This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques. 
 
 In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the base forecasts. Time series cross-validation facilitates the generation of a series of 1 to 12-step-ahead forecasts across various rolling periods. For instance, a 12-step-ahead forecast can be produced starting from January 2022, followed by another 12-step-ahead forecast from February 2022, and so forth. This is essential for the *Department of Treasury and Finance* to analyze the effects of market dynamics or policy changes on land transfer duty. 
 
@@ -1003,7 +1008,7 @@ where:
 
 The VECM framework thus captures both the short-term dynamics through the differenced terms and the long-term equilibrium relationships through the error correction terms.
 
-Finally, the reconciliation procedure can be implemented using the `FoReco` package *(Di Fonzo & Girolimetto, 2022)*.
+Finally, the reconciliation procedure can be implemented using the `FoReco` package @FoReco.
 
 # Results
 ## RMSE
@@ -1089,9 +1094,9 @@ ggplot_rmse
 ```
 
 
-@fig-rmse illustrates the Root Mean Square Error (RMSE) of reconciled forecasts in comparison to base forecasts for both VECM and ARIMA models. The blue lines denote the ARIMA model, while the red lines represent the VECM. The line types are differentiated as follows: solid lines for base forecasts, dotted lines for temporally reconciled forecasts, two-dash lines for cross-sectionally reconciled forecasts, and dashed lines for cross-temporally reconciled forecasts.
+@fig-rmse illustrates the Root Mean Square Error (RMSE) of reconciled forecasts in comparison to base forecasts for both VECM and ARIMA models. The blue lines denote the ARIMA model, while the red lines represent the VECM. The line types are differentiated as follows: solid lines for base forecasts, solid lines with circle markers for temporally reconciled forecasts, dotted lines for cross-sectionally reconciled forecasts, and dashed lines for cross-temporally reconciled forecasts.
 
-Upon initial examination, it is evident that the VECM model consistently produces more accurate forecasts compared to the ARIMA model, aligning with the model selection by the Department of Treasury and Finance. Furthermore, the significant disparity between reconciled forecasts and base forecasts, particularly from the four-step-ahead forecasts onwards for both models, suggests that forecast reconciliation markedly enhances forecast accuracy. Notably, for both models, the RMSE lines of temporally reconciled forecasts are closer to those of cross-temporally reconciled forecasts, compared to the RMSE lines of cross-sectionally reconciled forecasts. This indicates that temporal hierarchies play a more substantial role in improving forecast accuracy compared to cross-sectional hierarchies.
+Upon initial examination, it is evident that the VECM model consistently produces more accurate forecasts compared to the ARIMA model, aligning with the model selection by the *Department of Treasury and Finance*. Furthermore, the significant disparity between reconciled forecasts and base forecasts, particularly from the four-step-ahead forecasts onwards for both models, suggests that forecast reconciliation markedly enhances forecast accuracy. Notably, for both models, the RMSE lines of temporally reconciled forecasts are closer to those of cross-temporally reconciled forecasts, compared to the RMSE lines of cross-sectionally reconciled forecasts. This indicates that temporal hierarchies play a more substantial role in improving forecast accuracy compared to cross-sectional hierarchies.
 
 It is also noteworthy that for one to three-step-ahead forecasts, the base forecasts already exhibit high performance, hence the improvements from applying forecast reconciliation are not evident.
 
@@ -1311,26 +1316,3 @@ numerical_summary <- numerical_summary[,-1]
 # Creating a scrollable HTML table
 kable(numerical_summary, booktabs = TRUE)
 ```
-
-
-# References
-
-Hyndman, R. J., & Athanasopoulos, G. (2021). Forecasting: Principles and practice. Otexts. [https://otexts.com/fpp3/](https://otexts.com/fpp3/)
-
-Athanasopoulos, G., Hyndman, R. J., Kourentzes, N., & Petropoulos, F. (2017). Forecasting with temporal hierarchies. European Journal of Operational Research, 262(1), 60-74.                 [https://doi.org/10.1016/j.ejor.2017.02.046](https://doi.org/10.1016/j.ejor.2017.02.046)
-
-Wickramasuriya, S. L., Athanasopoulos, G., & Hyndman, R. J. (2018). Optimal forecast reconciliation for hierarchical and grouped time series through trace minimization.            Journal of the American Statistical Association, 114(526), 804-819.                            [https://doi.org/10.1080/01621459.2018.1448825](https://doi.org/10.1080/01621459.2018.1448825)
-
-Girolimetto, D., G. Athanasopoulos, T. Di Fonzo, R.J. Hyndman, Cross-temporal probabilistic           forecast reconciliation: Methodological and practical issues, International Journal of         Forecasting, 2023.[https://doi.org/10.1016/j.ijforecast.2023.10.003.](https://www.sciencedirect.com/science/article/pii/S0169207023001024)
-
-
-Kourentzes, N., & Athanasopoulos, G. (2019). Cross-temporal coherent forecasts for Australian        tourism. Annals of Tourism Research, 75, 393-409.                                              [https://doi.org/10.1016/j.annals.2019.02.001](https://doi.org/10.1016/j.annals.2019.02.001)
-
-Malakellis, M., & Warlters, M. (2021). The economic costs of transfer duty: a literature review. NSW Government.                                     [https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf](https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf)
-
-Girolimetto, D. & Di Fonzo, T. (2022), FoReco: Point Forecast Reconciliation.
-      [https://danigiro.github.io/FoReco/](https://danigiro.github.io/FoReco/)
-
-Real Estate Institute of Australia. (2022). *Pre-Budget Submission 2022: Growing Australia’s homes and jobs markets*. [https://treasury.gov.au/sites/default/files/2022-03/258735_real_estate_institute_of_australia.pdf](https://treasury.gov.au/sites/default/files/2022-03/258735_real_estate_institute_of_australia.pdf)
-
-
