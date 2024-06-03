@@ -548,17 +548,17 @@ jtest <- ca.jo(log(ltd_unit_ts[,c(2,8,9)]), type="trace", K=3, ecdet="none", spe
 jtest_sum <- summary(jtest)
 
 # Extract Eigenvalues
-eigenvalues <- jtest_sum@lambda
+eigenvalues <- round(jtest_sum@lambda, 2)
 
 # Extract Test Statistics
-test_statistics <- jtest_sum@teststat
+test_statistics <- round(jtest_sum@teststat,2)
 critical_values <- jtest_sum@cval
 
 # Extract Eigenvectors
-eigenvectors <- jtest_sum@V
+eigenvectors <- round(jtest_sum@V,2)
 
 # Extract Weights
-weights <- jtest_sum@W
+weights <- round(jtest_sum@W,2)
 
 # Format Test Statistics and Critical Values
 test_stats_table <- data.frame(
@@ -603,7 +603,7 @@ The test results, as shown in @tbl-jotest, using 3 lags as chosen by the DTF, al
 
 Furthermore, a rank of 2 implies that we need a combination of at least two time series to form a stationary series.
 
-To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r jtest_sum@lambda[1]`. This corresponds to the eigenvectors under the column `ltd_total.l3`, which is approximately equal to (`r jtest_sum@V[,1]`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
+To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r round(jtest_sum@lambda[1],2)`. This corresponds to the eigenvectors under the column `ltd_total.l3`, which is approximately equal to (`r round(jtest_sum@V[,1],2)`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
 
 ```{r}
 #| message: False
@@ -649,9 +649,9 @@ linear_comb <- as.numeric(unlist(s[,2]))
 adf_result <- adf.test(linear_comb)
 
 # Extract ADF Test components
-adf_statistic <- adf_result$statistic
-lag_order <- adf_result$parameter
-p_value <- adf_result$p.value
+adf_statistic <- round(adf_result$statistic,2)
+lag_order <- round(adf_result$parameter,1)
+p_value <- round(adf_result$p.value,2)
 
 # Format ADF Test result into a table
 adf_table <- data.frame(
@@ -700,7 +700,7 @@ for (var in variables) {
   # ADF Test
   linear_comb <- as.numeric(unlist(s[, 2]))
   adf_result <- adf.test(linear_comb)
-  adf_p_value <- adf_result$p.value
+  adf_p_value <- round(adf_result$p.value,2)
   
   # Append results to the data frame
   p_values <- rbind(p_values, data.frame(Variable = var, cointegration = johansen_p_value, ADF_p_value = adf_p_value))
