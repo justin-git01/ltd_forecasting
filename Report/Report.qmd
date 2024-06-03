@@ -1166,7 +1166,7 @@ ggplot_mape <- ggplot(mape_data_long, aes(x = h_step, y = MAPE, colour = MethodG
     "Temporally Reconciled" = 16,
     "Cross-sectionally Reconciled" = NA
   )) +
-  labs(x = "h-step Forecast", y = "MAPE Value", title = "MAPE of Various Forecast Methods") +
+  labs(x = "h-step Forecast", y = "MAPE Value", title = " ") +
   scale_x_continuous(breaks = 1:12) +
   theme_minimal() +
   guides(
