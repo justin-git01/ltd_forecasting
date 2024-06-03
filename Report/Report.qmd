@@ -1260,6 +1260,10 @@ The comparative analysis with the DTF's forecasts further validates the proposed
 
 This study introduced an advanced forecasting methodology for land transfer duty (LTD) in Victoria, leveraging Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models, enhanced by cross-sectional, temporal, and cross-temporal hierarchies. The findings underscore the superiority of VECM, especially when coupled with forecast reconciliation techniques, in producing more accurate forecasts compared to ARIMA. Temporal hierarchies were found to be more influential than cross-sectional hierarchies in improving forecast accuracy. The reconciled forecasts consistently outperformed those of the *Department of Treasury and Finance*, as evidenced by lower RMSE values. Despite some limitations, such as the lack of seasonal adjustment and manual lag selection for the Johansen test, the methodology demonstrates significant potential for enhancing LTD forecasting accuracy. Future work should focus on addressing these limitations to further refine the approach and improve its applicability.
 
+# GitHub repo
+
+Here is the [link](https://github.com/justin-git01/ltd_forecasting) to the GitHub repo of this project.
+
 # Appendix
 
 ```{r}
