@@ -1,8 +1,8 @@
 ## README
 
-# LTD Forecasting Project
+# Land Transfer Duty Forecasting Project
 
-Welcome to the LTD Forecasting Project repository! This project aims to improve the forecast accuracy of land transfer duty (LTD) for the Department of Treasury and Finance (DTF) using advanced forecasting methodologies, including forecast reconciliation. This README provides a detailed overview of the project, its methodology, results, and instructions on how to reproduce the results and apply the techniques to your own needs.
+Welcome to the Land Transfer Duty Forecasting Project repository! This project aims to improve the forecast accuracy of *land transfer duty* (**LTD**) for the *Department of Treasury and Finance* (**DTF**) using advanced forecasting methodologies, including forecast reconciliation. This README provides a detailed overview of the project, its methodology, results, and instructions on how to reproduce the results and apply the techniques to your own needs.
 
 ## Repository Structure
 
@@ -45,7 +45,7 @@ Empirical results demonstrate that VECM, particularly when coupled with forecast
 Ensure you have the following software and packages installed:
 - **R** (version 4.0 or higher)
 - **RStudio** (optional but recommended)
-- **Required R packages**: `dplyr`, `ggplot2`, `forecast`, `vars`, `tsibble`, `FoReco`, `tseries`, `urca`, `kableExtra`, `quarto`
+- **Required R packages**: `dplyr`, `ggplot2`, `forecast`, `vars`, `tsibble`, `FoReco`, `tseries`, `urca`, `kableExtra`, `quarto`, `fpp3`
 
 ### Steps to Reproduce
 
