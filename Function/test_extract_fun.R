@@ -12,6 +12,11 @@ test_extract <- function(data){
     select(Total, NonRes, Comm, Ind, Other, Res) %>%
     relocate(Month)
   
-  return(t(required_data[,-1]))
+  # Check if there is any data available in the specified range
+  if(nrow(required_data) == 0) {
+    return(NA)
+  } else {
+    return(t(required_data[,-7]))  # Transpose the data excluding the 'Month' column
+  }
 }
 
