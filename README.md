@@ -6,8 +6,8 @@ Welcome to the Land Transfer Duty Forecasting Project repository! This project a
 
 ## Repository Structure
 
-- **functions**: Contains user-defined functions created for the project.
-- **report**: Contains the final report and all relevant materials documenting the project.
+- **Function**: Contains user-defined functions created for the project.
+- **Report**: Contains the final report and all relevant materials documenting the project.
 - **analysis01_ltd**: Includes the initial steps of data analysis, handling missing values, summary statistics, and distribution for all variables. This is not the main focus for detailed analysis.
 - **analysis02_time_series**: Focuses on time series data analysis with time plots, seasonal plots, subseries plots, decomposition for all variables, and initial cross-sectional forecast reconciliation attempts. This file is also not the main focus.
 - **analysis03_vecm_train_test**: Contains R scripts for training and testing the VECM model:
@@ -16,6 +16,7 @@ Welcome to the Land Transfer Duty Forecasting Project repository! This project a
 - **analysis04_cross_validation**: The main directory containing all files related to performing cross-validation for 10 folds of training sets with a thorough forecast reconciliation procedure. This includes RMSE and MAPE computation and plotting for 12-step-ahead forecasts.
 - **data**: Contains all initial and generated data used in the project.
 - **presentation**: Contains files related to the presentation about the project.
+- **FINAL_FORECAST**: Contains the final forecast data for each type of reconciliation, along with the related files used to produce these forecasts.
 
 ## Project Overview
 
