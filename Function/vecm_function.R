@@ -19,6 +19,11 @@ vecm_forecast_fun <- function(train, sales, hvi, period, length, fc_range, lag){
   
   r <- sum(coint_test@teststat > coint_test@cval[, "5pct"])  # Example: Using r=1
   
+  # Limit r to be 2
+  if (r > 2){
+    r = 2
+  }
+
   # Condition test for r 
   if (r != 0){
     # Fit the VECM model using the rank from Johansen test
