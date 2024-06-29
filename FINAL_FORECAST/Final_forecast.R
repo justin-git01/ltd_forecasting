@@ -406,7 +406,7 @@ for (i in 1:folds) {
 
 # Plotting forecasts for one fold
 ## Initialise the fold number we want to plot
-fold_num = 25
+fold_num = 10
 
 ## Plotting
 plot_ct <- df |>
@@ -432,9 +432,3 @@ score_ct1 <- df |>
   )
 
 score_ct1
-
-# save(base_vecm_forecast, file = "data/base_vecm_fc.RData")
-# save(reconciled_vecm_tcs, file = "data/rec_vecm.RData")
-# save(thf_reconciled_vecm, file = "data/temp_rec_vecm.RData")
-# save(hts_reconciled_vecm, file = "data/cross_sec_rec_vecm.RData")
-# save(test_set, file = "data/test_set.RData")
