@@ -9,14 +9,16 @@ source("Function/var_function.R")
 source("Function/vecm_function.R")
 source("Function/adjust_series_fun.R")
 source("Function/test_extract_fun.R")
+source("Function/select_optimal_lag.R")
 
 # Load ltd aggregate date
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
   rename(Date = ...1,
          ltd = LTD,
          sales = SALES,
-         hvi = HVI) |>
-  dplyr::select(c(Date, ltd, sales, hvi))
+         hvi = HVI,
+         lending = LENDING) |>
+  dplyr::select(c(Date, ltd, sales, hvi, lending))
 
 # Load ltd unit data and join with aggregate data
 ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
@@ -26,7 +28,7 @@ ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
   dplyr::select(-ltd)
 
 # Rename ltd unit data
-names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
+names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending")
 
 # Convert ltd unit data to tsibble object
 ltd_unit <- ltd_unit %>%
@@ -34,6 +36,19 @@ ltd_unit <- ltd_unit %>%
   select(-Date) %>%
   as_tsibble(index = Month) %>%
   relocate(Month)
+
+# Decompositions
+dcmp <- ltd_unit |>
+  model(stl = STL(Sales))
+
+# Filter out sales trend
+sales_trend <- components(dcmp) |>
+  select(trend) |>
+  relocate(Month)
+
+# Join sales trend to ltd_unit
+ltd_unit <- ltd_unit |>
+  left_join(sales_trend, by = c("Month")) 
 
 # Train-test set 
 ltd_unit_train <- ltd_unit[1:117,]
