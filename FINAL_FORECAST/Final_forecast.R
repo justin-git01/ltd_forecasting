@@ -11,15 +11,16 @@ source("Function/var_function.R")
 source("Function/vecm_function.R")
 source("Function/adjust_series_fun.R")
 source("Function/test_extract_fun.R")
+source("Function/select_optimal_lag.R")
 
 # Load ltd aggregate date
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
-  # Rename variable
   rename(Date = ...1,
          ltd = LTD,
          sales = SALES,
-         hvi = HVI) |>
-  dplyr::select(c(Date, ltd, sales, hvi))
+         hvi = HVI,
+         lending = LENDING) |>
+  dplyr::select(c(Date, ltd, sales, hvi, lending))
 
 # Load ltd unit data and join with aggregate data
 ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
@@ -30,7 +31,7 @@ ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
   dplyr::select(-ltd)
 
 # Rename ltd unit data
-names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
+names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending")
 
 # Convert ltd unit data to tsibble object
 ltd_unit <- ltd_unit %>%
@@ -39,6 +40,18 @@ ltd_unit <- ltd_unit %>%
   as_tsibble(index = Month) %>%
   relocate(Month)
 
+# Decompositions
+dcmp <- ltd_unit |>
+  model(stl = STL(Sales))
+
+# Filter out sales trend
+sales_trend <- components(dcmp) |>
+  select(trend) |>
+  relocate(Month)
+
+# Join sales trend to ltd_unit
+ltd_unit <- ltd_unit |>
+  left_join(sales_trend, by = c("Month")) 
 
 # Perform cross-validation with 8 years initially
 ltd_cv <- ltd_unit |>
@@ -72,7 +85,7 @@ for (t in 1:folds){
   # Convert each folds into data in different temporal frequencies
   ## MONTHLY SERIES
   data$k1 <- adjust_series(ltd_filtered[, -1], freq = 12)
-  colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
+  colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending", "sales_trend")
   
   ## BI-MONTHLY SERIES
   data$k2 <- adjust_series(data$k1, freq = 6)
@@ -91,17 +104,26 @@ for (t in 1:folds){
   
   # FORECASTS
   ## MONTHLY FORECASTS
-  base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
-  residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-2)
+  base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-4)
+  residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-4)
   
   ## VECM fitting and forecast loop over the cross-sectional level
   for (i in 1:6) {
     train <- data$k1[, i]
     sales <- data$k1[, 7]
     hvi <- data$k1[, 8]
+    lending <- data$k1[, 9]
+    sales_trend <- data$k1[,10]
     
-    # Fit VECM
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", nrow(data$k1), 12, 10)
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "month", nrow(data$k1), 12, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "month", nrow(data$k1), 12, include_lending)
+    }
+    
     base_fc$k1[, i] <- forecast_res[[1]]
     residuals_fc$k1[, i] <- forecast_res[[2]]
   }
@@ -112,17 +134,25 @@ for (t in 1:folds){
   colnames(residuals_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # BI-MONTHLY FORECASTS
-  base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2)-2)
-  residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-2)
+  base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2)-4)
+  residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-4)
   
   ## VECM fitting and forecast loop over the cross-sectional level
   for (i in 1:6) {
     train <- data$k2[, i]
     sales <- data$k2[, 7]
     hvi <- data$k2[, 8]
+    lending <- data$k2[, 9]
+    sales_trend <- data$k2[,10]
     
-    # Fit VECM
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", nrow(data$k2), 6, 5)
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "2 months", nrow(data$k2), 6, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "2 months", nrow(data$k2), 6, include_lending)
+    }
     base_fc$k2[, i] <- forecast_res[[1]]
     residuals_fc$k2[, i] <- forecast_res[[2]]
   }
@@ -133,17 +163,26 @@ for (t in 1:folds){
   colnames(residuals_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # QUARTERLY FORECASTS
-  base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3)-2)
-  residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-2)
+  base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3)-4)
+  residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-4)
   
   ## VECM fitting and forecast loop over the cross-sectional level
   for (i in 1:6) {
     train <- data$k3[, i]
     sales <- data$k3[, 7]
     hvi <- data$k3[, 8]
+    lending <- data$k3[, 9]
+    sales_trend <- data$k3[,10]
     
-    # Fit VECM
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4, 3)
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "quarter", nrow(data$k3), 4, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "quarter", nrow(data$k3), 4, include_lending)
+    }
+    
     base_fc$k3[,i] <- forecast_res[[1]]
     residuals_fc$k3[,i] <- forecast_res[[2]]
   }
@@ -154,17 +193,25 @@ for (t in 1:folds){
   colnames(residuals_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # FOUR_MONTHLY FORECASTS
-  base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4)-2)
-  residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-2)
+  base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4)-4)
+  residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-4)
   
   ## VECM fitting and forecast loop over the cross-sectional level
   for (i in 1:6) {
     train <- data$k4[, i]
     sales <- data$k4[, 7]
     hvi <- data$k4[, 8]
+    lending <- data$k4[, 9]
+    sales_trend <- data$k4[,10]
     
-    # Fit VECM
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3, 2)
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "4 months", nrow(data$k4), 3, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "4 months", nrow(data$k4), 3, include_lending)
+    }
     base_fc$k4[,i] <- forecast_res[[1]]
     residuals_fc$k4[,i] <- forecast_res[[2]]
   }
@@ -177,15 +224,23 @@ for (t in 1:folds){
   
   
   # SEMI_ANNUALLY FORECASTS
-  base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6)-2)
-  residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-2)
+  base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6)-4)
+  residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-4)
   for (i in 1:6) {
     train <- data$k6[, i]
     sales <- data$k6[, 7]
     hvi <- data$k6[, 8]
+    lending <- data$k6[, 9]
+    sales_trend <- data$k6[,10]
     
-    # Fit VECM
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2, 2)
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "6 months", nrow(data$k6), 2, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "6 months", nrow(data$k6), 2, include_lending)
+    }
     base_fc$k6[,i] <- forecast_res[[1]]
     residuals_fc$k6[,i] <- forecast_res[[2]]
   }
@@ -197,15 +252,24 @@ for (t in 1:folds){
   colnames(residuals_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # ANNUALLY FORECASTS
-  base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12)-2)
-  residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-2)
+  base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12)-4)
+  residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-4)
   for (i in 1:6) {
     train <- data$k12[, i]
     sales <- data$k12[, 7]
     hvi <- data$k12[, 8]
+    lending <- data$k12[, 9]
+    sales_trend <- data$k12[,10]
+    
+    include_lending <- i %in% 2:5
     
     # Fit VAR
-    forecast_res <- var_forecast_fun(train, sales, hvi, "year", nrow(data$k12), 1)
+    if (include_lending){
+      forecast_res <- var_forecast_fun(train, sales_trend, hvi, lending, "year", nrow(data$k12), 1, include_lending)
+    }
+    else {
+      forecast_res <- var_forecast_fun(train, sales, hvi, lending, "year", nrow(data$k12), 1, include_lending)
+    }
     base_fc$k12[,i] <- forecast_res[[1]]
     residuals_fc$k12[,i] <- forecast_res[[2]]
   }
@@ -283,14 +347,14 @@ for (t in 1:folds){
     tsbase <- FoReco_data$base[l, ]
     # ts residuals ([lowest_freq' ...  highest_freq']')
     tsres <- FoReco_data$res[l, ]
-    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "struc",
+    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "wlsv",
                            res = tsres, keep = "recf")
   }
   
   ## Cross-temporally reconciliation
   ### Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
   tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                     thf_comb = "struc", hts_comb = "bu",
+                     thf_comb = "wlsv", hts_comb = "shr",
                      res = FoReco_data$res)$recf
   
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
