@@ -332,18 +332,14 @@ for (t in 1:folds){
     tsbase <- FoReco_data$base[l, ]
     # ts residuals ([lowest_freq' ...  highest_freq']')
     tsres <- FoReco_data$res[l, ]
-    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "struc",
+    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "wlsv",
                            res = tsres, keep = "recf")
   }
   
   ## cross-temp
-  # optimal 
-  # oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-  #                          comb = "struc", res = FoReco_data$res, keep = "recf")
-  
   # Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
   tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                     thf_comb = "struc", hts_comb = "bu",
+                     thf_comb = "wlsv", hts_comb = "shr",
                      res = FoReco_data$res)$recf
 
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
@@ -399,7 +395,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 5) |>
+  filter(id == 8) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -410,7 +406,7 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 score_ct1 <- df |>
-  filter(id == 5) |>
+  filter(id == 10) |>
   select(-id) |>
   pivot_longer(-c(Date, observations), names_to = "Approach") |>
   group_by(Approach) |>
