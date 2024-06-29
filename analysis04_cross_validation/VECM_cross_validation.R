@@ -81,11 +81,6 @@ for (t in 1:folds){
   # Extract test set
   test_set[, ,t] <- test_extract(ltd_filtered)
   
-  # Add column names for the array
-  last_month <- max(ltd_filtered$Month)
-  start_ym <- as.Date(last_month) + months(1)
-  colnames(test_set[, , t]) <- c(yearmonth(seq.Date(start_ym, by = "month", length.out = 12)))
-
   # Pre-define set of data
   data <- NULL
   base_fc <- NULL
@@ -93,7 +88,7 @@ for (t in 1:folds){
   
   # Monthly series
   data$k1 <- adjust_series(ltd_filtered[, -1], freq = 12)
-  colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi")
+  colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending", "sales_trend")
   
   # BI-MONTHLY SERIES
   data$k2 <- adjust_series(data$k1, freq = 6)
@@ -111,22 +106,24 @@ for (t in 1:folds){
   data$k12 <- adjust_series(data$k1, freq = 1)
   
   # MONTHLY FORECASTS
-  base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-2)
-  residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-2)
+  base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1)-4)
+  residuals_fc$k1 <- matrix(NA, nrow = nrow(data$k1), ncol = ncol(data$k1)-4)
   for (i in 1:6) {
     train <- data$k1[, i]
     sales <- data$k1[, 7]
     hvi <- data$k1[, 8]
-    if (t %in% c(1:7)){
-      lag_length <- 5
-    } 
-    else if (t == 9) {
-      lag_length <- 18
+    lending <- data$k1[, 9]
+    sales_trend <- data$k1[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "month", nrow(data$k1), 12, include_lending)
     }
     else {
-      lag_length <- 20
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "month", nrow(data$k1), 12, include_lending)
     }
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "month", nrow(data$k1), 12, lag_length)
+
     base_fc$k1[, i] <- forecast_res[[1]]
     residuals_fc$k1[, i] <- forecast_res[[2]]
   }
@@ -136,19 +133,23 @@ for (t in 1:folds){
   colnames(residuals_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # BI-MONTHLY FORECASTS
-  base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2)-2)
-  residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-2)
+  base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2)-4)
+  residuals_fc$k2 <- matrix(NA, nrow = nrow(data$k2), ncol = ncol(data$k2)-4)
   for (i in 1:6) {
     train <- data$k2[, i]
     sales <- data$k2[, 7]
     hvi <- data$k2[, 8]
-    if (t %in% c(1:7)){
-      lag_length_2months <- 3
-    } 
-    else {
-      lag_length_2months <- 5
+    lending <- data$k2[, 9]
+    sales_trend <- data$k2[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "2 months", nrow(data$k2), 6, include_lending)
     }
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "2 months", nrow(data$k2), 6, lag_length_2months)
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "2 months", nrow(data$k2), 6, include_lending)
+    }
     base_fc$k2[, i] <- forecast_res[[1]]
     residuals_fc$k2[, i] <- forecast_res[[2]]
   }
@@ -158,19 +159,24 @@ for (t in 1:folds){
   colnames(residuals_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # Quarterly
-  base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3)-2)
-  residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-2)
+  base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3)-4)
+  residuals_fc$k3 <- matrix(NA, nrow = nrow(data$k3), ncol = ncol(data$k3)-4)
   for (i in 1:6) {
     train <- data$k3[, i]
     sales <- data$k3[, 7]
     hvi <- data$k3[, 8]
-    if (t == 10) {
-      lag_quarter <- 3
+    lending <- data$k3[, 9]
+    sales_trend <- data$k3[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "quarter", nrow(data$k3), 4, include_lending)
     }
     else {
-      lag_quarter <- 2
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "quarter", nrow(data$k3), 4, include_lending)
     }
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "quarter", nrow(data$k3), 4, lag_quarter)
+    
     base_fc$k3[,i] <- forecast_res[[1]]
     residuals_fc$k3[,i] <- forecast_res[[2]]
   }
@@ -180,13 +186,23 @@ for (t in 1:folds){
   colnames(residuals_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # Four-monthly
-  base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4)-2)
-  residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-2)
+  base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4)-4)
+  residuals_fc$k4 <- matrix(NA, nrow = nrow(data$k4), ncol = ncol(data$k4)-4)
   for (i in 1:6) {
     train <- data$k4[, i]
     sales <- data$k4[, 7]
     hvi <- data$k4[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "4 months", nrow(data$k4), 3, 2)
+    lending <- data$k4[, 9]
+    sales_trend <- data$k4[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "4 months", nrow(data$k4), 3, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "4 months", nrow(data$k4), 3, include_lending)
+    }
     base_fc$k4[,i] <- forecast_res[[1]]
     residuals_fc$k4[,i] <- forecast_res[[2]]
   }
@@ -197,13 +213,23 @@ for (t in 1:folds){
   
   
   # Semi-annual
-  base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6)-2)
-  residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-2)
+  base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6)-4)
+  residuals_fc$k6 <- matrix(NA, nrow = nrow(data$k6), ncol = ncol(data$k6)-4)
   for (i in 1:6) {
     train <- data$k6[, i]
     sales <- data$k6[, 7]
     hvi <- data$k6[, 8]
-    forecast_res <- vecm_forecast_fun(train, sales, hvi, "6 months", nrow(data$k6), 2, 2)
+    lending <- data$k6[, 9]
+    sales_trend <- data$k6[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- vecm_forecast_fun(train, sales_trend, hvi, lending, "6 months", nrow(data$k6), 2, include_lending)
+    }
+    else {
+      forecast_res <- vecm_forecast_fun(train, sales, hvi, lending, "6 months", nrow(data$k6), 2, include_lending)
+    }
     base_fc$k6[,i] <- forecast_res[[1]]
     residuals_fc$k6[,i] <- forecast_res[[2]]
   }
@@ -213,13 +239,23 @@ for (t in 1:folds){
   colnames(residuals_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
   
   # Annual
-  base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12)-2)
-  residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-2)
+  base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12)-4)
+  residuals_fc$k12 <- matrix(NA, nrow = nrow(data$k12), ncol = ncol(data$k12)-4)
   for (i in 1:6) {
     train <- data$k12[, i]
     sales <- data$k12[, 7]
     hvi <- data$k12[, 8]
-    forecast_res <- var_forecast_fun(train, sales, hvi, "year", nrow(data$k12), 1)
+    lending <- data$k12[, 9]
+    sales_trend <- data$k12[,10]
+    
+    include_lending <- i %in% 2:5
+    
+    if (include_lending){
+      forecast_res <- var_forecast_fun(train, sales_trend, hvi, lending, "year", nrow(data$k12), 1, include_lending)
+    }
+    else {
+      forecast_res <- var_forecast_fun(train, sales, hvi, lending, "year", nrow(data$k12), 1, include_lending)
+    }
     base_fc$k12[,i] <- forecast_res[[1]]
     residuals_fc$k12[,i] <- forecast_res[[2]]
   }
