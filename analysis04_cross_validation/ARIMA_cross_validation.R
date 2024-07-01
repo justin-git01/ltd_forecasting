@@ -51,7 +51,7 @@ base_arima_forecast <- reconciled_arima <- cross_sec_arima <- temp_rec_arima <- 
 # Add row names for the array
 rownames(base_arima_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(reconciled_arima) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
-rownames(cross_rec_arima) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(cross_sec_arima) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(temp_rec_arima) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 
@@ -223,7 +223,7 @@ for (t in 1:folds){
     id <- which(simplify2array(strsplit(colnames(FoReco_data$res),
                                         split = "_"))[1, ] == "k1")
     mres <- t(FoReco_data$res[, id])
-    hts_recf_list[[h]] <- htsrec(mbase, C = FoReco_data$C, comb = "bu",
+    hts_recf_list[[h]] <- htsrec(mbase, C = FoReco_data$C, comb = "shr",
                                  res = mres, keep = "recf")
   }
   names(hts_recf_list) <- paste("k", K, sep="")
@@ -242,14 +242,17 @@ for (t in 1:folds){
     tsbase <- FoReco_data$base[l, ]
     # ts residuals ([lowest_freq' ...  highest_freq']')
     tsres <- FoReco_data$res[l, ]
-    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "struc",
+    thf_recf[l,] <- thfrec(tsbase, m = 12, comb = "wlsv",
                            res = tsres, keep = "recf")
   }
   
   
   ## cross-temp
-  oct_recf_struc <- octrec(FoReco_data$base, m = 12, C = FoReco_data$C,
-                           comb = "struc", res = FoReco_data$res, keep = "recf")
+  # Heuristic first-temporal-then-cross-sectional cross-temporal reconciliation
+  tcs_recf <- tcsrec(FoReco_data$base, m = 12, C = FoReco_data$C,
+                     thf_comb = "wlsv", hts_comb = "shr",
+                     res = FoReco_data$res)$recf
+  
 
   discrepancy <- function(x, tol = sqrt(.Machine$double.eps)) {
     cs <- max(abs(cs_info$Ut %*% x))
@@ -257,12 +260,12 @@ for (t in 1:folds){
     cat("cs discrepancy:", ifelse(cs>tol, sprintf("%.8f", cs), 0),
         "\nte discrepancy:",ifelse(te>tol, sprintf("%.8f", te), 0))
   }
-  discrepancy(oct_recf_struc)
+  discrepancy(tcs_recf)
 
 
   for (j in 1:nrow(base)){
     base_arima_forecast[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
-    reconciled_arima[j, , t] <- t(as.matrix(oct_recf_struc[j, -c(1:16)]))
+    reconciled_arima[j, , t] <- t(as.matrix(tcs_recf[j, -c(1:16)]))
     cross_sec_arima[j, , t] <- t(as.matrix(hts_recf[j, -c(1:16)]))
     temp_rec_arima[j, , t] <- t(as.matrix(thf_recf[j, -c(1:16)]))
   }
