@@ -406,7 +406,8 @@ for (i in 1:folds) {
 
 # Plotting forecasts for one fold
 ## Initialise the fold number we want to plot
-fold_num = 10
+### Note that there will be missing values in true values from fold 23
+fold_num = 12
 
 ## Plotting
 plot_ct <- df |>

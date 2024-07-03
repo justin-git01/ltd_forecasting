@@ -1,0 +1,871 @@
+---
+pagetitle: "Forecast Reconciliation" 
+subtitle: "Land Transfer Duty"
+author: "Hoang Do"
+email: "vdoo0002@student.monash.edu"
+date: "22-05-2024"
+unit-url: "https://github.com/justin-git01/ltd_forecasting"
+footer: "Department of Treasury and Finance"
+format: 
+  revealjs:
+    slide-number: c
+    width: 1280
+    height: 720
+    logo: images/monash-one-line-black-rgb.png
+    theme: assets/monash.scss
+    css: [assets/tachyons-addon.css, assets/custom.css]
+    include-after-body: "assets/after-body.html"
+execute:
+  echo: false
+---
+
+```{r, include = FALSE}
+current_file <- knitr::current_input()
+basename <- gsub(".[Rq]md$", "", current_file)
+library(tidyverse)
+library(kableExtra)
+library(readxl)
+library(fpp3)
+library(plotly)
+library(ggplot2)
+library(visNetwork)
+library(tidygraph)
+library(corrplot)
+library(urca)
+library(here)
+library(tseries)
+library(dplyr)
+library(ggdag)
+
+knitr::opts_chunk$set(
+  fig.path = sprintf("images/%s/", basename),
+  fig.width = 6,
+  fig.height = 4,
+  fig.align = "center",
+  out.width = "100%",
+  fig.retina = 3,
+  warning = FALSE,
+  message = FALSE,
+  cache = F,
+  cache.path = "cache/"
+)
+```
+
+```{r}
+visnetwork_hierarchy <- function(data, ...) {
+  nodes <- as_tibble(mutate(activate(data, "nodes"), id = row_number(), level = node_distance_from(node_is_root())))
+  edges <- as_tibble(activate(data, "edges"))
+  graph <- visNetwork(nodes, edges, ...) |> 
+    visHierarchicalLayout(direction = "UD", shakeTowards = "leaves") |> 
+    visOptions(
+      highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"), 
+      collapse = list(enabled = TRUE, fit = FALSE, resetHighlight = TRUE, keepCoord = TRUE,
+                      clusterOptions = list(fixed = TRUE, physics = TRUE))
+    ) |> 
+    visEdges(scaling = list(label = list(enabled = FALSE)), arrows = "to") |> 
+    visNodes(font = list(size = 16))
+  
+  graph$x$tree <- list(updateShape = TRUE, shapeVar = "dot", shapeY = "square")
+  graph
+}
+visnetwork_graph <- function(data, layout = "layout_nicely", ...) {
+  nodes <- as_tibble(mutate(activate(data, "nodes"), id = row_number()))
+  edges <- as_tibble(activate(data, "edges"))
+  graph <- visNetwork(nodes, edges, ...) |> 
+    visIgraphLayout(layout = layout, randomSeed = 123091238) |> 
+    visOptions(
+      highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), hover = FALSE)
+    ) |> 
+    visEdges(width = 3, scaling = list(label = list(enabled = FALSE)), arrows = "to") |> 
+    visNodes(size = 20)
+  
+  graph$x$tree <- list(updateShape = TRUE, shapeVar = "dot", shapeY = "square")
+  graph
+}
+```
+
+
+```{r}
+# Load ltd aggregate data
+ltd_agg <- read_excel(here("data/LTD_new.xlsx"), sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI,
+         lending = LENDING) |>
+  dplyr::select(c(Date, ltd, sales, hvi, lending))
+
+# Convert to tsibble object
+ltd_agg_ts <- ltd_agg |>
+  mutate(Month = yearmonth(Date)) |>
+  dplyr::select(-Date)  |>
+  as_tsibble(index = Month) |>
+  relocate(Month)
+
+# Load ltd unit data and join with aggregate data
+ltd_unit <- read_excel(here("data/LTD_new.xlsx"), sheet = 2) |>
+  rename(Date = ...1) |>
+  dplyr::select(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
+  left_join(ltd_agg, by = c("Date")) |>
+  dplyr::select(-ltd)
+
+# Convert to tsibble object
+ltd_unit_ts <- ltd_unit |>
+  mutate(Month = yearmonth(Date)) |>
+  dplyr::select(-Date)  |>
+  as_tsibble(index = Month) |>
+  relocate(Month)
+```
+
+```{r}
+# Decompositions
+dcmp <- ltd_unit_ts |>
+  model(stl = STL(sales))
+
+# Filter out sales trend
+sales_trend <- components(dcmp) |>
+  select(trend) |>
+  relocate(Month)
+
+# Join sales trend to ltd_unit
+ltd_unit_ts <- ltd_unit_ts |>
+  left_join(sales_trend, by = c("Month")) 
+```
+
+
+```{r}
+# Tax revenue data
+tax_rev <- read_excel(here::here("data/tax_rev.xlsx"), sheet = 2) |>
+  rename(Date = ...1)|>
+  mutate(reliance = `Reliance on stamp duty` *100 ) |>
+  dplyr::select(Date, reliance) |>
+  mutate(Quarter = yearquarter(Date)) |>
+  dplyr::select(-Date)  |>
+  as_tsibble(index = Quarter) |>
+  relocate(Quarter)
+```
+
+```{r}
+dtf_rmse <- read_excel(here::here("data/final_dtf_rmse.xlsx"), sheet = 4)
+dtf_mape <- read_excel(here::here("data/final_dtf_rmse.xlsx"), sheet = 5)
+```
+
+```{r, echo = F, message = F, warning = F}
+# Load rmse RDA file
+load(here::here("data/rmse_base_arima.RData"))
+load(here::here("data/rmse_base_vecm.RData"))
+load(here::here("data/rmse_cross_temp_arima.RData"))
+load(here::here("data/rmse_cross_temp_vecm.RData"))
+load(here::here("data/rmse_temp_arima.RData"))
+load(here::here("data/rmse_temp_vecm.RData"))
+load(here::here("data/rmse_cross_sec_arima.RData"))
+load(here::here("data/rmse_cross_sec_vecm.RData"))
+
+# Load mape RDA file
+load(here::here("data/mape_base_arima.RData"))
+load(here::here("data/mape_base_vecm.RData"))
+load(here::here("data/mape_cross_temp_arima.RData"))
+load(here::here("data/mape_cross_temp_vecm.RData"))
+load(here::here("data/mape_temp_arima.RData"))
+load(here::here("data/mape_temp_vecm.RData"))
+load(here::here("data/mape_cross_sec_arima.RData"))
+load(here::here("data/mape_cross_sec_vecm.RData"))
+
+```
+
+
+## <br>[`r rmarkdown::metadata$pagetitle`]{.monash-blue} {#etc5523-title background-image="images/bg-01.png"}
+
+### `r rmarkdown::metadata$subtitle`
+
+Author: *`r rmarkdown::metadata$author`*
+
+`r rmarkdown::metadata$department`
+
+::: tl
+<br>
+
+<ul class="fa-ul">
+
+<li>
+
+[<i class="fas fa-envelope"></i>]{.fa-li}`r rmarkdown::metadata$email`
+
+</li>
+
+<li>
+
+[<i class="fas fa-calendar-alt"></i>]{.fa-li} `r rmarkdown::metadata$date`
+
+</li>
+
+<li>
+
+[<i class="fa-solid fa-globe"></i>]{.fa-li}<a href="`r rmarkdown::metadata[["unit-url"]]`">`r rmarkdown::metadata[["unit-url"]]`</a>
+
+</li>
+
+</ul>
+
+<br>
+:::
+
+
+## Current forecasting approach
+
+::: callout-note
+## DTF forecast result
+
+* Cointegration pattern between LTD, Sales, and Home Value Index (HVI)
+
+* Vector Error Correction Model (VECM) with 3 lags
+
+* RMSE: Constantly drops until 7-step-ahead forecasts then increases
+
+:::
+
+<center>
+
+```{r dtf_rmse, fig.height = 3, fig.width = 3, out.width="50%"}
+
+## Create the plot
+dtf_rmse_plot <- ggplot(dtf_rmse, aes(x = h, y = rmse)) +
+  geom_line(linewidth = 1.1, color = "red") +
+  labs(x = "h-step Forecast", y = "RMSE Value", title = "RMSE of total LTD forecast") +
+  scale_x_continuous(breaks = 1:12) +
+  theme_minimal()
+
+## Convert ggplot to plotly
+ggplotly(dtf_rmse_plot)
+```
+
+</center>
+
+
+# Hierarchical Time Series {background="#006DAE"}
+
+## Cross-sectional hierarchy
+
+::: callout-note
+
+## Structure
+
+* Each level of aggregation exhibit distinct characteristics.
+
+* $\text{y}_t = y_{res,t} + y_{non-res,t}$ and $y_{non-res,t} = y_{ind,t} + y_{comm,t} + y_{other,t}$
+
+:::
+
+<center>
+```{r}
+#| echo: false
+#| output: hide
+tidygraph::tbl_graph(
+  nodes = tibble(label = c("Total", "Non-Residential", "Residential", "Industry", "Commercial","Other")),
+  edges = tibble(from = c(1, 1, 2, 2, 2), to = c(2, 3, 4, 5, 6))
+) |>
+  visnetwork_hierarchy(width = 750, height = 350)
+```
+</center>
+
+## {}
+
+::: callout-note
+
+## Notation
+
+Can be written in matrix form: 
+
+$$
+\begin{bmatrix}
+  \text{Total}_{t} \\
+  \text{Non-residential}_{t} \\
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  1 & 1 & 1 & 1 \\
+  0 & 1 & 1 & 1 \\
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  \text{Residential}_{t} \\
+  \text{Commercial}_{t} \\
+  \text{Industrial}_{t} \\
+  \text{Other}_{t} \\
+\end{bmatrix}
+$$
+or in a more compact notation:
+
+$$
+\textbf{y}_{t} = \textbf{S}\textbf{b}_{t}
+$$
+:::
+
+## Temporal hierarchy 
+
+::: {.callout-note}
+# Sructure
+
+* A time series can be disaggregated by **non-overlapping** temporal frequencies.
+
+* Forecasts can be generated at *bi-monthly*, *quarterly*, *four-monthly*, *semi-annually*, and *annually* frequencies.
+
+* Monthly value as the bottom level.
+
+:::
+
+<center>
+```{r}
+tidygraph::tbl_graph(
+  nodes = tibble(label = c("Year", "Q1", "Q2", "Q3", "Q4", month.abb)),
+  edges = tibble(from = c(rep(1, 4), rep(2:5, each = 3)), to = c(2:17))
+) |>
+  visnetwork_hierarchy(width = 600, height = 200) |> 
+  visNodes(font = list(size = 40))
+```
+</center>
+
+::: aside
+Temporal reconciliation is described in [**Athanasopoulos et al. (2017).**]{.monash-blue}
+:::
+
+## Cross-sectional + Temporal = Cross-Temporal
+
+<center>
+<img src="images/cross-temporal.png" width = "70%" height = "80%">
+
+</center>
+
+::: aside
+
+Image from [**Kourentzes and Athanasopoulos (2019)**]{.monash-blue}
+
+:::
+
+# Vector Error Correction Model {background="#006DAE"}
+
+## {}
+
+:::callout-note
+# What is Vector Error Correction Model (VECM)
+
+**VECM**: A model that captures both short-term dynamics and long-term equilibrium relationships in non-stationary, cointegrated time series data.
+
+:::
+
+:::callout-note
+# Key Components
+
+* *Cointegration*: Long-term equilibrium relationship among variables.
+* *Error Correction Term*: Speed of adjustment towards equilibrium.
+* *Short-term Dynamics*: Immediate responses to changes.
+
+:::
+
+## {}
+:::callout-note
+# Steps to Construct a VECM
+
+1. *Check for Stationarity*: Use unit root tests (ADF, PP).
+
+2. *Test for Cointegration*: Perform Johansen test using use the trace test statistic to find cointegrating relationships.
+
+3. *Specify the VECM*: Choose lag length and cointegrating rank.
+
+4. *Estimate the VECM*: Use maximum likelihood estimation.
+
+5. *Diagnostic Checks*: Validate model with tests for autocorrelation, heteroscedasticity, and normality.
+
+:::
+
+## Non-stationary time series
+
+::: callout-note
+# Why non-stationary?
+
+* Land transfer duty and home value index have trends.
+
+* Sales has a seasonal pattern.
+
+:::
+
+::: flex
+
+```{r}
+ltd_unit_ts |>
+  autoplot(ltd_total/1000000, color = "blue") +
+  labs(x = "Date", y = "Value (in $m)", title = "Land Transfer Duty over time") +
+  theme_minimal()
+
+```
+
+```{r}
+ltd_unit_ts |>
+  autoplot(sales, color = "blue") +
+  labs(x = "Date", y = "Units", title = "Unit of properties sold over time") +
+  theme_minimal()
+
+```
+
+```{r}
+ltd_unit_ts |>
+  autoplot(hvi, color = "blue") +
+  labs(x = "Date", y = "Index Point", title = "Home value index over time") +
+  theme_minimal()
+
+```
+
+:::
+
+## Choosing the right variable {auto-animate=true}
+
+::: callout-tip 
+
+# Procedure
+
+* **Step 1**: Fit a VECM to land transfer duty and other variables
+
+* **Step 2**: Form a linear combination using eigenvector components
+
+* **Step 3**: Use *Augmented Dickey-Fuller (ADF)* test for stationary
+
+:::
+
+## Result
+
+::: flex
+```{r}
+total_dag <- ggdag::dagify(total ~ sales,
+                           sales ~ hvi,
+                           hvi ~ total,
+  labels = c("total" = "Total,\n Residential",
+  "sales" = "Sales",
+  "hvi" = "Home value index"))
+
+ggdag::ggdag(total_dag, # the dag object we created
+             text = FALSE, # this means the original names won't be shown
+             use_labels = "label") + # instead use the new names
+  theme_void()
+```
+
+```{r}
+total_dag2 <- ggdag::dagify(total ~ sales,
+                           sales ~ lending,
+                           lending ~ total,
+  labels = c("total" = "Non-residential,\n Commercial, \n Industrial, \n Other",
+  "sales" = "Sales Trend",
+  "lending" = "Lending"))
+
+ggdag::ggdag(total_dag2, # the dag object we created
+             text = FALSE, # this means the original names won't be shown
+             use_labels = "label") + # instead use the new names
+  theme_void()
+```
+:::
+
+
+## Choose the optimal lag {auto-animate=true}
+
+::: callout-tip
+
+# Procedure
+
+* **Step 1**: Different lag ranges for each temporal frequency
+
+* **Step 2**: Fit a VECM for each lag value
+
+* **Step 3**: Choose optimal lag value based on **AICc**
+
+:::
+
+# Forecast ALL series {background="#006DAE"}
+
+## {auto-animate=true}
+
+::: {style="margin-top: 200px; font-size: 3em; color: red;"}
+Forecast at different levels don't add up!
+:::
+
+## {auto-animate=true}
+
+::: {style="margin-top: 100px;"}
+Forecast at different levels don't add up!
+:::
+
+::: {.callout-important}
+
+Independently produced forecasts are [**incoherent**]{.danger},
+
+$\hat{LTD}_{T+h|T} \neq \hat{Comm}_{T+h|T} + \hat{Ind}_{T+h|T} + \hat{Other}_{T+h|T} + \hat{Residential}_{T+h|T}$.
+
+Or for temporal hierarchy
+
+$\hat{Year}_{T+h|T} \neq \hat{Jan}_{T+h|T} + \hat{Feb}_{T+h|T} + \hat{Mar}_{T+h|T} + ... + \hat{Dec}_{T+h|T}$.
+:::
+
+
+# Reconciliation {background="#006DAE"}
+
+## {}
+::: callout-important
+
+# What is forecast reconciliation?
+
+Forecast reconciliation is a post-forecasting process that involves transforming
+a set of incoherent forecasts into coherent forecasts which satisfy a given set of
+linear constraints for a multivariate time series.
+
+:::
+
+::: callout-note
+## Hyndman et al. (2011)
+* First obtain a set of base forecast $\bf{\hat{y}}_{h}$, 
+
+* Then all coherent forecast can be represented as:
+<center>
+$\bf{\tilde{y}}_{h} = \bf{SG}\hat{\bf{y}}_{h}$, 
+</center>
+
+where **G** is a matrix that maps the base forecasts into the bottom level, and the summing matrix **S** sums these up using the aggregation structure to produce a set of **coherent forecasts** $\bf{\tilde{y}}_\text{h}$
+
+**Objective**: We need to find the optimal **G** matrix.
+
+:::
+
+# The MinT optimal reconciliation approach {background="#006DAE"}
+
+## {}
+
+::: callout-note
+# MinT
+
+[**Wickramasuriya et al. (2019)**]{.monash-blue} found a **G** matrix that minimises the total forecast variance of the set of coherent forecasts, leading to the *MinT (Minimum Trace)* optimal reconciliation approach.
+
+1. First we want to make sure we have unbiased forecasts
+
+2. Next we need to find the errors in our forecasts
+
+[**Wickramasuriya et al. (2019)**]{.monash-blue} show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
+
+<center>
+$\textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'}$,
+</center>
+
+where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
+
+The objective is to find a matrix **G** that minimises the error variances of the coherent forecasts.
+
+
+:::
+
+## {}
+
+:::callout-note
+# MinT
+[**Wickramasuriya et al. (2019)**]{.monash-blue} show that: 
+
+<center>
+$\textbf{G} = (\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1}$,
+</center>
+
+minimises the trace of $\textbf{V}_{h}$ subject to **S** **G** **S** = **S**
+
+Therefore, the optimally reconciled forecasts are given by:
+
+<center>
+$\bf{\tilde{y}}_{h} = \textbf{S}(\textbf{S}'\textbf{W}_{h}^{-1}\textbf{S})^{-1}\textbf{S}'\textbf{W}_{h}^{-1}\bf{\hat{y}}_{h}$,
+</center>
+which refers as the **MinT**
+
+Now we need to estimate $\textbf{W}_{h}$, which is challenging.
+
+
+
+:::
+
+## {}
+
+::: callout-note
+
+# Four simplifying approximations  
+1. $\bf{OLS}$ [**(Hyndman et al. (2011))**]{.monash-blue}.: 
+$\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$ for all h, where $\text{k}_{h} > 0$.
+
+
+2. $\bf{WLS}_{S}$  [**(Athanasopoulos et al. (2017))**]{.monash-blue}: 
+$\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$ for all h, where $\text{k}_{h} > 0$, $\mathbf{\Lambda} = diag(\textbf{S1})$, and $\bf{1}$ is  unit vector of dimension $\it{m}$ (the number of bottom-level series).
+
+
+3. $\bf{WLS}_{V}$ [**(Hyndman, Lee & Wang (2016))**]{.monash-blue}: 
+    $\mathbf{W}_{h} = \text{k}_{h}\text{diag(}\mathbf{\hat{W}}_{1}\text{)}$ for all h, where $\text{k}_{h} > 0$,
+
+$$
+\mathbf{\hat{W}}_{1} = \frac{1}{T}\sum_{t=1}^{T}\textbf{e}_{t}\textbf{e'}_{t},
+$$
+and $\textbf{e}_{t}$ is an $\it{n}$-dimensional vector of residuals of the models that generated the base forecasts stacked in the same order as the data.
+
+4. $\bf{MinT}_{S}$ [**Wickramasuriya, Athanasopoulos & Hyndman (2018)**]{.monash-blue}.: 
+  $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\hat{W}^{*}}_{1, D}$ for all h, where $\text{k}_{h} > 0$, and $\mathbf{\hat{W}^{*}}_{1, D} = \mathit{\lambda}\mathbf{\hat{W}^{*}}_{1, D} + \text{(1-} \mathit{\lambda})\mathbf{\hat{W}}_{1}$ is a shrinkage estimator with diagonal target $\mathbf{\hat{W}^{*}}_{1, D}$, a diagonal matrix comprising the diagonal entries of $\mathbf{\hat{W}}_{1}$, and $\mathit{\lambda}$ the shrinkage intensity parameter. 
+:::
+
+# Cross-temporal reconciliation {background="#006DAE"}
+::: {.monash-gray10 .f2 .footnote}
+
+<br><br>
+
+Heuristic first-temporal-then-cross-sectional reconciliation
+
+:::
+
+## 2-step approach 
+
+
+::: callout-note
+## Kourentzes and Athanasopoulos (2019)
+* **Step 1**: Independently generated **temporally coherence** forecast (**THieFs**) for each node of the cross-sectional hierarchy
+        
+* **Step 2**: From previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels
+
+This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level, 
+
+* Averaging across these, we compose a consesus reconciliation matrix **SG** , where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels
+        --> **cross-temporally coherence** forecast
+        
+:::
+
+
+## FoReco package
+
+<img src="images/logo.svg" class="absolute right-0 bottom-0" height="350px">
+
+::: callout-note
+## R package, Di Fonzo and Girolimetto (2022)
+* Offers classical (bottom-up and top-down) and modern (optimal and heuristic combination) **forecast reconciliation procedures** 
+
+* Allows for *cross-sectional*, *temporal* and *cross-temporal* linearly constrained multiple time series
+:::
+
+::: aside
+
+More info on FoReco package can be found [here](https://cran.r-project.org/web/packages/FoReco/index.html)
+
+:::
+
+# Results {background="#006DAE"}
+
+## {}
+
+::: callout-note
+# Comparing forecasts RMSE
+
+* RMSE constructed using **time series cross-validation** with *10 folds*
+* **VECM base forecast** performs much better
+* Overall, reconciliation **improves forecast accuracy** of base forecast
+
+:::
+
+
+<center>
+
+```{r}
+# Plotting RMSE of base forecast to choose the benchmark 
+## Node index (1: Total, 2: Non-residential, 3: Commercial, 4: Industrial, 5: Other, 5: Residential)
+i = 1
+## Create a data frame for plotting
+rmse_base_data <- data.frame(
+  h_step = 1:12,
+  RMSE_ARIMA_base = RMSE_arima_h_base[i,],
+  RMSE_VECM_base = RMSE_vecm_h_base[i,],
+  rmse_ARIMA_rec = RMSE_arima_h_rec[i,],
+  rmse_VECM_rec = RMSE_vecm_h_tcs_rec[i,],
+  rmse_DTF = dtf_rmse$rmse
+)
+
+## Convert to long format
+rmse_data_long <- rmse_base_data %>% 
+  pivot_longer(cols = -h_step, names_to = "Method", values_to = "RMSE")
+
+## Add columns for line type and method
+rmse_data_long <- rmse_data_long %>%
+  mutate(
+    LineType = ifelse(grepl("rec", Method), "Reconciled", "Base"),
+    MethodGroup = case_when(
+      grepl("ARIMA", Method) ~ "ARIMA",
+      grepl("VECM", Method) ~ "VECM",
+      Method == "rmse_DTF" ~ "DTF"
+    )
+  )
+
+## Create the plot with specified colors and line types
+ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = MethodGroup, linetype = LineType)) +
+  geom_line(linewidth = 1.1) +
+  scale_color_manual(values = c(
+    "ARIMA" = "blue",
+    "VECM" = "red",
+    "DTF" = "green"
+  )) +
+  scale_linetype_manual(values = c(
+    "Base" = "solid",
+    "Reconciled" = "dashed"
+  )) +
+  labs(x = "h-step Forecast", y = "RMSE Value", title = "Monthly total LTD base and reconciled forecast RMSE by Method") +
+  scale_x_continuous(breaks = 1:12) +
+  theme_minimal() +
+  guides(
+    colour = guide_legend(title = "Colour: Model", override.aes = list(linetype = "solid")),
+    linetype = guide_legend(title = "Line type: Reconciled/Base")
+  )
+
+## Convert ggplot to plotly
+ggplotly(ggplot_rmse)
+
+```
+
+</center>
+
+## {}
+
+<center>
+
+```{r}
+# Plotting RMSE of base forecast to choose the benchmark 
+## Node index (1: Total, 2: Non-residential, 3: Commercial, 4: Industrial, 5: Other, 5: Residential)
+i = 1
+## Create a data frame for plotting
+mape_base_data <- data.frame(
+  h_step = 1:12,
+  mape_ARIMA_base = mape_arima_base[i,],
+  mape_VECM_base = mape_vecm_base[i,],
+  mape_ARIMA_rec = mape_arima_cross_temp[i,],
+  mape_VECM_rec = mape_vecm_cross_temp[i,],
+  mape_DTF = dtf_mape$mape
+)
+
+## Convert to long format
+mape_data_long <- mape_base_data %>% 
+  pivot_longer(cols = -h_step, names_to = "Method", values_to = "MAPE")
+
+## Add columns for line type and method
+mape_data_long <- mape_data_long %>%
+  mutate(
+    LineType = ifelse(grepl("rec", Method), "Reconciled", "Base"),
+    MethodGroup = case_when(
+      grepl("ARIMA", Method) ~ "ARIMA",
+      grepl("VECM", Method) ~ "VECM",
+      Method == "mape_DTF" ~ "DTF"
+    )
+  )
+
+## Create the plot with specified colors and line types
+ggplot_mape <- ggplot(mape_data_long, aes(x = h_step, y = MAPE, colour = MethodGroup, linetype = LineType)) +
+  geom_line(linewidth = 1.1) +
+  scale_color_manual(values = c(
+    "ARIMA" = "blue",
+    "VECM" = "red",
+    "DTF" = "green"
+  )) +
+  scale_linetype_manual(values = c(
+    "Base" = "solid",
+    "Reconciled" = "dashed"
+  )) +
+  labs(x = "h-step Forecast", y = "MAPE Value", title = "Monthly total LTD base and reconciled forecast MAPE by Method") +
+  scale_x_continuous(breaks = 1:12) +
+  theme_minimal() +
+  guides(
+    colour = guide_legend(title = "Colour: Model", override.aes = list(linetype = "solid")),
+    linetype = guide_legend(title = "Line type: Reconciled/Base")
+  )
+
+## Convert ggplot to plotly
+ggplotly(ggplot_mape)
+
+```
+
+</center>
+
+## {}
+
+::: callout-note
+## Reconciled VECM against DTF
+* Below the horizontal line means cross-temporal forecast reconciliation performs better
+
+* Overall, cross-temporal reconciled forecasts perform better
+
+:::
+
+<center>
+```{r}
+i=1
+prop_data_vecm_dtf <- data.frame(
+  h_step = 1:12,
+  RMSE = RMSE_vecm_h_tcs_rec[i,]/dtf_rmse$rmse,
+  MAPE = mape_vecm_cross_temp[i,]/dtf_mape$mape
+)
+
+prop_data_vecm_dtf <- prop_data_vecm_dtf |>
+  pivot_longer(-h_step, names_to = "Ratio")
+
+# Create the plot
+ggplot_prop_vecm_dtf <- ggplot(prop_data_vecm_dtf, aes(x = h_step, y = value, color = Ratio)) +
+  geom_line(linewidth = 1.1) +
+  geom_hline(yintercept = 1) +
+  labs(x = "h-step Forecast", y = "Ratio", title = "Ratio of RMSE and MAPE of reconciled forecast to DTF forecast") +
+  scale_x_continuous(breaks = 1:12) +
+  theme_minimal()
+
+# Display the plot
+ggplotly(ggplot_prop_vecm_dtf)
+```
+
+
+</center>
+
+
+
+## Recap 
+
+
+::: callout-important
+
+## Summary
+* Overall, cross-temporal reconciled forecast performs better
+
+* Reconciliation helps improving where the forecasts are poor
+
+* Accuracy improvement proves it is efficient enough to adopt forecast reconciliation
+
+* **Limitation**: subjectivity and small sample selection bias
+:::
+
+## What else?
+
+## References
+:::callout-tip
+
+Hyndman, R. J., & Athanasopoulos, G. (2021). Forecasting: Principles and practice. Otexts. [https://otexts.com/fpp3/](https://otexts.com/fpp3/)
+
+Athanasopoulos, G., Hyndman, R. J., Kourentzes, N., & Petropoulos, F. (2017). Forecasting with
+  temporal hierarchies. European Journal of Operational Research, 262(1), 60-74.                 [https://doi.org/10.1016/j.ejor.2017.02.046](https://doi.org/10.1016/j.ejor.2017.02.046)
+
+Wickramasuriya, S. L., Athanasopoulos, G., & Hyndman, R. J. (2018). Optimal forecast                 reconciliation for hierarchical and grouped time series through trace minimization.            Journal of the American Statistical Association, 114(526), 804-819.                            [https://doi.org/10.1080/01621459.2018.1448825](https://doi.org/10.1080/01621459.2018.1448825)
+
+Girolimetto, D., G. Athanasopoulos, T. Di Fonzo, R.J. Hyndman, Cross-temporal probabilistic           forecast reconciliation: Methodological and practical issues, International Journal of         Forecasting, 2023.[https://doi.org/10.1016/j.ijforecast.2023.10.003.](https://www.sciencedirect.com/science/article/pii/S0169207023001024)
+:::
+
+## References
+:::callout-tip
+
+Kourentzes, N., & Athanasopoulos, G. (2019). Cross-temporal coherent forecasts for Australian        tourism. Annals of Tourism Research, 75, 393-409.                                              [https://doi.org/10.1016/j.annals.2019.02.001](https://doi.org/10.1016/j.annals.2019.02.001)
+
+Malakellis, M., & Warlters, M. (2021). The economic costs of transfer duty: a literature             review. NSW Government.                                                                        [https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf](https://www.treasury.nsw.gov.au/sites/default/files/2021-06/the_economic_costs_of_transfer_duty_a_literature_review.pdf)
+
+Girolimetto, D. & Di Fonzo, T. (2022), FoReco: Point Forecast Reconciliation.
+      [https://danigiro.github.io/FoReco/](https://danigiro.github.io/FoReco/)
+:::

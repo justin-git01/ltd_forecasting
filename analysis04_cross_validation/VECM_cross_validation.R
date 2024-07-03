@@ -395,7 +395,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 8) |>
+  filter(id == 2) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -406,7 +406,7 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 score_ct1 <- df |>
-  filter(id == 10) |>
+  filter(id == 2) |>
   select(-id) |>
   pivot_longer(-c(Date, observations), names_to = "Approach") |>
   group_by(Approach) |>
