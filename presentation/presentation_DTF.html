@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.554">
 
   <meta name="author" content="Hoang Do">
-  <meta name="dcterms.date" content="2025-10-05">
+  <meta name="dcterms.date" content="2024-09-07">
   <title>Forecast Reconciliation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -324,6 +324,9 @@
     }
   </style>
   <script src="presentation_DTF_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="presentation_DTF_files/libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
+  <script src="presentation_DTF_files/libs/vis-9.1.0/vis-network.min.js"></script>
+  <script src="presentation_DTF_files/libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
   <script src="presentation_DTF_files/libs/plotly-binding-4.10.2/plotly.js"></script>
   <script src="presentation_DTF_files/libs/typedarray-0.1/typedarray.min.js"></script>
   <script src="presentation_DTF_files/libs/jquery-3.5.1/jquery.min.js"></script>
@@ -331,9 +334,6 @@
   <script src="presentation_DTF_files/libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
   <link href="presentation_DTF_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
   <script src="presentation_DTF_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
-  <link href="presentation_DTF_files/libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
-  <script src="presentation_DTF_files/libs/vis-9.1.0/vis-network.min.js"></script>
-  <script src="presentation_DTF_files/libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -351,7 +351,7 @@
 <p><span class="fa-li"><i class="fas fa-envelope"></i></span>vdoo0002@student.monash.edu</p>
 </li>
 <li>
-<p><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> 22-05-2024</p>
+<p><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> 09-07-2024</p>
 </li>
 <li>
 <p><span class="fa-li"><i class="fa-solid fa-globe"></i></span><a href="https://github.com/justin-git01/ltd_forecasting">https://github.com/justin-git01/ltd_forecasting</a></p>
@@ -359,34 +359,6 @@
 </ul>
 <p><br></p>
 </div>
-</section>
-<section id="current-forecasting-approach" class="slide level2">
-<h2>Current forecasting approach</h2>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>DTF forecast result</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li><p>Cointegration pattern between LTD, Sales, and Home Value Index (HVI)</p></li>
-<li><p>Vector Error Correction Model (VECM) with 3 lags</p></li>
-<li><p>RMSE: Constantly drops until 7-step-ahead forecasts then increases</p></li>
-</ul>
-</div>
-</div>
-</div>
-<center>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-59cb278bef2414d86d13" style="width:50%;height:288px;"></div>
-<script type="application/json" data-for="htmlwidget-59cb278bef2414d86d13">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[123752157.947302,117799952.637224,128344829.80404,128777577.431141,127318202.797787,124789295.810198,125531746.473345,118848486.554694,132936581.148512,128553134.477267,122213802.447918,103733571.647283],"text":["h:  1<br />rmse: 123752158","h:  2<br />rmse: 117799953","h:  3<br />rmse: 128344830","h:  4<br />rmse: 128777577","h:  5<br />rmse: 127318203","h:  6<br />rmse: 124789296","h:  7<br />rmse: 125531746","h:  8<br />rmse: 118848487","h:  9<br />rmse: 132936581","h: 10<br />rmse: 128553134","h: 11<br />rmse: 122213802","h: 12<br />rmse: 103733572"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.8401826484018,"r":7.30593607305936,"b":37.2602739726027,"l":66.4840182648402},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"RMSE of total LTD forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[102273421.172222,134396731.623574],"tickmode":"array","ticktext":["1.1e+08","1.2e+08","1.3e+08"],"tickvals":[110000000,120000000,130000000],"categoryorder":"array","categoryarray":["1.1e+08","1.2e+08","1.3e+08"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"RMSE Value","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"99742de08b6d":{"x":{},"y":{},"type":"scatter"}},"cur_data":"99742de08b6d","visdat":{"99742de08b6d":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-</center>
 </section>
 <section>
 <section id="hierarchical-time-series" class="title-slide slide level1 center" data-background="#006DAE">
@@ -414,8 +386,8 @@
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="htmlwidget-109c38d6902252a48e03" style="width:750px;height:350px;" class="visNetwork html-widget "></div>
-<script type="application/json" data-for="htmlwidget-109c38d6902252a48e03">{"x":{"nodes":{"label":["Total","Non-Residential","Residential","Industry","Commercial","Other"],"id":[1,2,3,4,5,6],"level":[0,1,1,2,2,2]},"edges":{"from":[1,1,2,2,2],"to":[2,3,4,5,6]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":16}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":750,"height":350,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-31f01d385c9153e78ce1" style="width:750px;height:350px;" class="visNetwork html-widget "></div>
+<script type="application/json" data-for="htmlwidget-31f01d385c9153e78ce1">{"x":{"nodes":{"label":["Total","Non-Residential","Residential","Industrial","Commercial","Other"],"id":[1,2,3,4,5,6],"level":[0,1,1,2,2,2]},"edges":{"from":[1,1,2,2,2],"to":[2,3,4,5,6]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":16}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":750,"height":350,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -486,8 +458,8 @@
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="htmlwidget-1ce98b55cca2f1d4f467" style="width:600px;height:200px;" class="visNetwork html-widget "></div>
-<script type="application/json" data-for="htmlwidget-1ce98b55cca2f1d4f467">{"x":{"nodes":{"label":["Year","Q1","Q2","Q3","Q4","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"id":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"level":[0,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2]},"edges":{"from":[1,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5],"to":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":40}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":600,"height":200,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-11be852866638b80bcb3" style="width:600px;height:200px;" class="visNetwork html-widget "></div>
+<script type="application/json" data-for="htmlwidget-11be852866638b80bcb3">{"x":{"nodes":{"label":["Year","Q1","Q2","Q3","Q4","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"id":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"level":[0,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2]},"edges":{"from":[1,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5],"to":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","font":{"size":40}},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD","shakeTowards":"leaves"}},"edges":{"arrows":"to","scaling":{"label":{"enabled":false}}}},"groups":null,"width":600,"height":200,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":true},"keepCoord":true,"labelSuffix":"(cluster)"},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square"}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -511,6 +483,7 @@
 </section>
 <section id="section-1" class="slide level2">
 <h2></h2>
+<p><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -544,6 +517,7 @@
 </section>
 <section id="section-2" class="slide level2">
 <h2></h2>
+<p><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -554,8 +528,8 @@
 </div>
 <div class="callout-content">
 <ol type="1">
-<li><p><em>Check for Stationarity</em>: Use unit root tests (ADF, PP).</p></li>
-<li><p><em>Test for Cointegration</em>: Perform Johansen test using use the trace test statistic to find cointegrating relationships.</p></li>
+<li><p><em>Check for Stationarity</em>: Use unit root tests (ADF).</p></li>
+<li><p><em>Test for Cointegration</em>: Perform Johansen test using the trace test statistic to find cointegrating relationships.</p></li>
 <li><p><em>Specify the VECM</em>: Choose lag length and cointegrating rank.</p></li>
 <li><p><em>Estimate the VECM</em>: Use maximum likelihood estimation.</p></li>
 <li><p><em>Diagnostic Checks</em>: Validate model with tests for autocorrelation, heteroscedasticity, and normality.</p></li>
@@ -564,24 +538,10 @@
 </div>
 </div>
 </section>
-<section id="non-stationary-time-series" class="slide level2">
-<h2>Non-stationary time series</h2>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Why non-stationary?</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li><p>Land transfer duty and home value index have trends.</p></li>
-<li><p>Sales has a seasonal pattern.</p></li>
-</ul>
-</div>
-</div>
-</div>
+<section id="land-transfer-duty-1" class="slide level2">
+<h2>Land Transfer Duty</h2>
+<p><br> <br></p>
+<center>
 <div class="flex">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -606,6 +566,55 @@
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</center>
+</section>
+<section id="non-stationary-time-series" class="slide level2">
+<h2>Non-stationary time series</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Why non-stationary?</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Lending and home value index have trends.</p></li>
+<li><p>Sales has a seasonal pattern.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="flex">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -639,7 +648,7 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -648,7 +657,7 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="images/presentation_DTF.rmarkdown/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -667,17 +676,34 @@
 </div>
 <div class="callout-content">
 <ul>
-<li><p><strong>Step 1</strong>: Different lag ranges for each temporal frequency</p></li>
-<li><p><strong>Step 2</strong>: Fit a VECM for each lag value</p></li>
-<li><p><strong>Step 3</strong>: Choose optimal lag value based on <strong>AICc</strong></p></li>
+<li><p><strong>Variable Lag Ranges</strong>: Different lag ranges for each temporal frequency</p></li>
+<li><p><strong>Model Fitting</strong>: Fit a VECM for each lag value</p></li>
+<li><p><strong>Optimal Lag Selection</strong>: Choose the optimal lag based on the <strong>AICc</strong></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Benefits</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><strong>Adaptive Modeling</strong>: Captures unique dynamics and relationships in the data, enhancing forecast accuracy.</li>
+<li><strong>Prevents Overfitting</strong>: AICc penalization ensures the model is robust and generalizable.</li>
+<li><strong>Responsive to Changes</strong>: Adjusts to market dynamics and structural shifts, maintaining forecast accuracy under evolving economic conditions.</li>
 </ul>
 </div>
 </div>
 </div>
 </section></section>
 <section>
-<section id="forecast-all-series" class="title-slide slide level1 center" data-background="#006DAE">
-<h1>Forecast ALL series</h1>
+<section id="forecast-all-levels-and-nodes" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Forecast ALL levels and nodes</h1>
 
 </section>
 <section id="section-3" class="slide level2" data-auto-animate="true">
@@ -757,6 +783,7 @@
 </section>
 <section id="section-6" class="slide level2">
 <h2></h2>
+<p><br> <br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -766,23 +793,19 @@
 <p><strong>MinT</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="monash-blue"><strong>Wickramasuriya et al.&nbsp;(2019)</strong></span> found a <strong>G</strong> matrix that minimises the total forecast variance of the set of coherent forecasts, leading to the <em>MinT (Minimum Trace)</em> optimal reconciliation approach.</p>
-<ol type="1">
-<li><p>First we want to make sure we have unbiased forecasts</p></li>
-<li><p>Next we need to find the errors in our forecasts</p></li>
-</ol>
 <p><span class="monash-blue"><strong>Wickramasuriya et al.&nbsp;(2019)</strong></span> show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:</p>
 <center>
 <span class="math inline">\(\textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'}\)</span>,
 </center>
 <p>where <span class="math inline">\(\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]\)</span> is the variance-covariance matrix of the corresponding base forecast errors.</p>
-<p>The objective is to find a matrix <strong>G</strong> that minimises the error variances of the coherent forecasts.</p>
+<p>The idea is to find a <strong>G</strong> matrix that minimises the total forecast variance of the coherent forecasts, leading to the <em>MinT (Minimum Trace)</em> optimal reconciliation approach.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="section-7" class="slide level2">
 <h2></h2>
+<p><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -815,7 +838,7 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Four simplifying approximations</strong></p>
+<p><strong>Four simplifying assumptions</strong></p>
 </div>
 <div class="callout-content">
 <ol type="1">
@@ -832,6 +855,12 @@
 </div>
 </div>
 </div>
+</section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+<center>
+<p><img src="images/W_h.png" width="70%" height="80%"></p>
+</center>
 </section></section>
 <section>
 <section id="cross-temporal-reconciliation" class="title-slide slide level1 center" data-background="#006DAE">
@@ -892,7 +921,7 @@
 <h1>Results</h1>
 
 </section>
-<section id="section-9" class="slide level2">
+<section id="section-10" class="slide level2">
 <h2></h2>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -914,19 +943,20 @@
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ae42f51edf39d6f64a56" style="width:100%;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-ae42f51edf39d6f64a56">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[82304861.78096,124708706.492494,160906790.501556,179576048.391863,202393752.897025,216249841.072906,222799672.125449,219287298.039894,209407905.071088,192282333.138503,176393772.212418,170536538.315047],"text":["h_step:  1<br />RMSE:  82304862<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  2<br />RMSE: 124708706<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  3<br />RMSE: 160906791<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  4<br />RMSE: 179576048<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  5<br />RMSE: 202393753<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  6<br />RMSE: 216249841<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  7<br />RMSE: 222799672<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  8<br />RMSE: 219287298<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  9<br />RMSE: 209407905<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 10<br />RMSE: 192282333<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 11<br />RMSE: 176393772<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 12<br />RMSE: 170536538<br />MethodGroup: ARIMA<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","name":"(ARIMA,Base)","legendgroup":"(ARIMA,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[87415078.0627699,114349141.811284,147115632.918122,155168635.076766,170640141.4188,186064908.89781,193992269.860767,185290360.845842,182129732.44293,168818450.632235,146362782.542314,138329724.821365],"text":["h_step:  1<br />RMSE:  87415078<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  2<br />RMSE: 114349142<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  3<br />RMSE: 147115633<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  4<br />RMSE: 155168635<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  5<br />RMSE: 170640141<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  6<br />RMSE: 186064909<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  7<br />RMSE: 193992270<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  8<br />RMSE: 185290361<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  9<br />RMSE: 182129732<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 10<br />RMSE: 168818451<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 11<br />RMSE: 146362783<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 12<br />RMSE: 138329725<br />MethodGroup: ARIMA<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","name":"(ARIMA,Reconciled)","legendgroup":"(ARIMA,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[123752157.947302,117799952.637224,128344829.80404,128777577.431141,127318202.797787,124789295.810198,125531746.473345,118848486.554694,132936581.148512,128553134.477267,122213802.447918,103733571.647283],"text":["h_step:  1<br />RMSE: 123752158<br />MethodGroup: DTF<br />LineType: Base","h_step:  2<br />RMSE: 117799953<br />MethodGroup: DTF<br />LineType: Base","h_step:  3<br />RMSE: 128344830<br />MethodGroup: DTF<br />LineType: Base","h_step:  4<br />RMSE: 128777577<br />MethodGroup: DTF<br />LineType: Base","h_step:  5<br />RMSE: 127318203<br />MethodGroup: DTF<br />LineType: Base","h_step:  6<br />RMSE: 124789296<br />MethodGroup: DTF<br />LineType: Base","h_step:  7<br />RMSE: 125531746<br />MethodGroup: DTF<br />LineType: Base","h_step:  8<br />RMSE: 118848487<br />MethodGroup: DTF<br />LineType: Base","h_step:  9<br />RMSE: 132936581<br />MethodGroup: DTF<br />LineType: Base","h_step: 10<br />RMSE: 128553134<br />MethodGroup: DTF<br />LineType: Base","h_step: 11<br />RMSE: 122213802<br />MethodGroup: DTF<br />LineType: Base","h_step: 12<br />RMSE: 103733572<br />MethodGroup: DTF<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,255,0,1)","dash":"solid"},"hoveron":"points","name":"(DTF,Base)","legendgroup":"(DTF,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[63472415.7780787,74788470.2438209,93763078.04943,104521906.805527,100223714.87596,98474674.6907046,90050383.5988137,98357117.8648197,116875319.7501,134740333.338723,128833782.995095,129930424.287941],"text":["h_step:  1<br />RMSE:  63472416<br />MethodGroup: VECM<br />LineType: Base","h_step:  2<br />RMSE:  74788470<br />MethodGroup: VECM<br />LineType: Base","h_step:  3<br />RMSE:  93763078<br />MethodGroup: VECM<br />LineType: Base","h_step:  4<br />RMSE: 104521907<br />MethodGroup: VECM<br />LineType: Base","h_step:  5<br />RMSE: 100223715<br />MethodGroup: VECM<br />LineType: Base","h_step:  6<br />RMSE:  98474675<br />MethodGroup: VECM<br />LineType: Base","h_step:  7<br />RMSE:  90050384<br />MethodGroup: VECM<br />LineType: Base","h_step:  8<br />RMSE:  98357118<br />MethodGroup: VECM<br />LineType: Base","h_step:  9<br />RMSE: 116875320<br />MethodGroup: VECM<br />LineType: Base","h_step: 10<br />RMSE: 134740333<br />MethodGroup: VECM<br />LineType: Base","h_step: 11<br />RMSE: 128833783<br />MethodGroup: VECM<br />LineType: Base","h_step: 12<br />RMSE: 129930424<br />MethodGroup: VECM<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","name":"(VECM,Base)","legendgroup":"(VECM,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[62762611.4113362,68096602.0943091,81855359.4170787,92164103.4679943,84528012.0159188,84878415.7875012,76824572.9731779,66143998.4498079,99429366.5667895,80712770.9514538,103750481.465607,86773267.9433585],"text":["h_step:  1<br />RMSE:  62762611<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  2<br />RMSE:  68096602<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  3<br />RMSE:  81855359<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  4<br />RMSE:  92164103<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  5<br />RMSE:  84528012<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  6<br />RMSE:  84878416<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  7<br />RMSE:  76824573<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  8<br />RMSE:  66143998<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  9<br />RMSE:  99429367<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 10<br />RMSE:  80712771<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 11<br />RMSE: 103750481<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 12<br />RMSE:  86773268<br />MethodGroup: VECM<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","name":"(VECM,Reconciled)","legendgroup":"(VECM,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":66.4840182648402},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Monthly total LTD base and reconciled forecast RMSE by Method","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[54760758.3756306,230801525.161154],"tickmode":"array","ticktext":["1.0e+08","1.5e+08","2.0e+08"],"tickvals":[100000000,150000000,200000000],"categoryorder":"array","categoryarray":["1.0e+08","1.5e+08","2.0e+08"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"RMSE Value","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Colour: Model<br />Line type: Reconciled/Base","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"99747a118f60":{"x":{},"y":{},"colour":{},"linetype":{},"type":"scatter"}},"cur_data":"99747a118f60","visdat":{"99747a118f60":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9d36928743e54ec2d6a0" style="width:100%;height:384px;"></div>
+<script type="application/json" data-for="htmlwidget-9d36928743e54ec2d6a0">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[82304861.78096,124708706.492494,160906790.501556,179576048.391863,202393752.897025,216249841.072906,222799672.125449,219287298.039894,209407905.071088,192282333.138503,176393772.212418,170536538.315047],"text":["h_step:  1<br />RMSE:  82304862<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  2<br />RMSE: 124708706<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  3<br />RMSE: 160906791<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  4<br />RMSE: 179576048<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  5<br />RMSE: 202393753<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  6<br />RMSE: 216249841<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  7<br />RMSE: 222799672<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  8<br />RMSE: 219287298<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  9<br />RMSE: 209407905<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 10<br />RMSE: 192282333<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 11<br />RMSE: 176393772<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 12<br />RMSE: 170536538<br />MethodGroup: ARIMA<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","name":"(ARIMA,Base)","legendgroup":"(ARIMA,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[87415078.0627699,114349141.811284,147115632.918122,155168635.076766,170640141.4188,186064908.89781,193992269.860767,185290360.845842,182129732.44293,168818450.632235,146362782.542314,138329724.821365],"text":["h_step:  1<br />RMSE:  87415078<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  2<br />RMSE: 114349142<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  3<br />RMSE: 147115633<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  4<br />RMSE: 155168635<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  5<br />RMSE: 170640141<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  6<br />RMSE: 186064909<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  7<br />RMSE: 193992270<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  8<br />RMSE: 185290361<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  9<br />RMSE: 182129732<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 10<br />RMSE: 168818451<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 11<br />RMSE: 146362783<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 12<br />RMSE: 138329725<br />MethodGroup: ARIMA<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","name":"(ARIMA,Reconciled)","legendgroup":"(ARIMA,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[123752157.947302,117799952.637224,128344829.80404,128777577.431141,127318202.797787,124789295.810198,125531746.473345,118848486.554694,132936581.148512,128553134.477267,122213802.447918,103733571.647283],"text":["h_step:  1<br />RMSE: 123752158<br />MethodGroup: DTF<br />LineType: Base","h_step:  2<br />RMSE: 117799953<br />MethodGroup: DTF<br />LineType: Base","h_step:  3<br />RMSE: 128344830<br />MethodGroup: DTF<br />LineType: Base","h_step:  4<br />RMSE: 128777577<br />MethodGroup: DTF<br />LineType: Base","h_step:  5<br />RMSE: 127318203<br />MethodGroup: DTF<br />LineType: Base","h_step:  6<br />RMSE: 124789296<br />MethodGroup: DTF<br />LineType: Base","h_step:  7<br />RMSE: 125531746<br />MethodGroup: DTF<br />LineType: Base","h_step:  8<br />RMSE: 118848487<br />MethodGroup: DTF<br />LineType: Base","h_step:  9<br />RMSE: 132936581<br />MethodGroup: DTF<br />LineType: Base","h_step: 10<br />RMSE: 128553134<br />MethodGroup: DTF<br />LineType: Base","h_step: 11<br />RMSE: 122213802<br />MethodGroup: DTF<br />LineType: Base","h_step: 12<br />RMSE: 103733572<br />MethodGroup: DTF<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,255,0,1)","dash":"solid"},"hoveron":"points","name":"(DTF,Base)","legendgroup":"(DTF,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[63472415.7780787,74788470.2438209,93763078.04943,104521906.805527,100223714.87596,98474674.6907046,90050383.5988137,98357117.8648197,116875319.7501,134740333.338723,128833782.995095,129930424.287941],"text":["h_step:  1<br />RMSE:  63472416<br />MethodGroup: VECM<br />LineType: Base","h_step:  2<br />RMSE:  74788470<br />MethodGroup: VECM<br />LineType: Base","h_step:  3<br />RMSE:  93763078<br />MethodGroup: VECM<br />LineType: Base","h_step:  4<br />RMSE: 104521907<br />MethodGroup: VECM<br />LineType: Base","h_step:  5<br />RMSE: 100223715<br />MethodGroup: VECM<br />LineType: Base","h_step:  6<br />RMSE:  98474675<br />MethodGroup: VECM<br />LineType: Base","h_step:  7<br />RMSE:  90050384<br />MethodGroup: VECM<br />LineType: Base","h_step:  8<br />RMSE:  98357118<br />MethodGroup: VECM<br />LineType: Base","h_step:  9<br />RMSE: 116875320<br />MethodGroup: VECM<br />LineType: Base","h_step: 10<br />RMSE: 134740333<br />MethodGroup: VECM<br />LineType: Base","h_step: 11<br />RMSE: 128833783<br />MethodGroup: VECM<br />LineType: Base","h_step: 12<br />RMSE: 129930424<br />MethodGroup: VECM<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","name":"(VECM,Base)","legendgroup":"(VECM,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[62762611.4113362,68096602.0943091,81855359.4170787,92164103.4679943,84528012.0159188,84878415.7875012,76824572.9731779,66143998.4498079,99429366.5667895,80712770.9514538,103750481.465607,86773267.9433585],"text":["h_step:  1<br />RMSE:  62762611<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  2<br />RMSE:  68096602<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  3<br />RMSE:  81855359<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  4<br />RMSE:  92164103<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  5<br />RMSE:  84528012<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  6<br />RMSE:  84878416<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  7<br />RMSE:  76824573<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  8<br />RMSE:  66143998<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  9<br />RMSE:  99429367<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 10<br />RMSE:  80712771<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 11<br />RMSE: 103750481<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 12<br />RMSE:  86773268<br />MethodGroup: VECM<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","name":"(VECM,Reconciled)","legendgroup":"(VECM,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":66.4840182648402},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Monthly total LTD base and reconciled forecast RMSE by Method","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[54760758.3756306,230801525.161154],"tickmode":"array","ticktext":["1.0e+08","1.5e+08","2.0e+08"],"tickvals":[100000000,150000000,200000000],"categoryorder":"array","categoryarray":["1.0e+08","1.5e+08","2.0e+08"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"RMSE Value","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Colour: Model<br />Line type: Reconciled/Base","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"10c26386a5e9b":{"x":{},"y":{},"colour":{},"linetype":{},"type":"scatter"}},"cur_data":"10c26386a5e9b","visdat":{"10c26386a5e9b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
 </section>
-<section id="section-10" class="slide level2">
-<h2></h2>
+<section id="mape" class="slide level2">
+<h2>MAPE</h2>
+<br> <br>
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-26b59d3cb95973617f43" style="width:100%;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-26b59d3cb95973617f43">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[10.3163168225552,15.7466304053443,21.6390847999033,24.257766749413,26.8548202988439,28.2554676976181,30.7788291861276,28.7296188335356,27.5178012291637,24.5072752220433,22.2019072212402,21.1321721472968],"text":["h_step:  1<br />MAPE: 10.316317<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  2<br />MAPE: 15.746630<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  3<br />MAPE: 21.639085<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  4<br />MAPE: 24.257767<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  5<br />MAPE: 26.854820<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  6<br />MAPE: 28.255468<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  7<br />MAPE: 30.778829<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  8<br />MAPE: 28.729619<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  9<br />MAPE: 27.517801<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 10<br />MAPE: 24.507275<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 11<br />MAPE: 22.201907<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 12<br />MAPE: 21.132172<br />MethodGroup: ARIMA<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","name":"(ARIMA,Base)","legendgroup":"(ARIMA,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[11.0774291968092,14.680847268581,20.8294582405111,21.2556705172239,22.7980935076488,23.7755864423284,25.0818764082879,23.2401643961903,22.8273180177682,20.5278678207903,17.8794132185175,16.3459446424032],"text":["h_step:  1<br />MAPE: 11.077429<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  2<br />MAPE: 14.680847<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  3<br />MAPE: 20.829458<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  4<br />MAPE: 21.255671<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  5<br />MAPE: 22.798094<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  6<br />MAPE: 23.775586<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  7<br />MAPE: 25.081876<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  8<br />MAPE: 23.240164<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  9<br />MAPE: 22.827318<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 10<br />MAPE: 20.527868<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 11<br />MAPE: 17.879413<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 12<br />MAPE: 16.345945<br />MethodGroup: ARIMA<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","name":"(ARIMA,Reconciled)","legendgroup":"(ARIMA,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[15.6876940731112,15.2728346855967,16.5960149923629,16.9315688297504,16.3928433792636,15.7782779333528,16.1036995292845,15.1188193872943,16.4237527074659,15.3602794764146,14.2910637014656,12.0019484846358],"text":["h_step:  1<br />MAPE: 15.687694<br />MethodGroup: DTF<br />LineType: Base","h_step:  2<br />MAPE: 15.272835<br />MethodGroup: DTF<br />LineType: Base","h_step:  3<br />MAPE: 16.596015<br />MethodGroup: DTF<br />LineType: Base","h_step:  4<br />MAPE: 16.931569<br />MethodGroup: DTF<br />LineType: Base","h_step:  5<br />MAPE: 16.392843<br />MethodGroup: DTF<br />LineType: Base","h_step:  6<br />MAPE: 15.778278<br />MethodGroup: DTF<br />LineType: Base","h_step:  7<br />MAPE: 16.103700<br />MethodGroup: DTF<br />LineType: Base","h_step:  8<br />MAPE: 15.118819<br />MethodGroup: DTF<br />LineType: Base","h_step:  9<br />MAPE: 16.423753<br />MethodGroup: DTF<br />LineType: Base","h_step: 10<br />MAPE: 15.360279<br />MethodGroup: DTF<br />LineType: Base","h_step: 11<br />MAPE: 14.291064<br />MethodGroup: DTF<br />LineType: Base","h_step: 12<br />MAPE: 12.001948<br />MethodGroup: DTF<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,255,0,1)","dash":"solid"},"hoveron":"points","name":"(DTF,Base)","legendgroup":"(DTF,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[7.91583900808662,10.090169902884,11.9033599019124,12.5418442955535,11.6927506349399,11.19242862375,8.93068757802114,11.2136792113172,12.6428798876302,14.0786758936363,13.6768286271308,13.3838334985908],"text":["h_step:  1<br />MAPE:  7.915839<br />MethodGroup: VECM<br />LineType: Base","h_step:  2<br />MAPE: 10.090170<br />MethodGroup: VECM<br />LineType: Base","h_step:  3<br />MAPE: 11.903360<br />MethodGroup: VECM<br />LineType: Base","h_step:  4<br />MAPE: 12.541844<br />MethodGroup: VECM<br />LineType: Base","h_step:  5<br />MAPE: 11.692751<br />MethodGroup: VECM<br />LineType: Base","h_step:  6<br />MAPE: 11.192429<br />MethodGroup: VECM<br />LineType: Base","h_step:  7<br />MAPE:  8.930688<br />MethodGroup: VECM<br />LineType: Base","h_step:  8<br />MAPE: 11.213679<br />MethodGroup: VECM<br />LineType: Base","h_step:  9<br />MAPE: 12.642880<br />MethodGroup: VECM<br />LineType: Base","h_step: 10<br />MAPE: 14.078676<br />MethodGroup: VECM<br />LineType: Base","h_step: 11<br />MAPE: 13.676829<br />MethodGroup: VECM<br />LineType: Base","h_step: 12<br />MAPE: 13.383833<br />MethodGroup: VECM<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","name":"(VECM,Base)","legendgroup":"(VECM,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[8.12744971002548,8.24227279026088,8.73422351332123,11.9331174786446,10.1484320457032,10.6034019516876,10.5284874423793,8.15473831867716,10.8113405642117,7.04116967540635,8.97281259140872,7.39156846073244],"text":["h_step:  1<br />MAPE:  8.127450<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  2<br />MAPE:  8.242273<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  3<br />MAPE:  8.734224<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  4<br />MAPE: 11.933117<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  5<br />MAPE: 10.148432<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  6<br />MAPE: 10.603402<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  7<br />MAPE: 10.528487<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  8<br />MAPE:  8.154738<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  9<br />MAPE: 10.811341<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 10<br />MAPE:  7.041170<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 11<br />MAPE:  8.972813<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 12<br />MAPE:  7.391568<br />MethodGroup: VECM<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","name":"(VECM,Reconciled)","legendgroup":"(VECM,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":37.2602739726027},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Monthly total LTD base and reconciled forecast MAPE by Method","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[5.85428669987029,31.9657121616636],"tickmode":"array","ticktext":["10","15","20","25","30"],"tickvals":[10,15,20,25,30],"categoryorder":"array","categoryarray":["10","15","20","25","30"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"MAPE Value","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Colour: Model<br />Line type: Reconciled/Base","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"99743076a326":{"x":{},"y":{},"colour":{},"linetype":{},"type":"scatter"}},"cur_data":"99743076a326","visdat":{"99743076a326":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2b56f378bdc34daf852c" style="width:100%;height:384px;"></div>
+<script type="application/json" data-for="htmlwidget-2b56f378bdc34daf852c">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[10.3163168225552,15.7466304053443,21.6390847999033,24.257766749413,26.8548202988439,28.2554676976181,30.7788291861276,28.7296188335356,27.5178012291637,24.5072752220433,22.2019072212402,21.1321721472968],"text":["h_step:  1<br />MAPE: 10.316317<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  2<br />MAPE: 15.746630<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  3<br />MAPE: 21.639085<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  4<br />MAPE: 24.257767<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  5<br />MAPE: 26.854820<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  6<br />MAPE: 28.255468<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  7<br />MAPE: 30.778829<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  8<br />MAPE: 28.729619<br />MethodGroup: ARIMA<br />LineType: Base","h_step:  9<br />MAPE: 27.517801<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 10<br />MAPE: 24.507275<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 11<br />MAPE: 22.201907<br />MethodGroup: ARIMA<br />LineType: Base","h_step: 12<br />MAPE: 21.132172<br />MethodGroup: ARIMA<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","name":"(ARIMA,Base)","legendgroup":"(ARIMA,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[11.0774291968092,14.680847268581,20.8294582405111,21.2556705172239,22.7980935076488,23.7755864423284,25.0818764082879,23.2401643961903,22.8273180177682,20.5278678207903,17.8794132185175,16.3459446424032],"text":["h_step:  1<br />MAPE: 11.077429<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  2<br />MAPE: 14.680847<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  3<br />MAPE: 20.829458<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  4<br />MAPE: 21.255671<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  5<br />MAPE: 22.798094<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  6<br />MAPE: 23.775586<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  7<br />MAPE: 25.081876<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  8<br />MAPE: 23.240164<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step:  9<br />MAPE: 22.827318<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 10<br />MAPE: 20.527868<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 11<br />MAPE: 17.879413<br />MethodGroup: ARIMA<br />LineType: Reconciled","h_step: 12<br />MAPE: 16.345945<br />MethodGroup: ARIMA<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","name":"(ARIMA,Reconciled)","legendgroup":"(ARIMA,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[15.6876940731112,15.2728346855967,16.5960149923629,16.9315688297504,16.3928433792636,15.7782779333528,16.1036995292845,15.1188193872943,16.4237527074659,15.3602794764146,14.2910637014656,12.0019484846358],"text":["h_step:  1<br />MAPE: 15.687694<br />MethodGroup: DTF<br />LineType: Base","h_step:  2<br />MAPE: 15.272835<br />MethodGroup: DTF<br />LineType: Base","h_step:  3<br />MAPE: 16.596015<br />MethodGroup: DTF<br />LineType: Base","h_step:  4<br />MAPE: 16.931569<br />MethodGroup: DTF<br />LineType: Base","h_step:  5<br />MAPE: 16.392843<br />MethodGroup: DTF<br />LineType: Base","h_step:  6<br />MAPE: 15.778278<br />MethodGroup: DTF<br />LineType: Base","h_step:  7<br />MAPE: 16.103700<br />MethodGroup: DTF<br />LineType: Base","h_step:  8<br />MAPE: 15.118819<br />MethodGroup: DTF<br />LineType: Base","h_step:  9<br />MAPE: 16.423753<br />MethodGroup: DTF<br />LineType: Base","h_step: 10<br />MAPE: 15.360279<br />MethodGroup: DTF<br />LineType: Base","h_step: 11<br />MAPE: 14.291064<br />MethodGroup: DTF<br />LineType: Base","h_step: 12<br />MAPE: 12.001948<br />MethodGroup: DTF<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,255,0,1)","dash":"solid"},"hoveron":"points","name":"(DTF,Base)","legendgroup":"(DTF,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[7.91583900808662,10.090169902884,11.9033599019124,12.5418442955535,11.6927506349399,11.19242862375,8.93068757802114,11.2136792113172,12.6428798876302,14.0786758936363,13.6768286271308,13.3838334985908],"text":["h_step:  1<br />MAPE:  7.915839<br />MethodGroup: VECM<br />LineType: Base","h_step:  2<br />MAPE: 10.090170<br />MethodGroup: VECM<br />LineType: Base","h_step:  3<br />MAPE: 11.903360<br />MethodGroup: VECM<br />LineType: Base","h_step:  4<br />MAPE: 12.541844<br />MethodGroup: VECM<br />LineType: Base","h_step:  5<br />MAPE: 11.692751<br />MethodGroup: VECM<br />LineType: Base","h_step:  6<br />MAPE: 11.192429<br />MethodGroup: VECM<br />LineType: Base","h_step:  7<br />MAPE:  8.930688<br />MethodGroup: VECM<br />LineType: Base","h_step:  8<br />MAPE: 11.213679<br />MethodGroup: VECM<br />LineType: Base","h_step:  9<br />MAPE: 12.642880<br />MethodGroup: VECM<br />LineType: Base","h_step: 10<br />MAPE: 14.078676<br />MethodGroup: VECM<br />LineType: Base","h_step: 11<br />MAPE: 13.676829<br />MethodGroup: VECM<br />LineType: Base","h_step: 12<br />MAPE: 13.383833<br />MethodGroup: VECM<br />LineType: Base"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","name":"(VECM,Base)","legendgroup":"(VECM,Base)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[8.12744971002548,8.24227279026088,8.73422351332123,11.9331174786446,10.1484320457032,10.6034019516876,10.5284874423793,8.15473831867716,10.8113405642117,7.04116967540635,8.97281259140872,7.39156846073244],"text":["h_step:  1<br />MAPE:  8.127450<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  2<br />MAPE:  8.242273<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  3<br />MAPE:  8.734224<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  4<br />MAPE: 11.933117<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  5<br />MAPE: 10.148432<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  6<br />MAPE: 10.603402<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  7<br />MAPE: 10.528487<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  8<br />MAPE:  8.154738<br />MethodGroup: VECM<br />LineType: Reconciled","h_step:  9<br />MAPE: 10.811341<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 10<br />MAPE:  7.041170<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 11<br />MAPE:  8.972813<br />MethodGroup: VECM<br />LineType: Reconciled","h_step: 12<br />MAPE:  7.391568<br />MethodGroup: VECM<br />LineType: Reconciled"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","name":"(VECM,Reconciled)","legendgroup":"(VECM,Reconciled)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":37.2602739726027},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Monthly total LTD base and reconciled forecast MAPE by Method","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[5.85428669987029,31.9657121616636],"tickmode":"array","ticktext":["10","15","20","25","30"],"tickvals":[10,15,20,25,30],"categoryorder":"array","categoryarray":["10","15","20","25","30"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"MAPE Value","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Colour: Model<br />Line type: Reconciled/Base","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"10c265959c812":{"x":{},"y":{},"colour":{},"linetype":{},"type":"scatter"}},"cur_data":"10c265959c812","visdat":{"10c265959c812":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -943,7 +973,7 @@
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Below the horizontal line means cross-temporal forecast reconciliation performs better</p></li>
+<li><p>Below the horizontal line means cross-temporally reconciled forecast performs better</p></li>
 <li><p>Overall, cross-temporal reconciled forecasts perform better</p></li>
 </ul>
 </div>
@@ -952,14 +982,15 @@
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-00122e83c5ff8f58a7d4" style="width:100%;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-00122e83c5ff8f58a7d4">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[0.518078034422914,0.539668827688804,0.526284383169124,0.704785102823841,0.619076984444361,0.672025299368932,0.653793087931953,0.539376660953456,0.658274680383922,0.458401143430883,0.6278617728426,0.61586403825968],"text":["h_step:  1<br />value: 0.5180780<br />Ratio: MAPE","h_step:  2<br />value: 0.5396688<br />Ratio: MAPE","h_step:  3<br />value: 0.5262844<br />Ratio: MAPE","h_step:  4<br />value: 0.7047851<br />Ratio: MAPE","h_step:  5<br />value: 0.6190770<br />Ratio: MAPE","h_step:  6<br />value: 0.6720253<br />Ratio: MAPE","h_step:  7<br />value: 0.6537931<br />Ratio: MAPE","h_step:  8<br />value: 0.5393767<br />Ratio: MAPE","h_step:  9<br />value: 0.6582747<br />Ratio: MAPE","h_step: 10<br />value: 0.4584011<br />Ratio: MAPE","h_step: 11<br />value: 0.6278618<br />Ratio: MAPE","h_step: 12<br />value: 0.6158640<br />Ratio: MAPE"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"MAPE","legendgroup":"MAPE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[0.507163773564762,0.578069859705451,0.637776835592501,0.715684401791728,0.663911445169944,0.680173850140155,0.611993182055272,0.55654051950732,0.747945867930141,0.627855332191271,0.848926057347908,0.836501303921226],"text":["h_step:  1<br />value: 0.5071638<br />Ratio: RMSE","h_step:  2<br />value: 0.5780699<br />Ratio: RMSE","h_step:  3<br />value: 0.6377768<br />Ratio: RMSE","h_step:  4<br />value: 0.7156844<br />Ratio: RMSE","h_step:  5<br />value: 0.6639114<br />Ratio: RMSE","h_step:  6<br />value: 0.6801739<br />Ratio: RMSE","h_step:  7<br />value: 0.6119932<br />Ratio: RMSE","h_step:  8<br />value: 0.5565405<br />Ratio: RMSE","h_step:  9<br />value: 0.7479459<br />Ratio: RMSE","h_step: 10<br />value: 0.6278553<br />Ratio: RMSE","h_step: 11<br />value: 0.8489261<br />Ratio: RMSE","h_step: 12<br />value: 0.8365013<br />Ratio: RMSE"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"RMSE","legendgroup":"RMSE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.45,12.55],"y":[1,1],"text":"yintercept: 1","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Ratio of RMSE and MAPE of reconciled forecast to DTF forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.431321200602427,1.02707994282846],"tickmode":"array","ticktext":["0.6","0.8","1.0"],"tickvals":[0.6,0.8,1],"categoryorder":"array","categoryarray":["0.6","0.8","1.0"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Ratio","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Ratio","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"997456f6dcdd":{"x":{},"y":{},"colour":{},"type":"scatter"},"9974691e5dc5":{"yintercept":{}}},"cur_data":"997456f6dcdd","visdat":{"997456f6dcdd":["function (y) ","x"],"9974691e5dc5":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1815bdae241af6126e3f" style="width:100%;height:384px;"></div>
+<script type="application/json" data-for="htmlwidget-1815bdae241af6126e3f">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[0.518078034422914,0.539668827688804,0.526284383169124,0.704785102823841,0.619076984444361,0.672025299368932,0.653793087931953,0.539376660953456,0.658274680383922,0.458401143430883,0.6278617728426,0.61586403825968],"text":["h_step:  1<br />value: 0.5180780<br />Ratio: MAPE","h_step:  2<br />value: 0.5396688<br />Ratio: MAPE","h_step:  3<br />value: 0.5262844<br />Ratio: MAPE","h_step:  4<br />value: 0.7047851<br />Ratio: MAPE","h_step:  5<br />value: 0.6190770<br />Ratio: MAPE","h_step:  6<br />value: 0.6720253<br />Ratio: MAPE","h_step:  7<br />value: 0.6537931<br />Ratio: MAPE","h_step:  8<br />value: 0.5393767<br />Ratio: MAPE","h_step:  9<br />value: 0.6582747<br />Ratio: MAPE","h_step: 10<br />value: 0.4584011<br />Ratio: MAPE","h_step: 11<br />value: 0.6278618<br />Ratio: MAPE","h_step: 12<br />value: 0.6158640<br />Ratio: MAPE"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"MAPE","legendgroup":"MAPE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[0.507163773564762,0.578069859705451,0.637776835592501,0.715684401791728,0.663911445169944,0.680173850140155,0.611993182055272,0.55654051950732,0.747945867930141,0.627855332191271,0.848926057347908,0.836501303921226],"text":["h_step:  1<br />value: 0.5071638<br />Ratio: RMSE","h_step:  2<br />value: 0.5780699<br />Ratio: RMSE","h_step:  3<br />value: 0.6377768<br />Ratio: RMSE","h_step:  4<br />value: 0.7156844<br />Ratio: RMSE","h_step:  5<br />value: 0.6639114<br />Ratio: RMSE","h_step:  6<br />value: 0.6801739<br />Ratio: RMSE","h_step:  7<br />value: 0.6119932<br />Ratio: RMSE","h_step:  8<br />value: 0.5565405<br />Ratio: RMSE","h_step:  9<br />value: 0.7479459<br />Ratio: RMSE","h_step: 10<br />value: 0.6278553<br />Ratio: RMSE","h_step: 11<br />value: 0.8489261<br />Ratio: RMSE","h_step: 12<br />value: 0.8365013<br />Ratio: RMSE"],"type":"scatter","mode":"lines","line":{"width":4.15748031496063,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"RMSE","legendgroup":"RMSE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.45,12.55],"y":[1,1],"text":"yintercept: 1","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":44.4931506849315,"r":7.30593607305936,"b":40.9132420091324,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Ratio of RMSE and MAPE of reconciled forecast to DTF forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.45,12.55],"tickmode":"array","ticktext":["1","2","3","4","5","6","7","8","9","10","11","12"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["1","2","3","4","5","6","7","8","9","10","11","12"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"h-step Forecast","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.431321200602427,1.02707994282846],"tickmode":"array","ticktext":["0.6","0.8","1.0"],"tickvals":[0.6,0.8,1],"categoryorder":"array","categoryarray":["0.6","0.8","1.0"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Ratio","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Ratio","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"10c2650a8dde5":{"x":{},"y":{},"colour":{},"type":"scatter"},"10c267e800ec1":{"yintercept":{}}},"cur_data":"10c2650a8dde5","visdat":{"10c2650a8dde5":["function (y) ","x"],"10c267e800ec1":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
 </section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
+<p><br></p>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -970,7 +1001,7 @@
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Overall, cross-temporal reconciled forecast performs better</p></li>
+<li><p>Overall, cross-temporally reconciled forecast performs better</p></li>
 <li><p>Reconciliation helps improving where the forecasts are poor</p></li>
 <li><p>Accuracy improvement proves it is efficient enough to adopt forecast reconciliation</p></li>
 <li><p><strong>Limitation</strong>: subjectivity and small sample selection bias</p></li>
@@ -978,9 +1009,6 @@
 </div>
 </div>
 </div>
-</section>
-<section id="what-else" class="slide level2">
-<h2>What else?</h2>
 </section>
 <section id="references" class="slide level2">
 <h2>References</h2>
@@ -990,7 +1018,7 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>References</strong></p>
 </div>
 <div class="callout-content">
 <p>Hyndman, R. J., &amp; Athanasopoulos, G. (2021). Forecasting: Principles and practice. Otexts. <a href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a></p>
@@ -1001,15 +1029,16 @@
 </div>
 </div>
 </section>
-<section id="references-1" class="slide level2">
+<section id="references-2" class="slide level2">
 <h2>References</h2>
+<p><br></p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>References</strong></p>
 </div>
 <div class="callout-content">
 <p>Kourentzes, N., &amp; Athanasopoulos, G. (2019). Cross-temporal coherent forecasts for Australian tourism. Annals of Tourism Research, 75, 393-409. <a href="https://doi.org/10.1016/j.annals.2019.02.001">https://doi.org/10.1016/j.annals.2019.02.001</a></p>
@@ -1018,13 +1047,16 @@
 </div>
 </div>
 </div>
+</section></section>
+<section id="thank-you" class="title-slide slide level1 center" data-background="#006DAE">
+<h1>Thank You</h1>
 <div class="quarto-auto-generated-content">
 <p><img src="images/monash-one-line-black-rgb.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p>Department of Treasury and Finance</p>
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

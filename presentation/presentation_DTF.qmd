@@ -3,7 +3,7 @@ pagetitle: "Forecast Reconciliation"
 subtitle: "Land Transfer Duty"
 author: "Hoang Do"
 email: "vdoo0002@student.monash.edu"
-date: "22-05-2024"
+date: "09-07-2024"
 unit-url: "https://github.com/justin-git01/ltd_forecasting"
 footer: "Department of Treasury and Finance"
 format: 
@@ -210,38 +210,6 @@ Author: *`r rmarkdown::metadata$author`*
 <br>
 :::
 
-
-## Current forecasting approach
-
-::: callout-note
-## DTF forecast result
-
-* Cointegration pattern between LTD, Sales, and Home Value Index (HVI)
-
-* Vector Error Correction Model (VECM) with 3 lags
-
-* RMSE: Constantly drops until 7-step-ahead forecasts then increases
-
-:::
-
-<center>
-
-```{r dtf_rmse, fig.height = 3, fig.width = 3, out.width="50%"}
-
-## Create the plot
-dtf_rmse_plot <- ggplot(dtf_rmse, aes(x = h, y = rmse)) +
-  geom_line(linewidth = 1.1, color = "red") +
-  labs(x = "h-step Forecast", y = "RMSE Value", title = "RMSE of total LTD forecast") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-## Convert ggplot to plotly
-ggplotly(dtf_rmse_plot)
-```
-
-</center>
-
-
 # Hierarchical Time Series {background="#006DAE"}
 
 ## Cross-sectional hierarchy
@@ -261,7 +229,7 @@ ggplotly(dtf_rmse_plot)
 #| echo: false
 #| output: hide
 tidygraph::tbl_graph(
-  nodes = tibble(label = c("Total", "Non-Residential", "Residential", "Industry", "Commercial","Other")),
+  nodes = tibble(label = c("Total", "Non-Residential", "Residential", "Industrial", "Commercial","Other")),
   edges = tibble(from = c(1, 1, 2, 2, 2), to = c(2, 3, 4, 5, 6))
 ) |>
   visnetwork_hierarchy(width = 750, height = 350)
@@ -352,6 +320,7 @@ Image from [**Kourentzes and Athanasopoulos (2019)**]{.monash-blue}
 # Vector Error Correction Model {background="#006DAE"}
 
 ## {}
+<br>
 
 :::callout-note
 # What is Vector Error Correction Model (VECM)
@@ -370,12 +339,14 @@ Image from [**Kourentzes and Athanasopoulos (2019)**]{.monash-blue}
 :::
 
 ## {}
+<br>
+
 :::callout-note
 # Steps to Construct a VECM
 
-1. *Check for Stationarity*: Use unit root tests (ADF, PP).
+1. *Check for Stationarity*: Use unit root tests (ADF).
 
-2. *Test for Cointegration*: Perform Johansen test using use the trace test statistic to find cointegrating relationships.
+2. *Test for Cointegration*: Perform Johansen test using the trace test statistic to find cointegrating relationships.
 
 3. *Specify the VECM*: Choose lag length and cointegrating rank.
 
@@ -385,12 +356,48 @@ Image from [**Kourentzes and Athanasopoulos (2019)**]{.monash-blue}
 
 :::
 
+## Land Transfer Duty
+
+<br>
+<br>
+
+<center>
+
+::: flex
+```{r}
+ltd_unit_ts |>
+  autoplot(ltd_total/1000000, color = "blue") +
+  labs(x = "Date", y = "Value (in $m)", title = "Land Transfer Duty over time") +
+  theme_minimal()
+
+```
+
+```{r}
+ltd_unit_ts |>
+  autoplot(ltd_res/1000000, color = "blue") +
+  labs(x = "Date", y = "Value (in $m)", title = "Residential Land Transfer Duty over time") +
+  theme_minimal()
+
+```
+
+```{r}
+ltd_unit_ts |>
+  autoplot(ltd_nonres/1000000, color = "blue") +
+  labs(x = "Date", y = "Value (in $m)", title = "Non-Residential Land Transfer Duty over time") +
+  theme_minimal()
+
+```
+
+:::
+
+</center>
+
 ## Non-stationary time series
 
 ::: callout-note
 # Why non-stationary?
 
-* Land transfer duty and home value index have trends.
+* Lending and home value index have trends.
 
 * Sales has a seasonal pattern.
 
@@ -400,8 +407,8 @@ Image from [**Kourentzes and Athanasopoulos (2019)**]{.monash-blue}
 
 ```{r}
 ltd_unit_ts |>
-  autoplot(ltd_total/1000000, color = "blue") +
-  labs(x = "Date", y = "Value (in $m)", title = "Land Transfer Duty over time") +
+  autoplot(lending, color = "blue") +
+  labs(x = "Date", y = "Value (in $)", title = "Lending over time") +
   theme_minimal()
 
 ```
@@ -437,6 +444,7 @@ ltd_unit_ts |>
 * **Step 3**: Use *Augmented Dickey-Fuller (ADF)* test for stationary
 
 :::
+
 
 ## Result
 
@@ -477,15 +485,24 @@ ggdag::ggdag(total_dag2, # the dag object we created
 
 # Procedure
 
-* **Step 1**: Different lag ranges for each temporal frequency
+* **Variable Lag Ranges**: Different lag ranges for each temporal frequency
 
-* **Step 2**: Fit a VECM for each lag value
+* **Model Fitting**: Fit a VECM for each lag value
 
-* **Step 3**: Choose optimal lag value based on **AICc**
+* **Optimal Lag Selection**: Choose the optimal lag based on the **AICc**
 
 :::
 
-# Forecast ALL series {background="#006DAE"}
+:::callout-note
+# Benefits
+
+* **Adaptive Modeling**: Captures unique dynamics and relationships in the data, enhancing forecast accuracy.
+* **Prevents Overfitting**: AICc penalization ensures the model is robust and generalizable.
+* **Responsive to Changes**: Adjusts to market dynamics and structural shifts, maintaining forecast accuracy under evolving economic conditions.
+
+:::
+
+# Forecast ALL levels and nodes {background="#006DAE"}
 
 ## {auto-animate=true}
 
@@ -542,15 +559,11 @@ where **G** is a matrix that maps the base forecasts into the bottom level, and 
 # The MinT optimal reconciliation approach {background="#006DAE"}
 
 ## {}
+<br>
+<br>
 
 ::: callout-note
 # MinT
-
-[**Wickramasuriya et al. (2019)**]{.monash-blue} found a **G** matrix that minimises the total forecast variance of the set of coherent forecasts, leading to the *MinT (Minimum Trace)* optimal reconciliation approach.
-
-1. First we want to make sure we have unbiased forecasts
-
-2. Next we need to find the errors in our forecasts
 
 [**Wickramasuriya et al. (2019)**]{.monash-blue} show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
 
@@ -560,12 +573,13 @@ $\textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\
 
 where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
 
-The objective is to find a matrix **G** that minimises the error variances of the coherent forecasts.
-
+The idea is to find a **G** matrix that minimises the total forecast variance of the coherent forecasts, leading to the *MinT (Minimum Trace)* optimal reconciliation approach.
 
 :::
 
 ## {}
+
+<br>
 
 :::callout-note
 # MinT
@@ -594,7 +608,7 @@ Now we need to estimate $\textbf{W}_{h}$, which is challenging.
 
 ::: callout-note
 
-# Four simplifying approximations  
+# Four simplifying assumptions  
 1. $\bf{OLS}$ [**(Hyndman et al. (2011))**]{.monash-blue}.: 
 $\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$ for all h, where $\text{k}_{h} > 0$.
 
@@ -614,6 +628,12 @@ and $\textbf{e}_{t}$ is an $\it{n}$-dimensional vector of residuals of the model
 4. $\bf{MinT}_{S}$ [**Wickramasuriya, Athanasopoulos & Hyndman (2018)**]{.monash-blue}.: 
   $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\hat{W}^{*}}_{1, D}$ for all h, where $\text{k}_{h} > 0$, and $\mathbf{\hat{W}^{*}}_{1, D} = \mathit{\lambda}\mathbf{\hat{W}^{*}}_{1, D} + \text{(1-} \mathit{\lambda})\mathbf{\hat{W}}_{1}$ is a shrinkage estimator with diagonal target $\mathbf{\hat{W}^{*}}_{1, D}$, a diagonal matrix comprising the diagonal entries of $\mathbf{\hat{W}}_{1}$, and $\mathit{\lambda}$ the shrinkage intensity parameter. 
 :::
+
+## {}
+<center>
+<img src="images/W_h.png" width = "70%" height = "80%">
+
+</center>
 
 # Cross-temporal reconciliation {background="#006DAE"}
 ::: {.monash-gray10 .f2 .footnote}
@@ -730,8 +750,9 @@ ggplotly(ggplot_rmse)
 
 </center>
 
-## {}
-
+## MAPE
+<br>
+<br>
 <center>
 
 ```{r}
@@ -794,7 +815,7 @@ ggplotly(ggplot_mape)
 
 ::: callout-note
 ## Reconciled VECM against DTF
-* Below the horizontal line means cross-temporal forecast reconciliation performs better
+* Below the horizontal line means cross-temporally reconciled forecast performs better
 
 * Overall, cross-temporal reconciled forecasts perform better
 
@@ -831,11 +852,12 @@ ggplotly(ggplot_prop_vecm_dtf)
 
 ## Recap 
 
+<br>
 
 ::: callout-important
 
 ## Summary
-* Overall, cross-temporal reconciled forecast performs better
+* Overall, cross-temporally reconciled forecast performs better
 
 * Reconciliation helps improving where the forecasts are poor
 
@@ -844,10 +866,11 @@ ggplotly(ggplot_prop_vecm_dtf)
 * **Limitation**: subjectivity and small sample selection bias
 :::
 
-## What else?
 
 ## References
 :::callout-tip
+
+# References
 
 Hyndman, R. J., & Athanasopoulos, G. (2021). Forecasting: Principles and practice. Otexts. [https://otexts.com/fpp3/](https://otexts.com/fpp3/)
 
@@ -860,7 +883,11 @@ Girolimetto, D., G. Athanasopoulos, T. Di Fonzo, R.J. Hyndman, Cross-temporal pr
 :::
 
 ## References
+<br>
+
 :::callout-tip
+
+# References
 
 Kourentzes, N., & Athanasopoulos, G. (2019). Cross-temporal coherent forecasts for Australian        tourism. Annals of Tourism Research, 75, 393-409.                                              [https://doi.org/10.1016/j.annals.2019.02.001](https://doi.org/10.1016/j.annals.2019.02.001)
 
@@ -869,3 +896,6 @@ Malakellis, M., & Warlters, M. (2021). The economic costs of transfer duty: a li
 Girolimetto, D. & Di Fonzo, T. (2022), FoReco: Point Forecast Reconciliation.
       [https://danigiro.github.io/FoReco/](https://danigiro.github.io/FoReco/)
 :::
+
+
+# Thank You {background="#006DAE"}
