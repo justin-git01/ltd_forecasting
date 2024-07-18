@@ -93,7 +93,7 @@ dtf_rmse <- read_excel(here("data/final_dtf_rmse.xlsx"), sheet = 4)
 
 # Abstract
 
-Accurate land transfer duty forecasting is essential for government effective market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. By employing Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models within cross-sectional, temporal, and cross-temporal hierarchical structures, the methodology significantly enhances forecast accuracy. Results demonstrate that VECM, particularly when using cross-temporal reconciliation, consistently outperforms ARIMA. Temporal hierarchies contribute more to accuracy improvements than cross-sectional hierarchies. The reconciled forecasts exhibit lower RMSE compared to the *Department of Treasury and Finance*'s forecasts, underscoring the efficacy of the proposed approach.
+Accurate land transfer duty forecasting is essential for effective government market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. By employing Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models within cross-sectional, temporal, and cross-temporal hierarchical structures, the methodology significantly enhances forecast accuracy. Results demonstrate that VECM, particularly when using cross-temporal reconciliation, consistently outperforms ARIMA. Temporal hierarchies contribute more to accuracy improvements than cross-sectional hierarchies. The reconciled forecasts exhibit lower RMSE compared to the *Department of Treasury and Finance*'s forecasts, underscoring the efficacy of the proposed approach.
 
 # Introduction and background
 
@@ -108,12 +108,14 @@ Land transfer duty is a tax applied to the "dutiable value" of a property being 
 #| label: fig-taxrevenue
 #| fig-cap: "Percentage of Victoria's Tax Revenue from Land Transfer Duty"
 #| fig-align: 'center'
+#| fig-height: 5
+#| fig-width: 8
 
 autoplot(tax_rev, reliance, color = "blue") +
   geom_hline(aes(yintercept = mean(reliance), linetype = "Average percentage"), color = "red", linewidth = 1.2) +
   scale_linetype_manual(name ="", values = c('dashed')) +
   labs(x = "Date", y = "Percentage", title = " ") +
-  theme_minimal()
+  theme_bw()
 ```
 
 Additionally, Victoria’s tax revenue heavily relies on land transfer duty. As shown in @fig-taxrevenue, over the past 20 years, on average, land transfer duty accounts for **27%** of Victoria's tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty is removed, the government will need to introduce one or more new taxes to generate equivalent revenue.
@@ -127,8 +129,6 @@ Our project employs three forecasting models, including vector error correction 
 *The rest of the paper is organized as follows. Section 3 includes exploratory data analysis (EDA). Section 4 outlines the forecasting methods covered in this project. Section 5 discusses the detailed time series cross-validation process adopted for this project. Section 6 presents the main results and section 7 concludes.*
 
 # Exploratory Data Analysis (EDA)
-
-The data provided by the *Department of Treasury and Finance* is already well-processed and cleaned, with no missing values. Therefore, no further data cleaning is required.
 
 ## Time series analysis {#sec-tsanalysis} 
 
@@ -146,6 +146,11 @@ ltd_unit_ts <- ltd_unit %>%
   relocate(Month)
 ```
 
+For this project, the total land transfer duty is divided into residential and non-residential categories. The non-residential land transfer duty is further disaggregated into commercial, industrial, and other categories. @fig-crosssec1 provides an overview of the cross-sectional hierarchical structure.
+
+![Cross-sectional hierarchy](image/cross_sec.png){#fig-crosssec1 fig-alt="Cross-sectional hierarchy" fig-align="center" width=65%} 
+
+
 ### Total Land Transfer Duty 
 
 ```{r}
@@ -155,14 +160,14 @@ ltd_unit_ts <- ltd_unit %>%
 #| label: fig-trend
 #| fig-cap: "Time plot of Land Transfer Duty in Victoria over time"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_tot_inM = ltd_total/1000000) |>
 autoplot(ltd_tot_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-trend demonstrates an upward, non-linear trend, showing that the value of land transfer duty has generally increased over the ten-year period. Note that, due to the outbreak of Covid-19, total land transfer duty experienced a significant decline, reaching a low of 286.2 million in June 2020. Subsequently, it rebounded to an unprecedented peak of 1.013 billion in March 2022. This trend can be attributed to multiple rate cuts by the Reserve Bank of Australia, which initially aimed to stabilize the real estate sector and subsequently stimulated demand. Additionally, there is a noticeable increase in variability, particularly in recent years, indicating more pronounced fluctuations in the values. This increasing volatility suggests that a transformation of the data may be necessary to better analyze and model these trends.
@@ -180,7 +185,7 @@ ltd_unit_ts |>
   gg_season(ltd_tot_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
 Considering the seasonal patterns of land transfer duty, referring to @fig-sspattern, it is clear that there is a large jump in land transfer duty in June and December each year. This may be attributed to June being the end of financial year, when buyers rush to complete transactions to take advantage of tax benefits, financial reporting, while December being the end of calender year, when many individuals aim to complete transactions before the holiday season. @fig-sspattern also shows that there is a decrease in April each year. 
@@ -189,10 +194,10 @@ Considering the seasonal patterns of land transfer duty, referring to @fig-sspat
 #| warning: False
 #| echo: False
 #| label: fig-dcmp
-#| fig-cap: "Decomposition of log of Land Transfer Duty in Victoria"
+#| fig-cap: "Log of total Land Transfer Duty in Victoria (top) and its three additive components."
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 #| 
 log_ltd_ts <- ltd_unit_ts |>
   mutate(log_ltd = log(ltd_total))
@@ -203,7 +208,7 @@ dcmp <- log_ltd_ts |>
 ## Plot all components
 components(dcmp) |>
   autoplot() +
-  theme_minimal()
+  theme_bw()
 ```
 
 ```{r}
@@ -211,16 +216,16 @@ components(dcmp) |>
 #| warning: False
 #| echo: False
 #| label: fig-ssadj
-#| fig-cap: "Seasonally adjusted of log Land Transfer Duty in Victoria"
+#| fig-cap: "Seasonally adjusted of log Land Transfer Duty (blue) and the original data (grey)"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 components(dcmp) |>
   as_tsibble() |>
   autoplot(log_ltd, colour = "gray") +
   geom_line(aes(y=season_adjust), colour = "#0072B2") +
   labs(x = "Date", y = "Amount", title = " ") +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-dcmp shows that there is a seasonal pattern for log transformed land transfer duty, which agrees with what indicated from @fig-sspattern. The grey bars positioned to the left of each panel illustrate the relative scales of the components. Although each grey bar represents an same length, their sizes differ due to the distinct scales of the plots. The prominent grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
@@ -237,14 +242,14 @@ The grey line in @fig-ssadj represents the log-transformed total land transfer d
 #| label: fig-restrend
 #| fig-cap: "Time plot of Residential property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_res_inM = ltd_res/1000000) |>
 autoplot(ltd_res_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 
 ```
 
@@ -263,7 +268,7 @@ ltd_unit_ts |>
   gg_season(ltd_res_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
 Since as discussed above, we expect residential land transfer duty also mirrors the seasonal pattern of total land transfer duty, which is shown in @fig-resspattern. There is also a large jump in land transfer duty in June and December each year, which can be explained by the same reason.
@@ -276,14 +281,14 @@ Since as discussed above, we expect residential land transfer duty also mirrors 
 #| label: fig-nonrestrend
 #| fig-cap: "Time plot of Non-residential property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_nonres_inM = ltd_nonres/1000000) |>
 autoplot(ltd_nonres_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 
 ```
 
@@ -302,7 +307,7 @@ ltd_unit_ts |>
   gg_season(ltd_nonres_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-nonresspattern also shows an increase in June and December each year. Although the magnitude of change is smaller compared to total and residential property land transfer duty, the increasing pattern is more consistent across all years.
@@ -315,14 +320,14 @@ ltd_unit_ts |>
 #| label: fig-commtrend
 #| fig-cap: "Time plot of Commercial property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_comm_inM = ltd_comm/1000000) |>
 autoplot(ltd_comm_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 
 ```
 
@@ -341,7 +346,7 @@ ltd_unit_ts |>
   gg_season(ltd_comm_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-commspattern demonstrates various increases throughout the year, in March, May, June and December, highlighting significant fluctuations throughout the year. Moreover, while some years display consistent seasonal patterns, others show irregular fluctuations.
@@ -354,14 +359,14 @@ ltd_unit_ts |>
 #| label: fig-indtrend
 #| fig-cap: "Time plot of Industrial property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_ind_inM = ltd_ind/1000000) |>
 autoplot(ltd_ind_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 
 ```
 
@@ -380,7 +385,7 @@ ltd_unit_ts |>
   gg_season(ltd_ind_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
 Apart from slight increases in August and December each year, @fig-indspattern shows that there is no clear indication of seasonal pattern.
@@ -393,14 +398,14 @@ Apart from slight increases in August and December each year, @fig-indspattern s
 #| label: fig-othertrend
 #| fig-cap: "Time plot of Other type property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 
 ltd_unit_ts |>
   mutate(ltd_other_inM = ltd_other/1000000) |>
 autoplot(ltd_other_inM, color = "red") +
   labs(title = " ", x = "Date", y = "Amount (in $m)") +
-  theme_minimal()
+  theme_bw()
 
 ```
 
@@ -419,26 +424,28 @@ ltd_unit_ts |>
   gg_season(ltd_other_inM, labels = "both") +
   theme(legend.position = "none") +
   labs(x = "Date", y = "Amount (in $m)", title= " ")+
-  theme_minimal()
+  theme_bw()
 ```
 
-As shown in @fig-otherspattern, the seasonal pattern is quite irregular across all years, but there is a consistent increase observed in December.
+As shown in @fig-otherspattern, the seasonal pattern is quite irregular across all years, but there is a consistent increase observed in December for the past several years from 2020.
 
 ### Sales
+
+The sales variable indicates the number of properties sold in Victoria, measured in units.
 
 ```{r}
 #| message: False
 #| warning: False
 #| echo: False
 #| label: fig-salestrend
-#| fig-cap: "Time Plot of Sales Units in Victoria"
+#| fig-cap: "Time Plot of Units of Properties Sold in Victoria"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 ltd_unit_ts |>
   autoplot(sales, color = "red") +
   labs(title = " ", x = "Date", y = "Units") +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-salestrend shows a non-linear trend, and strong fluctuations in sales units over the ten-year period from January 2014 to January 2024. The plot exhibits considerable variability with both high and low peaks scattered throughout the timeline. The values range from approximately 5000 to over 15000, indicating significant changes in sales units.
@@ -450,7 +457,7 @@ In recent years, there is a noticeable increase in variability, particularly aro
 #| warning: False
 #| echo: False
 #| label: fig-salessspattern
-#| fig-cap: "Seasonal plot of Sales in Victoria"
+#| fig-cap: "Seasonal plot of Units of Properties Sold in Victoria"
 #| fig-align: 'center'
 
 ltd_unit_ts |>
@@ -463,7 +470,7 @@ ltd_unit_ts |>
     plot.title = element_text(hjust = 0.5),
     legend.position = "right"
   ) +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-salessspattern exhibits a significant decline in sales units in December, followed by a trough in January each year. This trend contrasts with the observed increase in total land transfer duty in December, as depicted in the seasonal plot in @fig-sspattern. This discrepancy can be attributed to the fact that, despite the reduction in the number of sales units, the properties sold during this period are typically of higher value, thereby driving up the total land transfer duty.
@@ -473,10 +480,10 @@ ltd_unit_ts |>
 #| warning: False
 #| echo: False
 #| label: fig-salesdcmp
-#| fig-cap: "Decomposition of log of sales in Victoria"
+#| fig-cap: "Log of Units of Properties Sold in Victoria (Top) and Its Three Additive Components"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 4
+#| fig-width: 5
 log_ltd_ts <- ltd_unit_ts |>
   mutate(log_sales = log(sales))
 
@@ -494,7 +501,7 @@ components(dcmp) |>
 #| warning: False
 #| echo: False
 #| label: fig-salesssadj
-#| fig-cap: "Seasonally adjusted of log of sales in Victoria"
+#| fig-cap: "Seasonally adjusted of log of Units of Properties Sold in Victoria (blue) and the original data (grey). "
 #| fig-align: 'center'
 #| fig-height: 3
 #| fig-width: 4
