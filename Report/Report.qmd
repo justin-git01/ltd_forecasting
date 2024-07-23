@@ -62,8 +62,9 @@ ltd_agg <- read_excel(here("data/LTD_new.xlsx"), sheet = 1) |>
   rename(Date = ...1,
          ltd = LTD,
          sales = SALES,
-         hvi = HVI) |>
-  dplyr::select(c(Date, ltd, sales, hvi))
+         hvi = HVI,
+         lending = LENDING) |>
+  dplyr::select(c(Date, ltd, sales, hvi, lending))
 
 # Load ltd unit data and join with aggregate data
 ltd_unit <- read_excel(here("data/LTD_new.xlsx"), sheet = 2) |>
@@ -90,7 +91,6 @@ tax_rev <- read_excel(here::here("data/tax_rev.xlsx"), sheet = 2) |>
 dtf_rmse <- read_excel(here("data/final_dtf_rmse.xlsx"), sheet = 4)
 ```
 
-
 # Abstract
 
 Accurate land transfer duty forecasting is essential for effective government market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. Time series data can often be disaggregated by various attributes of interest. Forecasts are frequently needed for both disaggregated and aggregated series, necessitating that the forecasts align accurately with the data’s aggregation structure. The forecast reconciliation methodology addresses this challenge by ensuring coherence across the entire aggregation structure. By employing Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models within cross-sectional, temporal, and cross-temporal hierarchical structures, the methodology significantly enhances forecast accuracy, using the *Department of Treasury and Finance*'s forecasts as a benchmark.
@@ -108,8 +108,6 @@ Land transfer duty is a tax applied to the "dutiable value" of a property being 
 #| label: fig-taxrevenue
 #| fig-cap: "Percentage of Victoria's Tax Revenue from Land Transfer Duty"
 #| fig-align: 'center'
-#| fig-height: 5
-#| fig-width: 8
 
 autoplot(tax_rev, reliance, color = "blue") +
   geom_hline(aes(yintercept = mean(reliance), linetype = "Average percentage"), color = "red", linewidth = 1.2) +
@@ -133,6 +131,8 @@ Overall, the results suggest that VECM, particularly when using cross-temporal r
 The rest of the paper is organized as follows. Section 3 includes exploratory data analysis (EDA). Section 4 explores the forecasting methods covered in detail. Section 5 discusses the detailed time series cross-validation process adopted for this project. Section 6 presents the main results and their implementation. Section 7 concludes the study and offers recommendations.
 
 # Exploratory Data Analysis (EDA)
+
+In this section, we conduct a detailed Exploratory Data Analysis (EDA) for the total land transfer duty and all its disaggregated levels, as well as for other included exploratory variables. Each of the three exploratory variables serves as a measure of property market performance and will have interrelations with land transfer duty.
 
 ## Time series analysis {#sec-tsanalysis} 
 
@@ -164,8 +164,8 @@ For this project, the total land transfer duty is divided into residential and n
 #| label: fig-trend
 #| fig-cap: "Time plot of Land Transfer Duty in Victoria over time"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_tot_inM = ltd_total/1000000) |>
@@ -200,8 +200,8 @@ Considering the seasonal patterns of land transfer duty, referring to @fig-sspat
 #| label: fig-dcmp
 #| fig-cap: "Log of total Land Transfer Duty in Victoria (top) and its three additive components."
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 #| 
 log_ltd_ts <- ltd_unit_ts |>
   mutate(log_ltd = log(ltd_total))
@@ -222,8 +222,8 @@ components(dcmp) |>
 #| label: fig-ssadj
 #| fig-cap: "Seasonally adjusted of log Land Transfer Duty (blue) and the original data (grey)"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 components(dcmp) |>
   as_tsibble() |>
   autoplot(log_ltd, colour = "gray") +
@@ -246,8 +246,8 @@ The grey line in @fig-ssadj represents the log-transformed total land transfer d
 #| label: fig-restrend
 #| fig-cap: "Time plot of Residential property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_res_inM = ltd_res/1000000) |>
@@ -285,8 +285,8 @@ Since as discussed above, we expect residential land transfer duty also mirrors 
 #| label: fig-nonrestrend
 #| fig-cap: "Time plot of Non-residential property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_nonres_inM = ltd_nonres/1000000) |>
@@ -324,8 +324,8 @@ ltd_unit_ts |>
 #| label: fig-commtrend
 #| fig-cap: "Time plot of Commercial property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_comm_inM = ltd_comm/1000000) |>
@@ -363,8 +363,8 @@ ltd_unit_ts |>
 #| label: fig-indtrend
 #| fig-cap: "Time plot of Industrial property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_ind_inM = ltd_ind/1000000) |>
@@ -402,8 +402,8 @@ Apart from slight increases in August and December each year, @fig-indspattern s
 #| label: fig-othertrend
 #| fig-cap: "Time plot of Other type property Land Transfer Duty in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 
 ltd_unit_ts |>
   mutate(ltd_other_inM = ltd_other/1000000) |>
@@ -435,7 +435,7 @@ As shown in @fig-otherspattern, the seasonal pattern is quite irregular across a
 
 ### Sales
 
-The sales variable indicates the number of properties sold in Victoria, measured in units.
+The sales variable indicates the number of properties sold in Victoria, measured in units at the contract date for all types of residential dwellings.
 
 ```{r}
 #| message: False
@@ -444,8 +444,8 @@ The sales variable indicates the number of properties sold in Victoria, measured
 #| label: fig-salestrend
 #| fig-cap: "Time Plot of Units of Properties Sold in Victoria"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 ltd_unit_ts |>
   autoplot(sales, color = "red") +
   labs(title = " ", x = "Date", y = "Units") +
@@ -486,8 +486,8 @@ ltd_unit_ts |>
 #| label: fig-salesdcmp
 #| fig-cap: "Log of Units of Properties Sold in Victoria (Top) and Its Three Additive Components"
 #| fig-align: 'center'
-#| fig-height: 4
-#| fig-width: 5
+#| fig-height: 3.5
+#| fig-width: 4.5
 log_ltd_ts <- ltd_unit_ts |>
   mutate(log_sales = log(sales))
 
@@ -497,7 +497,7 @@ dcmp <- log_ltd_ts |>
 ## Plot all components
 components(dcmp) |>
   autoplot() +
-  theme_minimal()
+  theme_bw()
 ```
 
 ```{r}
@@ -507,14 +507,14 @@ components(dcmp) |>
 #| label: fig-salesssadj
 #| fig-cap: "Seasonally adjusted of log of Units of Properties Sold in Victoria (blue) and the original data (grey). "
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 3.5
+#| fig-width: 4.5
 components(dcmp) |>
   as_tsibble() |>
   autoplot(log_sales, colour = "gray") +
   geom_line(aes(y=season_adjust), colour = "#0072B2") +
   labs(x = "Date", y = "Amount", title = " ") +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-salesdcmp indicates a seasonal pattern for log-transformed sales, which agrees with @fig-salessspattern. However, the large grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
@@ -526,6 +526,8 @@ The grey line in @fig-salesssadj represents the original log-transformed sales, 
 
 ### Home Value Index
 
+The Home Value Index aims to measure monthly movements in the value of Australian housing markets.
+
 ```{r}
 #| message: False
 #| warning: False
@@ -533,24 +535,44 @@ The grey line in @fig-salesssadj represents the original log-transformed sales, 
 #| label: fig-hvitrend
 #| fig-cap: "Time plot of Home Value Index in Victoria over time"
 #| fig-align: 'center'
-#| fig-height: 3
-#| fig-width: 4
+#| fig-height: 3.5
+#| fig-width: 4.5
 ltd_unit_ts |>
   autoplot(hvi, color = "red") +
   labs(title = " ", x = "Date", y = "Index Point") +
-  theme_minimal()
+  theme_bw()
 ```
 
 @fig-hvitrend illustrates an increasing trend, with some considerable variability throughout the timeline. There is no clear sign of seasonal pattern in home value index.
 
+### Lending
+
+Lending is the new borrower-accepted finance commitments for housing, personal and business loans from Australian Bureau Statistics (ABS), relating to all types of residential transactions.
+
+```{r}
+#| message: False
+#| warning: False
+#| echo: False
+#| label: fig-lendingtrend
+#| fig-cap: "Time plot of Lending in Victoria over time"
+#| fig-align: 'center'
+#| fig-height: 3.5
+#| fig-width: 4.5
+ltd_unit_ts |>
+  autoplot(lending, color = "red") +
+  labs(title = " ", x = "Date", y = "Value (in $m)") +
+  theme_bw()
+```
+
+@fig-lendingtrend shows an overall increasing trend over time with clear seasonal pattern for lending.
 
 ## Cointegration Analysis for modelling {#sec-coint}
 
-Based on the observations from @fig-trend, which shows the trend and increasing variance pattern in land transfer duty, @fig-salestrend, which exhibits an increasing pattern and a somewhat seasonal pattern in sales, and @fig-hvitrend, which illustrates the trend in the home value index, we can conclude that these three series are not stationary.
+Based on the observations from @fig-trend, which illustrates the trend and increasing variance pattern in land transfer duty while other disaggregated levels of land transfer duty exhibit either a trend or seasonal pattern, we can conclude that these series are non-stationary. The same findings apply to the three exploratory variables.
 
 Furthermore, to justify the use of the Vector Error Correction Model (VECM) by the *Department of Treasury and Finance*, it is essential to test for the presence of cointegration patterns (or long-term equilibrium relationships) among these three series.
 
-The Johansen procedure will be employed to test for cointegration between log transformed of  land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
+The Johansen procedure with the trace test statistic will be employed to test for cointegration between log transformed of land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
 
 ```{r}
 #| label: tbl-jotest
@@ -597,20 +619,20 @@ weights_table <- data.frame(
 )
 
 # Display Eigenvalues
-kable(matrix(eigenvalues, ncol = 1), col.names = "Eigenvalue", label = "Eigenvalues (lambda)") %>%
-  kable_styling()
+# kable(matrix(eigenvalues, ncol = 1), col.names = "Eigenvalue", label = "Eigenvalues (lambda)") %>%
+#   kable_styling()
 
 # Display Test Statistics
 kable(test_stats_table, col.names = c("Rank", "Test Statistic", "10%", "5%", "1%"), label = "Values of test statistics and critical values of test") %>%
   kable_styling()
 
 # Display Eigenvectors
-kable(eigenvectors_table, col.names = c("Variable", "ltd_total.l3", "sales.l3", "hvi.l3"), label = "Eigenvectors, normalised to the first column") %>%
-  kable_styling()
+# kable(eigenvectors_table, col.names = c("Variable", "ltd_total.l3", "sales.l3", "hvi.l3"), label = "Eigenvectors, normalised to the first column") %>%
+#   kable_styling()
 
 # Display Weights
-kable(weights_table, col.names = c("Variable", "ltd_total.l3", "sales.l3", "hvi.l3"), label = "Weights W (Loading Matrix)") %>%
-  kable_styling()
+# kable(weights_table, col.names = c("Variable", "ltd_total.l3", "sales.l3", "hvi.l3"), label = "Weights W (Loading Matrix)") %>%
+#   kable_styling()
 
 ```
 
@@ -618,7 +640,7 @@ The test results, as shown in @tbl-jotest, using 3 lags as chosen by the DTF, al
 
 Furthermore, a rank of 2 implies that we need a combination of at least two time series to form a stationary series.
 
-To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r round(jtest_sum@lambda[1],2)`. This corresponds to the eigenvectors under the column `ltd_total.l3`, which is approximately equal to (`r round(jtest_sum@V[,1],2)`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
+To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r round(jtest_sum@lambda[1],2)`. This corresponds to the eigenvectors components of `ltd_total`, which is approximately equal to (`r round(jtest_sum@V[,1],2)`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
 
 ```{r}
 #| message: False
@@ -650,7 +672,6 @@ theme_minimal()
 
 As shown in @fig-splot, the linear combination appears to be more stationary, although there remains a slight indication of varying variances over time.
 
-We can further evaluate this by applying the Augmented Dickey-Fuller (ADF) test:
 
 ```{r}
 #| label: tbl-adf
@@ -658,7 +679,7 @@ We can further evaluate this by applying the Augmented Dickey-Fuller (ADF) test:
 #| echo: False
 #| message: false
 #| warning: false
-#| 
+
 linear_comb <- as.numeric(unlist(s[,2]))
 
 adf_result <- adf.test(linear_comb)
@@ -675,12 +696,12 @@ adf_table <- data.frame(
 )
 
 # Display ADF Test result
-kable(adf_table) %>%
-  kable_styling()
+# kable(adf_table) %>%
+#   kable_styling()
 
 ```
 
-The ADF test statistic shown in @tbl-adf indicates that we can reject the null hypothesis of a unit root, providing evidence of a stationary series formed from the linear combination at the 10% level of significance. Therefore, we can conclude that it is appropriate to fit a Vector Error Correction Model (VECM) to these three time series.
+Additionally, the p-value of `r p_value` from the Augmented Dickey-Fuller (ADF) test indicates that we can reject the null hypothesis of a unit root, providing evidence of a stationary series formed from the linear combination at the 10% level of significance. Therefore, we can conclude that it is appropriate to fit a Vector Error Correction Model (VECM) to these three time series.
 
 Since we will fit VECM to all the variables in the hierarchy, including residential, non-residential, commercial, property and other, we will perform the same procedure of cointegration analysis as above.
 
