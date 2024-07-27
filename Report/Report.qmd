@@ -672,10 +672,20 @@ theme_minimal()
 
 As shown in @fig-splot, the linear combination appears to be more stationary, although there remains a slight indication of varying variances over time.
 
+```{r}
+s_ts <- df |>
+  mutate(Month = yearmonth(Date)) |>
+  select(-Date) |>
+  as_tsibble(index = Month) |>
+  relocate(Month)
+
+s_ts |>
+  ACF(Value) |>
+  autoplot()
+```
+
 
 ```{r}
-#| label: tbl-adf
-#| tbl-cap: "Augmented Dickey-Fuller (ADF) test for total_ltd"
 #| echo: False
 #| message: false
 #| warning: false
@@ -700,6 +710,7 @@ adf_table <- data.frame(
 #   kable_styling()
 
 ```
+
 
 Additionally, the p-value of `r p_value` from the Augmented Dickey-Fuller (ADF) test indicates that we can reject the null hypothesis of a unit root, providing evidence of a stationary series formed from the linear combination at the 10% level of significance. Therefore, we can conclude that it is appropriate to fit a Vector Error Correction Model (VECM) to these three time series.
 
