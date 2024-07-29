@@ -189,7 +189,7 @@ sa_data <- total_ltd_sa |>
   left_join(sales_trend, by = "Month")
 
 # Seasonal data
-s_data <- total_ltd_s |>
+seasonal_data <- total_ltd_s |>
   left_join(nonres_ltd_s, by = c("Month")) |>
   left_join(comm_ltd_s, by = "Month") |>
   left_join(ind_ltd_s, by = "Month") |>
@@ -197,20 +197,21 @@ s_data <- total_ltd_s |>
   left_join(res_ltd_s, by = "Month") 
 
 # Perform cross-validation with 8 years initially
-ltd_cv <- ltd_unit |>
+ltd_cv <- sa_data |>
   stretch_tsibble(.init = 96, .step = 1)
 
 # Number of cross-validation folds
 folds <- length(unique(ltd_cv$.id))
 
 # Define array of data
-base_vecm_forecast <- hts_reconciled_vecm <- thf_reconciled_vecm <- reconciled_vecm_tcs <- test_set <- array(, dim = c(6, 12, folds))
+base_vecm_forecast <- hts_reconciled_vecm <- thf_reconciled_vecm <- reconciled_vecm_tcs <- seasonality <- test_set <- array(, dim = c(6, 12, folds))
 
 # Add row names for the array
 rownames(base_vecm_forecast) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(reconciled_vecm_tcs) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(hts_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(thf_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+rownames(seasonality) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 
 for (t in 1:folds){
@@ -517,6 +518,115 @@ for (t in 1:folds){
   }
 }
 
+########################### Seasonality data of ltd ###########################
+
+# Perform cross-validation with 8 years initially
+ltd_cv <- seasonal_data |>
+  stretch_tsibble(.init = 96, .step = 1)
+
+# Define array of data
+seasonality <- array(, dim = c(6, 12, folds))
+
+# Add row names for the array
+rownames(seasonality) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+
+for (t in 1:folds){
+  # Filter to fold
+  ltd_filtered <- ltd_cv %>% filter(.id == t) %>% dplyr::select(-.id)
+  
+  # Pre-define set of data
+  data <- NULL
+  base_fc <- NULL
+  
+  # Monthly series
+  data$k1 <- adjust_series(ltd_filtered[, -1], freq = 12)
+  colnames(data$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # BI-MONTHLY SERIES
+  data$k2 <- adjust_series(data$k1, freq = 6)
+  
+  # QUARTERLY SERIES
+  data$k3 <- adjust_series(data$k1, freq = 4)
+  
+  # FOUR-MONTHLY SERIES
+  data$k4 <- adjust_series(data$k1, freq = 3)
+  
+  # SEMI-ANNUAL SERIES
+  data$k6 <- adjust_series(data$k1, freq = 2)
+  
+  # ANNUAL SERIES
+  data$k12 <- adjust_series(data$k1, freq = 1)
+  
+  # MONTHLY FORECASTS
+  base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1))
+  for (i in 1:6) {
+    base_fc$k1[, i] <- snaive(data$k1[,i], h = 12)$mean
+  }
+  base_fc$k1 <- ts(base_fc$k1, frequency = 12)
+  colnames(base_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # BI-MONTHLY FORECASTS
+  base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2))
+  for (i in 1:6) {
+    base_fc$k2[, i] <- snaive(data$k2[,i], h = 6)$mean
+  }
+  base_fc$k2 <- ts(base_fc$k2, frequency = 6)
+  colnames(base_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # Quarterly
+  base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3))
+  for (i in 1:6) {
+    base_fc$k3[, i] <- snaive(data$k3[,i], h = 4)$mean
+  }
+  base_fc$k3 <- ts(base_fc$k3, frequency = 4)
+  colnames(base_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # Four-monthly
+  base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4))
+  for (i in 1:6) {
+    base_fc$k4[, i] <- snaive(data$k4[,i], h = 3)$mean
+  }
+  base_fc$k4 <- ts(base_fc$k4, frequency = 3)
+  colnames(base_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # Semi-annual
+  base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6))
+  for (i in 1:6) {
+    base_fc$k6[, i] <- snaive(data$k6[,i], h = 2)$mean
+  }
+  base_fc$k6 <- ts(base_fc$k6, frequency = 2)
+  colnames(base_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  # Annual
+  base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12))
+  for (i in 1:6) {
+    base_fc$k12[, i] <- naive(data$k12[,i], h = 1)$mean
+  }
+  base_fc$k12 <- ts(base_fc$k12, frequency = 1)
+  colnames(base_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
+  
+  base <- t(do.call(rbind, rev(base_fc)))
+  
+  kset <- c(12, 6, 4, 3, 2, 1)
+  h <- 1
+  colnames(base) <- paste("k", rep(kset, h * rev(kset)), "_h",
+                          do.call("c", as.list(sapply(
+                            rev(kset) * h,
+                            function(x) seq(1:x)))),
+                          sep = "")
+  
+  for (j in 1:nrow(base)){
+    seasonality[j, ,t] <- t(as.matrix(base[j, -c(1:16)]))
+  }
+}
+
+# Add forecasts together
+final_base[1,,1] <- base_vecm_forecast[1,,1] + seasonality[1,,1]
+final_hts <- hts_reconciled_vecm + seasonality
+final_thf <- thf_reconciled_vecm + seasonality
+final_tcs <- reconciled_vecm_tcs[1,,1] + seasonality
+
+
 # Loop through each .id to create forecasts dataframe for each folds
 df <- NULL
 for (i in 1:folds) {
@@ -524,11 +634,11 @@ for (i in 1:folds) {
   start_date <- as.POSIXct("2021-07-01", tz="UTC") + months(i - 1)
   
   # Extract Total values for each .id and each array
-  vecm_base <- base_vecm_forecast["Total", , i]            # base forecasts
-  vecm_hts_reconciled <- hts_reconciled_vecm["Total", , i] # cross-sectionally reconciled forecasts
-  vecm_tcs_reconciled <- reconciled_vecm_tcs["Total", , i] # temporally reconciled forecasts
-  vecm_thf_reconciled <- thf_reconciled_vecm["Total", , i] # cross-temporally reconciled forecasts
-  total_observed <- test_set["Total", , i]                 # True values or observations
+  vecm_base <- final_base["Total", , i]          # base forecasts
+  vecm_hts_reconciled <- final_hts["Total", , i] # cross-sectionally reconciled forecasts
+  vecm_tcs_reconciled <- final_tcs["Total", , i] # temporally reconciled forecasts
+  vecm_thf_reconciled <- final_thf["Total", , i] # cross-temporally reconciled forecasts
+  total_observed <- test_set["Total", , i]       # True values or observations
   
   # Create a dataframe for the current .id
   df1 <- data.frame(
@@ -550,7 +660,7 @@ for (i in 1:folds) {
 # Plotting forecasts for one fold
 ## Initialise the fold number we want to plot
 ### Note that there will be missing values in true values from fold 23
-fold_num = 12
+fold_num = 18
 
 ## Plotting
 plot_ct <- df |>
