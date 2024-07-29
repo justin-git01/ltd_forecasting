@@ -334,9 +334,6 @@ for (t in 1:folds){
 ltd_cv <- seasonal_data |>
   stretch_tsibble(.init = 108, .step = 1)
 
-# Number of folds
-folds <- length(unique(ltd_cv$.id))
-
 # Define array of data
 seasonality <- array(, dim = c(6, 12, folds))
 
