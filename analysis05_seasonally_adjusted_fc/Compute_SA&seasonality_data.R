@@ -1,3 +1,11 @@
+###########################################################################
+
+# This script performs a decomposition for all variables including all ltd,
+# and exploratory variables (sales, hvi, lending).
+# Then filter out seasonally adjusted data and seasonality
+
+###########################################################################
+
 # Load ltd aggregate date
 ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
   rename(Date = ...1,
