@@ -190,8 +190,11 @@ s_data <- total_ltd_s |>
 
 
 # Train-test set for SA data
-ltd_unit_train_sa <- sa_data[1:117,]
+sa_data <- sa_data[1:117,]
+save(sa_data, file = "data/seasonally_adjusted_dat.RData")
 
 # Train-test set for Seasonal data
-ltd_unit_train_s <- s_data[1:117,]
+seasonal_data <- s_data[1:117,]
+save(seasonal_data, file = "data/seasonal_dat.RData")
+
 
