@@ -1,4 +1,3 @@
-## README
 
 # Land Transfer Duty Forecasting Project
 
@@ -14,6 +13,9 @@ Welcome to the Land Transfer Duty Forecasting Project repository! This project a
   - `demo_cross_temporal_reco.R`: Applies the full forecasting and cross-temporal reconciliation procedure to a subset of data.
   - `plot.R`: Plots one year worth of forecasts for all temporal frequencies, from monthly to annually.
 - **analysis04_cross_validation**: The main directory containing all files related to performing cross-validation for 10 folds of training sets with a thorough forecast reconciliation procedure. This includes RMSE and MAPE computation and plotting for 12-step-ahead forecasts.
+- **analysis05_seasonally_adjusted_fc**: Updated analysis approach for handling seasonal data:
+  - `Compute_SA&seasonality_data.R`: Separates seasonally adjusted data and seasonal patterns.
+  - `Forecast.R`: Forecasts seasonally adjusted data using established models and seasonal patterns using the SNAIVE method, then reconciles and combines them to produce final forecasts.
 - **data**: Contains all initial and generated data used in the project.
 - **presentation**: Contains files related to the presentation about the project.
 - **FINAL_FORECAST**: Contains the final forecast data for each type of reconciliation, along with the related files used to produce these forecasts.
@@ -35,9 +37,14 @@ To improve forecast accuracy, the project utilizes forecast reconciliation techn
 - **Temporal Reconciliation**: Ensures coherence across different temporal frequencies.
 - **Cross-temporal Reconciliation**: Combines both cross-sectional and temporal reconciliation for optimal accuracy.
 
+#### Seasonal Adjustment
+
+To address challenges with seasonal patterns, the project has introduced a new component:
+- **Seasonally Adjusted Forecasting**: Separates the seasonal components and seasonally adjusted data for more accurate modeling. Seasonally adjusted data is forecasted using existing models, while seasonal patterns are modeled using SNAIVE to ensure accurate seasonality representation in the final forecasts.
+
 ### Results
 
-Empirical results demonstrate that VECM, particularly when coupled with forecast reconciliation techniques, consistently outperforms ARIMA. Temporal hierarchies play a more significant role in enhancing forecast accuracy than cross-sectional hierarchies. Reconciled forecasts exhibit lower RMSE compared to those of the DTF, validating the proposed methodology's efficacy.
+Empirical results demonstrate that VECM, particularly when coupled with forecast reconciliation and seasonal adjustment techniques, consistently outperforms ARIMA. The addition of seasonal adjustment further enhances forecast accuracy, particularly in data with significant seasonal variations.
 
 ## Reproducing the Results
 
@@ -69,6 +76,9 @@ Ensure you have the following software and packages installed:
 5. **Cross-validation and Evaluation**:
    - Execute the scripts in `analysis04_cross_validation` to perform cross-validation, compute RMSE and MAPE, and generate plots for the 10 folds of 12-step-ahead forecasts.
 
+6. **Seasonal Adjustment Analysis**:
+   - Run scripts in `analysis05_seasonally_adjusted_fc` to process and forecast the seasonally adjusted and seasonal data, ensuring comprehensive forecast accuracy.
+
 ### Applying the Methodology
 
 You can use the provided scripts and functions as references to apply the forecast reconciliation methodology to your own datasets. Modify the data loading and preprocessing steps as needed, and adjust the model parameters to fit your specific requirements.
@@ -77,7 +87,7 @@ You can use the provided scripts and functions as references to apply the foreca
 
 For citing this project, please use the following BibTeX entry:
 ```bibtex
-@misc{github_repo_2024,
+@misc{ltd_project,
   author = {Hoang Do},
   title = {LTD Forecasting Project},
   year = {2024},
