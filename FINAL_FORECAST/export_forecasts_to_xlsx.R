@@ -14,23 +14,23 @@ thf_reconciled_forecasts <- list()
 tcs_reconciled_forecasts <- list()
 
 # Loop for Cross-temporally reconciled forecasts
-for (i in 1:dim(hts_reconciled_vecm)[3]) {
+for (i in 1:dim(final_hts)[3]) {
   start_date <- as.Date("2021-07-01") %m+% months(i - 1)
-  forecasts <- hts_reconciled_vecm[1, , i]
+  forecasts <- final_hts[1, , i]
   hts_reconciled_forecasts[[i]] <- c(format(start_date, "%b-%y"), forecasts)
 }
 
 # Loop for Temporally reconciled forecasts
-for (i in 1:dim(thf_reconciled_vecm)[3]) {
+for (i in 1:dim(final_thf)[3]) {
   start_date <- as.Date("2021-07-01") %m+% months(i - 1)
-  forecasts <- thf_reconciled_vecm[1, , i]
+  forecasts <- final_thf[1, , i]
   thf_reconciled_forecasts[[i]] <- c(format(start_date, "%b-%y"), forecasts)
 }
 
 # Loop for Cross-temporally reconciled forecasts
-for (i in 1:dim(reconciled_vecm_tcs)[3]) {
+for (i in 1:dim(final_tcs)[3]) {
   start_date <- as.Date("2021-07-01") %m+% months(i - 1)
-  forecasts <- reconciled_vecm_tcs[1, , i]
+  forecasts <- final_tcs[1, , i]
   tcs_reconciled_forecasts[[i]] <- c(format(start_date, "%b-%y"), forecasts)
 }
 
