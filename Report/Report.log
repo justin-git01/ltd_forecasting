@@ -1,0 +1,2157 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.29)  1 AUG 2024 14:54
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Report.tex
+(./Report.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-05-08>
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count189
+\c@section=\count190
+\c@subsection=\count191
+\c@subsubsection=\count192
+\c@paragraph=\count193
+\c@subparagraph=\count194
+\c@figure=\count195
+\c@table=\count196
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip50
+For additional information on amsmath, use the `?' option.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen141
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen142
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count197
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count198
+\leftroot@=\count199
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count266
+\DOTSCASE@=\count267
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen143
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count268
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count269
+\dotsspace@=\muskip16
+\c@parentequation=\count270
+\dspbrk@lvl=\count271
+\tag@help=\toks18
+\row@=\count272
+\column@=\count273
+\maxfields@=\count274
+\andhelp@=\toks19
+\eqnshift@=\dimen144
+\alignsep@=\dimen145
+\tagshift@=\dimen146
+\tagwidth@=\dimen147
+\totwidth@=\dimen148
+\lineht@=\dimen149
+\@envbody=\toks20
+\multlinegap=\skip51
+\multlinetaggap=\skip52
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks22
+\inpenc@posthook=\toks23
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2024/03/29 v3.1b Micro-typographical refinements (RS)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks24
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count275
+)
+\MT@toks=\toks25
+\MT@tempbox=\box53
+\MT@count=\count276
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1061.
+LaTeX Info: Redefining \leftprotrusion on input line 1062.
+\MT@prot@toks=\toks26
+LaTeX Info: Redefining \rightprotrusion on input line 1081.
+LaTeX Info: Redefining \textls on input line 1392.
+\MT@outer@kern=\dimen150
+LaTeX Info: Redefining \textmicrotypecontext on input line 2013.
+\MT@listname@count=\count277
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2024/03/29 v3.1b Definitions specific to pdftex (RS)
+LaTeX Info: Redefining \lsstyle on input line 902.
+LaTeX Info: Redefining \lslig on input line 902.
+\MT@outer@space=\skip53
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2024/03/29 v3.1b microtype main configuration file (RS)
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/xcolor/svgnam.def
+File: svgnam.def 2023/11/15 v3.01 Predefined colors according to SVG 1.1 (UK)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/xcolor/x11nam.def
+File: x11nam.def 2023/11/15 v3.01 Predefined colors according to Unix/X11 (UK)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count278
+\Gm@cntv=\count279
+\c@Gm@tempcnt=\count280
+\Gm@bindingoffset=\dimen151
+\Gm@wd@mp=\dimen152
+\Gm@odd@mp=\dimen153
+\Gm@even@mp=\dimen154
+\Gm@layoutwidth=\dimen155
+\Gm@layoutheight=\dimen156
+\Gm@layouthoffset=\dimen157
+\Gm@layoutvoffset=\dimen158
+\Gm@dimlist=\toks27
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2023-11-01 v4.19 Multi-page Table package (DPC)
+\LTleft=\skip54
+\LTright=\skip55
+\LTpre=\skip56
+\LTpost=\skip57
+\LTchunksize=\count281
+\LTcapwidth=\dimen159
+\LT@head=\box54
+\LT@firsthead=\box55
+\LT@foot=\box56
+\LT@lastfoot=\box57
+\LT@gbox=\box58
+\LT@cols=\count282
+\LT@rows=\count283
+\c@LT@tables=\count284
+\c@LT@chunks=\count285
+\LT@p@ftn=\toks28
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen160
+\lightrulewidth=\dimen161
+\cmidrulewidth=\dimen162
+\belowrulesep=\dimen163
+\belowbottomsep=\dimen164
+\aboverulesep=\dimen165
+\abovetopsep=\dimen166
+\cmidrulesep=\dimen167
+\cmidrulekern=\dimen168
+\defaultaddspace=\dimen169
+\@cmidla=\count286
+\@cmidlb=\count287
+\@aboverulesep=\dimen170
+\@belowrulesep=\dimen171
+\@thisruleclass=\count288
+\@lastruleclass=\count289
+\@thisrulewidth=\dimen172
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/tools/array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen173
+\ar@mcellbox=\box59
+\extrarowheight=\dimen174
+\NC@list=\toks29
+\extratabsurround=\skip58
+\backup@length=\skip59
+\ar@cellbox=\box60
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count290
+\calc@Bcount=\count291
+\calc@Adimen=\dimen175
+\calc@Bdimen=\dimen176
+\calc@Askip=\skip60
+\calc@Bskip=\skip61
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count292
+\calc@Cskip=\skip62
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
+Package: footnote 1997/01/28 1.13 Save footnotes around boxes
+\fn@notes=\box61
+\fn@width=\dimen177
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen178
+\Gin@req@width=\dimen179
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip63
+\multirow@cntb=\count293
+\multirow@dima=\skip64
+\bigstrutjot=\dimen180
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen181
+\WF@size=\dimen182
+\c@WF@wrappedlines=\count294
+\WF@box=\box62
+\WF@everypar=\toks30
+Package: wrapfig 2003/01/31  v 3.6
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count295
+\float@exts=\toks31
+\float@box=\box63
+\@float@everytoks=\toks32
+\@floatcapt=\box64
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/05/26 v1.0h Color table columns (DPC)
+\everycr=\toks33
+\minrowclearance=\skip65
+\rownum=\count296
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PDF (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/tabu/tabu.sty
+Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box65
+\sift@deathcycles=\count297
+\@vwid@loff=\dimen183
+\@vwid@roff=\dimen184
+)
+\c@taburow=\count298
+\tabu@nbcols=\count299
+\tabu@cnt=\count300
+\tabu@Xcol=\count301
+\tabu@alloc=\count302
+\tabu@nested=\count303
+\tabu@target=\dimen185
+\tabu@spreadtarget=\dimen186
+\tabu@naturalX=\dimen187
+\tabucolX=\dimen188
+\tabu@Xsum=\dimen189
+\extrarowdepth=\dimen190
+\abovetabulinesep=\dimen191
+\belowtabulinesep=\dimen192
+\tabustrutrule=\dimen193
+\tabu@thebody=\toks34
+\tabu@footnotes=\toks35
+\tabu@box=\box66
+\tabu@arstrutbox=\box67
+\tabu@hleads=\box68
+\tabu@vleads=\box69
+\tabu@cellskip=\skip66
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box70
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip67
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box71
+\UL@hyphenbox=\box72
+\UL@skip=\skip68
+\UL@hook=\toks36
+\UL@height=\dimen194
+\UL@pe=\count304
+\UL@pixel=\dimen195
+\ULC@box=\box73
+Package: ulem 2019/11/18
+\ULdepth=\dimen196
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen197
+\c@nlinenum=\count305
+\TeXr@lab=\toks37
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen198
+\captionmargin=\dimen199
+\caption@leftmargin=\dimen256
+\caption@rightmargin=\dimen257
+\caption@width=\dimen258
+\caption@indent=\dimen259
+\caption@parindent=\dimen260
+\caption@hangindent=\dimen261
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count306
+\c@continuedfloat=\count307
+Package caption Info: float package is loaded.
+Package caption Info: longtable package is loaded.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+)
+Package caption Info: threeparttable package is loaded.
+Package caption Info: wrapfig package is loaded.
+)
+\@float@every@codelisting=\toks38
+\c@codelisting=\count308
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count309
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count310
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2024/03/21 v3.20 programmable bibliographies (PK/MW)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count311
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+\c@tabx@nest=\count312
+\c@listtotal=\count313
+\c@listcount=\count314
+\c@liststart=\count315
+\c@liststop=\count316
+\c@citecount=\count317
+\c@citetotal=\count318
+\c@multicitecount=\count319
+\c@multicitetotal=\count320
+\c@instcount=\count321
+\c@maxnames=\count322
+\c@minnames=\count323
+\c@maxitems=\count324
+\c@minitems=\count325
+\c@citecounter=\count326
+\c@maxcitecounter=\count327
+\c@savedcitecounter=\count328
+\c@uniquelist=\count329
+\c@uniquename=\count330
+\c@refsection=\count331
+\c@refsegment=\count332
+\c@maxextratitle=\count333
+\c@maxextratitleyear=\count334
+\c@maxextraname=\count335
+\c@maxextradate=\count336
+\c@maxextraalpha=\count337
+\c@abbrvpenalty=\count338
+\c@highnamepenalty=\count339
+\c@lownamepenalty=\count340
+\c@maxparens=\count341
+\c@parenlevel=\count342
+\blx@tempcnta=\count343
+\blx@tempcntb=\count344
+\blx@tempcntc=\count345
+\c@blx@maxsection=\count346
+\blx@maxsegment@0=\count347
+\blx@notetype=\count348
+\blx@parenlevel@text=\count349
+\blx@parenlevel@foot=\count350
+\blx@sectionciteorder@0=\count351
+\blx@sectionciteorderinternal@0=\count352
+\blx@entrysetcounter=\count353
+\blx@biblioinstance=\count354
+\labelnumberwidth=\skip69
+\labelalphawidth=\skip70
+\biblabelsep=\skip71
+\bibitemsep=\skip72
+\bibnamesep=\skip73
+\bibinitsep=\skip74
+\bibparsep=\skip75
+\bibhang=\skip76
+\blx@bcfin=\read2
+\blx@bcfout=\write3
+\blx@langwohyphens=\language5
+\c@mincomprange=\count355
+\c@maxcomprange=\count356
+\c@mincompwidth=\count357
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2024/03/21 v3.20 biblatex datamodel (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'authoryear-comp.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count358
+\c@savedafterword=\count359
+\c@annotator=\count360
+\c@savedannotator=\count361
+\c@author=\count362
+\c@savedauthor=\count363
+\c@bookauthor=\count364
+\c@savedbookauthor=\count365
+\c@commentator=\count366
+\c@savedcommentator=\count367
+\c@editor=\count368
+\c@savededitor=\count369
+\c@editora=\count370
+\c@savededitora=\count371
+\c@editorb=\count372
+\c@savededitorb=\count373
+\c@editorc=\count374
+\c@savededitorc=\count375
+\c@foreword=\count376
+\c@savedforeword=\count377
+\c@holder=\count378
+\c@savedholder=\count379
+\c@introduction=\count380
+\c@savedintroduction=\count381
+\c@namea=\count382
+\c@savednamea=\count383
+\c@nameb=\count384
+\c@savednameb=\count385
+\c@namec=\count386
+\c@savednamec=\count387
+\c@translator=\count388
+\c@savedtranslator=\count389
+\c@shortauthor=\count390
+\c@savedshortauthor=\count391
+\c@shorteditor=\count392
+\c@savedshorteditor=\count393
+\c@labelname=\count394
+\c@savedlabelname=\count395
+\c@institution=\count396
+\c@savedinstitution=\count397
+\c@lista=\count398
+\c@savedlista=\count399
+\c@listb=\count400
+\c@savedlistb=\count401
+\c@listc=\count402
+\c@savedlistc=\count403
+\c@listd=\count404
+\c@savedlistd=\count405
+\c@liste=\count406
+\c@savedliste=\count407
+\c@listf=\count408
+\c@savedlistf=\count409
+\c@location=\count410
+\c@savedlocation=\count411
+\c@organization=\count412
+\c@savedorganization=\count413
+\c@origlocation=\count414
+\c@savedoriglocation=\count415
+\c@origpublisher=\count416
+\c@savedorigpublisher=\count417
+\c@publisher=\count418
+\c@savedpublisher=\count419
+\c@language=\count420
+\c@savedlanguage=\count421
+\c@origlanguage=\count422
+\c@savedoriglanguage=\count423
+\c@pageref=\count424
+\c@savedpageref=\count425
+\shorthandwidth=\skip77
+\shortjournalwidth=\skip78
+\shortserieswidth=\skip79
+\shorttitlewidth=\skip80
+\shortauthorwidth=\skip81
+\shorteditorwidth=\skip82
+\locallabelnumberwidth=\skip83
+\locallabelalphawidth=\skip84
+\localshorthandwidth=\skip85
+\localshortjournalwidth=\skip86
+\localshortserieswidth=\skip87
+\localshorttitlewidth=\skip88
+\localshortauthorwidth=\skip89
+\localshorteditorwidth=\skip90
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2024/03/21 v3.20 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2024/03/21 v3.20 biblatex compatibility (PK/MW)
+\c@textcitecount=\count426
+\c@textcitetotal=\count427
+\c@textcitemaxnames=\count428
+\c@biburlbigbreakpenalty=\count429
+\c@biburlbreakpenalty=\count430
+\c@biburlnumpenalty=\count431
+\c@biburlucpenalty=\count432
+\c@biburllcpenalty=\count433
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count434
+)
+Package biblatex Info: Trying to load bibliography style 'authoryear-comp'...
+Package biblatex Info: ... file 'authoryear-comp.bbx' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/authoryear-comp.bbx
+File: authoryear-comp.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'authoryear'...
+Package biblatex Info: ... file 'authoryear.bbx' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/authoryear.bbx
+File: authoryear.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2024/03/21 v3.20 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count435
+\c@bbx:relatedtotal=\count436
+)))
+Package biblatex Info: Trying to load citation style 'authoryear-comp'...
+Package biblatex Info: ... file 'authoryear-comp.cbx' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/authoryear-comp.cbx
+File: authoryear-comp.cbx 2024/03/21 v3.20 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\footcites'.
+Package biblatex Info: Redefining '\footcitetexts'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-05-08 L3 programming layer (loader) 
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count437
+\l__pdf_internal_box=\box74
+))
+Package biblatex Info: ... and expl3
+(biblatex)             2024-05-08 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2024-05-08 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-05-23 v7.01i Hypertext links for LaTeX
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count438
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
+)
+\@linkdim=\dimen262
+\Hy@linkcounter=\count439
+\Hy@pagecounter=\count440
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-05-23 v7.01i Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count441
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-05-23 v7.01i Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `unicode' set `true' on input line 4040.
+Package hyperref Info: Hyper figures OFF on input line 4157.
+Package hyperref Info: Link nesting OFF on input line 4162.
+Package hyperref Info: Hyper index ON on input line 4165.
+Package hyperref Info: Plain pages OFF on input line 4172.
+Package hyperref Info: Backreferencing OFF on input line 4177.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4424.
+\c@Hy@tempcnt=\count442
+LaTeX Info: Redefining \url on input line 4763.
+\XeTeXLinkMargin=\dimen263
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count443
+\Field@Width=\dimen264
+\Fld@charsize=\dimen265
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count444
+\c@Item=\count445
+\c@Hfootnote=\count446
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2024-05-23 v7.01i Hyperref driver for pdfTeX
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+with kernel methods
+)
+\Fld@listcount=\count447
+\c@bookmark@seq@number=\count448
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
+)
+\Hy@SectionHShift=\skip91
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
+\BKM@id=\count449
+))
+Package hyperref Info: Option `colorlinks' set `true' on input line 146.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bera/bera.sty
+Package: bera 2004/01/31 (WaS)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bera/beraserif.sty
+Package: beraserif 2004/01/30 (WaS)
+LaTeX Font Info:    Trying to load font information for T1+fve on input line 30.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bera/t1fve.fd
+File: t1fve.fd 2004/09/07 scalable font definitions for T1/fve.
+)
+LaTeX Font Info:    Font shape `T1/fve/m/n' will be
+(Font)              scaled to size 9.85492pt on input line 30.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bera/berasans.sty
+Package: berasans 2004/01/30 (WaS)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/bera/beramono.sty
+Package: beramono 2004/01/31 (WaS)
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mathdesign.sty
+Package: mathdesign 2013/08/29 v2.31 Math Design Project
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/mdbch.cfg) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/mdbch.sty
+Package: mdbch 2013/08/29 v2.31 bitstream bitstream charter + mdbch (Math Design Project)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdfont.def
+File: mdfont.def 2013/08/29 v2.31 (Math Design Project)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdsffont.def
+File: mdsffont.def 2013/08/29 v2.31 (Math Design Project)
+
+LaTeX Info: Font shape OT1/phv/mc/n has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 53.
+
+
+LaTeX Info: Font shape OT1/phv/mc/sc has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 56.
+
+
+LaTeX Info: Font shape OT1/phv/mc/sl has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 59.
+
+
+LaTeX Info: Font shape OT1/phv/mc/it has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 79.
+
+
+LaTeX Info: Font shape T1/phv/mc/n has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 102.
+
+
+LaTeX Info: Font shape T1/phv/mc/sc has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 105.
+
+
+LaTeX Info: Font shape T1/phv/mc/sl has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 108.
+
+
+LaTeX Info: Font shape T1/phv/mc/it has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 128.
+
+
+LaTeX Info: Font shape OT1/uhv/mc/n has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 259.
+
+
+LaTeX Info: Font shape OT1/uhv/mc/sc has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 262.
+
+
+LaTeX Info: Font shape OT1/uhv/mc/sl has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 265.
+
+
+LaTeX Info: Font shape OT1/uhv/mc/it has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 268.
+
+
+LaTeX Info: Font shape T1/uhv/mc/n has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 313.
+
+
+LaTeX Info: Font shape T1/uhv/mc/sc has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 316.
+
+
+LaTeX Info: Font shape T1/uhv/mc/sl has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 319.
+
+
+LaTeX Info: Font shape T1/uhv/mc/it has incorrect series value `mc'.
+            It should not contain an `m'! Please correct it.
+            Found on input line 322.
+
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdttfont.def
+File: mdttfont.def 2013/08/29 v2.31 (Math Design Project)
+)
+\symmdcal=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `mdcal' in version `bold'
+(Font)                  OMS/mdbch/m/n --> OMS/mdbch/b/n on input line 97.
+\symmdscr=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `mdscr' in version `bold'
+(Font)                  OMS/mdbch/m/n --> OMS/mdbch/b/n on input line 103.
+LaTeX Font Info:    Redeclaring math alphabet \mathfrak on input line 109.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `normal'
+(Font)                  U/euf/m/n --> U/xmdeuf/m/n on input line 109.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/b/n --> U/xmdeuf/m/n on input line 109.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/xmdeuf/m/n --> U/xmdeuf/b/n on input line 110.
+LaTeX Info: Redefining \frak on input line 111.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/lmr/m/n --> OT1/mdbch/m/n on input line 121.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/lmm/m/it --> OML/mdbch/m/it on input line 122.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/lmsy/m/n --> OMS/mdbch/m/n on input line 123.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/lmex/m/n --> OMX/mdbch/m/n on input line 124.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/lmr/bx/n --> OT1/mdbch/b/n on input line 126.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/lmm/b/it --> OML/mdbch/b/it on input line 127.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/lmsy/b/n --> OMS/mdbch/b/n on input line 128.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/lmex/m/n --> OMX/mdbch/b/n on input line 129.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
+(Font)                  OT1/mdbch/m/n --> T1/mdbch/m/n on input line 131.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/lmr/bx/n --> T1/mdbch/b/n on input line 132.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/lmr/m/it --> T1/mdbch/m/it on input line 133.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/lmss/m/n --> T1/fvs/m/n on input line 134.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/lmtt/m/n --> T1/fvm/m/n on input line 135.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
+(Font)                  OT1/mdbch/b/n --> T1/mdbch/b/n on input line 137.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/lmr/bx/n --> T1/mdbch/b/n on input line 138.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/lmr/bx/it --> T1/mdbch/b/it on input line 139.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/lmss/bx/n --> T1/fvs/b/n on input line 140.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/lmtt/m/n --> T1/fvm/b/n on input line 141.
+\symlettersupright=\mathgroup8
+LaTeX Font Info:    Overwriting symbol font `lettersupright' in version `bold'
+(Font)                  OML/mdbch/m/n --> OML/mdbch/b/n on input line 144.
+LaTeX Font Info:    Redeclaring math alphabet \mathrm on input line 145.
+LaTeX Font Info:    Overwriting math alphabet `\mathcal' in version `normal'
+(Font)                  OMS/mdbch/m/n --> OMS/mdbch/m/n on input line 167.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks39
+\XKV@tempa@toks=\toks40
+)
+\XKV@depth=\count450
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+LaTeX Font Info:    Trying to load font information for T1+mdbch on input line 186.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/t1mdbch.fd
+File: t1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for T1/mdbch.
+)
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 186.
+LaTeX Font Info:    Redeclaring math accent \widetilde on input line 449.
+LaTeX Font Info:    Redeclaring math accent \widehat on input line 450.
+Now handling font encoding MDA ...
+... no UTF-8 mapping file for font encoding MDA
+\symmathdesignA=\mathgroup9
+LaTeX Font Info:    Overwriting symbol font `mathdesignA' in version `bold'
+(Font)                  MDA/mdbch/m/n --> MDA/mdbch/b/n on input line 491.
+LaTeX Font Info:    Overwriting encoding scheme math defaults on input line 493.
+Now handling font encoding MDB ...
+... no UTF-8 mapping file for font encoding MDB
+\symmathdesignB=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `mathdesignB' in version `bold'
+(Font)                  MDB/mdbch/m/n --> MDB/mdbch/b/n on input line 498.
+LaTeX Info: Redefining \bold on input line 510.
+LaTeX Font Info:    Redeclaring math accent \widetilde on input line 532.
+LaTeX Font Info:    Redeclaring math accent \widehat on input line 533.
+\rulethickness=\skip92
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/sourcecodepro/sourcecodepro.sty
+Package: sourcecodepro 2018/01/13 v2.7 Adobe's Source Code Pro typeface
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/ly1/ly1enc.def
+File: ly1enc.def 2022/06/11 v0.8 TeX 'n ANSI encoding (DPC/KB)
+Now handling font encoding LY1 ...
+... processing UTF-8 mapping file for font encoding LY1
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/base/ly1enc.dfu
+File: ly1enc.dfu 2022/06/07 v1.3c UTF-8 support
+   defining Unicode char U+00A0 (decimal 160)
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A2 (decimal 162)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00A4 (decimal 164)
+   defining Unicode char U+00A5 (decimal 165)
+   defining Unicode char U+00A6 (decimal 166)
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00AD (decimal 173)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00B0 (decimal 176)
+   defining Unicode char U+00B5 (decimal 181)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+00BB (decimal 187)
+   defining Unicode char U+00BC (decimal 188)
+   defining Unicode char U+00BD (decimal 189)
+   defining Unicode char U+00BE (decimal 190)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C0 (decimal 192)
+   defining Unicode char U+00C1 (decimal 193)
+   defining Unicode char U+00C2 (decimal 194)
+   defining Unicode char U+00C3 (decimal 195)
+   defining Unicode char U+00C4 (decimal 196)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00C7 (decimal 199)
+   defining Unicode char U+00C8 (decimal 200)
+   defining Unicode char U+00C9 (decimal 201)
+   defining Unicode char U+00CA (decimal 202)
+   defining Unicode char U+00CB (decimal 203)
+   defining Unicode char U+00CC (decimal 204)
+   defining Unicode char U+00CD (decimal 205)
+   defining Unicode char U+00CE (decimal 206)
+   defining Unicode char U+00CF (decimal 207)
+   defining Unicode char U+00D0 (decimal 208)
+   defining Unicode char U+00D1 (decimal 209)
+   defining Unicode char U+00D2 (decimal 210)
+   defining Unicode char U+00D3 (decimal 211)
+   defining Unicode char U+00D4 (decimal 212)
+   defining Unicode char U+00D5 (decimal 213)
+   defining Unicode char U+00D6 (decimal 214)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00D9 (decimal 217)
+   defining Unicode char U+00DA (decimal 218)
+   defining Unicode char U+00DB (decimal 219)
+   defining Unicode char U+00DC (decimal 220)
+   defining Unicode char U+00DD (decimal 221)
+   defining Unicode char U+00DE (decimal 222)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E0 (decimal 224)
+   defining Unicode char U+00E1 (decimal 225)
+   defining Unicode char U+00E2 (decimal 226)
+   defining Unicode char U+00E3 (decimal 227)
+   defining Unicode char U+00E4 (decimal 228)
+   defining Unicode char U+00E5 (decimal 229)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00E7 (decimal 231)
+   defining Unicode char U+00E8 (decimal 232)
+   defining Unicode char U+00E9 (decimal 233)
+   defining Unicode char U+00EA (decimal 234)
+   defining Unicode char U+00EB (decimal 235)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F0 (decimal 240)
+   defining Unicode char U+00F1 (decimal 241)
+   defining Unicode char U+00F2 (decimal 242)
+   defining Unicode char U+00F3 (decimal 243)
+   defining Unicode char U+00F4 (decimal 244)
+   defining Unicode char U+00F5 (decimal 245)
+   defining Unicode char U+00F6 (decimal 246)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+00F9 (decimal 249)
+   defining Unicode char U+00FA (decimal 250)
+   defining Unicode char U+00FB (decimal 251)
+   defining Unicode char U+00FC (decimal 252)
+   defining Unicode char U+00FD (decimal 253)
+   defining Unicode char U+00FE (decimal 254)
+   defining Unicode char U+00FF (decimal 255)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+0160 (decimal 352)
+   defining Unicode char U+0161 (decimal 353)
+   defining Unicode char U+0174 (decimal 372)
+   defining Unicode char U+0175 (decimal 373)
+   defining Unicode char U+0176 (decimal 374)
+   defining Unicode char U+0177 (decimal 375)
+   defining Unicode char U+0178 (decimal 376)
+   defining Unicode char U+017D (decimal 381)
+   defining Unicode char U+017E (decimal 382)
+   defining Unicode char U+0192 (decimal 402)
+   defining Unicode char U+0218 (decimal 536)
+   defining Unicode char U+0219 (decimal 537)
+   defining Unicode char U+021A (decimal 538)
+   defining Unicode char U+021B (decimal 539)
+   defining Unicode char U+0237 (decimal 567)
+   defining Unicode char U+02C6 (decimal 710)
+   defining Unicode char U+02DC (decimal 732)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+   defining Unicode char U+2026 (decimal 8230)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2039 (decimal 8249)
+   defining Unicode char U+203A (decimal 8250)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+FB00 (decimal 64256)
+   defining Unicode char U+FB01 (decimal 64257)
+   defining Unicode char U+FB02 (decimal 64258)
+   defining Unicode char U+FB03 (decimal 64259)
+   defining Unicode char U+FB04 (decimal 64260)
+   defining Unicode char U+FB05 (decimal 64261)
+   defining Unicode char U+FB06 (decimal 64262)
+)))) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fira/FiraSans.sty
+Package: FiraSans 2022/09/17 (Bob Tennent and autoinst) Style file for Fira Sans fonts.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fontaxes/fontaxes.sty
+Package: fontaxes 2020/07/21 v1.0e Font selection axes
+LaTeX Info: Redefining \upshape on input line 29.
+LaTeX Info: Redefining \itshape on input line 31.
+LaTeX Info: Redefining \slshape on input line 33.
+LaTeX Info: Redefining \swshape on input line 35.
+LaTeX Info: Redefining \scshape on input line 37.
+LaTeX Info: Redefining \sscshape on input line 39.
+LaTeX Info: Redefining \ulcshape on input line 41.
+LaTeX Info: Redefining \textsw on input line 47.
+LaTeX Info: Redefining \textssc on input line 48.
+LaTeX Info: Redefining \textulc on input line 49.
+)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fontawesome/fontawesome.sty
+Package: fontawesome 2016/05/15 v4.6.3.1 font awesome icons
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fontawesome/fontawesomesymbols-generic.tex) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fontawesome/fontawesomesymbols-pdftex.tex)) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2024/04/23 v4.2 Extensive control of page headers and footers
+\f@nch@headwidth=\skip93
+\f@nch@O@elh=\skip94
+\f@nch@O@erh=\skip95
+\f@nch@O@olh=\skip96
+\f@nch@O@orh=\skip97
+\f@nch@O@elf=\skip98
+\f@nch@O@erf=\skip99
+\f@nch@O@olf=\skip100
+\f@nch@O@orf=\skip101
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2023/07/08 v1.2f Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup11
+\symboldletters=\mathgroup12
+\symboldsymbols=\mathgroup13
+\symboldlargesymbols=\mathgroup14
+Package bm Info: No bold for \U/msa/m/n, using \pmb.
+Package bm Info: No bold for \U/msb/m/n, using \pmb.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2023/10/27 v2.16 Sectioning titles
+\ttl@box=\box75
+\beforetitleunit=\skip102
+\aftertitleunit=\skip103
+\ttl@plus=\dimen266
+\ttl@minus=\dimen267
+\ttl@toksa=\toks41
+\titlewidth=\dimen268
+\titlewidthlast=\dimen269
+\titlewidthfirst=\dimen270
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty
+Package: xpatch 2020/03/25 v0.3a Extending etoolbox patching commands
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/textpos/textpos.sty
+Package: textpos 2022/07/23 v1.10.1
+Package textpos Info: choosing support for LaTeX3 on input line 60.
+\TP@textbox=\box76
+\TP@holdbox=\box77
+\TPHorizModule=\dimen271
+\TPVertModule=\dimen272
+\TP@margin=\dimen273
+\TP@absmargin=\dimen274
+Grid set 16 x 16 = 37.34424pt x 52.81541pt
+\TPboxrulesize=\dimen275
+\TP@ox=\dimen276
+\TP@oy=\dimen277
+\TP@tbargs=\toks42
+TextBlockOrigin set to 0pt x 0pt
+)
+\@quotelevel=\count451
+\@quotereset=\count452
+No file Report.aux.
+\openout1 = `Report.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 344.
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for MDA/cmr/m/n on input line 344.
+LaTeX Font Info:    Trying to load font information for MDA+cmr on input line 344.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdacmr.fd
+File: mdacmr.fd 
+)
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for MDB/cmr/m/n on input line 344.
+LaTeX Font Info:    Trying to load font information for MDB+cmr on input line 344.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbcmr.fd
+File: mdbcmr.fd 
+)
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Font Info:    Checking defaults for LY1/ptm/m/n on input line 344.
+LaTeX Font Info:    Trying to load font information for LY1+ptm on input line 344.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/ly1/ly1ptm.fd
+File: ly1ptm.fd 2001/02/01 font definitions for LY1/ptm using Berry names.
+)
+LaTeX Font Info:    ... okay on input line 344.
+LaTeX Info: Redefining \microtypecontext on input line 344.
+Package microtype Info: Applying patch `item' on input line 344.
+Package microtype Info: Applying patch `toc' on input line 344.
+Package microtype Info: Applying patch `eqnum' on input line 344.
+Package microtype Info: Applying patch `footnote' on input line 344.
+Package microtype Info: Applying patch `verbatim' on input line 344.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using protrusion set `basicmath'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `alltext-nott'.
+LaTeX Info: Redefining \showhyphens on input line 344.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/mt-bch.cfg
+File: mt-bch.cfg 2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(68.28644pt, 708.47397pt, 68.28644pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=708.47397pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-40.98355pt
+* \headheight=15.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2024/03/21 v3.20 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Data encoding 'utf8' specified.
+(biblatex)             No need to reencode data.
+\openout3 = `Report.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'Report.bbl' not found.
+No file Report.bbl.
+Package biblatex Info: Reference section=0 on input line 344.
+Package biblatex Info: Reference segment=0 on input line 344.
+Package hyperref Info: Link coloring ON on input line 344.
+
+Package mathdesign/mdbch Warning: Package 'amssymb' shouldn't be used in conjonction with package mdbch, on input line 344.
+
+
+Package mathdesign/mdbch Warning: Package 'amsfonts' shouldn't be used in conjonction with package mdbch, on input line 344.
+
+\c@mv@tabular=\count453
+\c@mv@boldtabular=\count454
+<AACSB.png, id=4, 1204.5pt x 406.51875pt>
+File: AACSB.png Graphic file (type png)
+<use AACSB.png>
+Package pdftex.def Info: AACSB.png  used on input line 345.
+(pdftex.def)             Requested size: 50.57945pt x 17.07056pt.
+<EQUIS.png, id=5, 619.56468pt x 380.92313pt>
+File: EQUIS.png Graphic file (type png)
+<use EQUIS.png>
+Package pdftex.def Info: EQUIS.png  used on input line 345.
+(pdftex.def)             Requested size: 27.76575pt x 17.07104pt.
+<AMBA.png, id=6, 276.03125pt x 83.31125pt>
+File: AMBA.png Graphic file (type png)
+<use AMBA.png>
+Package pdftex.def Info: AMBA.png  used on input line 345.
+(pdftex.def)             Requested size: 56.5615pt x 17.07127pt.
+<monash2.png, id=8, 2730.2pt x 791.95876pt>
+File: monash2.png Graphic file (type png)
+<use monash2.png>
+Package pdftex.def Info: monash2.png  used on input line 345.
+(pdftex.def)             Requested size: 170.67874pt x 49.50938pt.
+<MBSportrait.jpg, id=9, 621.32124pt x 503.8825pt>
+File: MBSportrait.jpg Graphic file (type jpg)
+<use MBSportrait.jpg>
+Package pdftex.def Info: MBSportrait.jpg  used on input line 345.
+(pdftex.def)             Requested size: 56.90248pt x 46.14708pt.
+LaTeX Font Info:    Trying to load font information for T1+FiraSans-TLF on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fira/T1FiraSans-TLF.fd
+File: T1FiraSans-TLF.fd 2019/10/10 (autoinst) Font definitions for T1/FiraSans-TLF.
+)
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/m/n' in size <10.95> not available
+(Font)              Font shape `T1/FiraSans-TLF/regular/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/regular/n' will be
+(Font)              scaled to size 10.95pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/m/n' in size <12> not available
+(Font)              Font shape `T1/FiraSans-TLF/regular/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/regular/n' will be
+(Font)              scaled to size 12.0pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/b/n' in size <12> not available
+(Font)              Font shape `T1/FiraSans-TLF/bold/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/bold/n' will be
+(Font)              scaled to size 12.0pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/m/n' in size <10> not available
+(Font)              Font shape `T1/FiraSans-TLF/regular/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/regular/n' will be
+(Font)              scaled to size 10.0pt on input line 345.
+LaTeX Font Info:    Trying to load font information for OT1+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/ot1mdbch.fd
+File: ot1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for OT1/mdbch.
+)
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for OML+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/omlmdbch.fd
+File: omlmdbch.fd 2013/08/29 Fontinst v1.933 font definitions for OML/mdbch.
+)
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OML/mdbch/m/it/10'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for OMS+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/omsmdbch.fd
+File: omsmdbch.fd 2013/08/29 Fontinst v1.933 font definitions for OMS/mdbch.
+)
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OMS/mdbch/m/n/10'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for OMX+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/omxmdbch.fd
+File: omxmdbch.fd 2013/08/29 Fontinst v1.933 font definitions for OMX/mdbch.
+)
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OML/mdbch/m/n/10'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for MDA+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/mdamdbch.fd
+File: mdamdbch.fd 2013/08/29 Fontinst v1.933 font definitions for MDA/mdbch.
+)
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for MDB+mdbch on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/mdbmdbch.fd
+File: mdbmdbch.fd 2013/08/29 Fontinst v1.933 font definitions for MDB/mdbch.
+)
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 9.60007pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 6.72005pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 4.80003pt on input line 345.
+LaTeX Font Info:    Trying to load font information for U+fontawesometwo on input line 345.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/fontawesome/ufontawesometwo.fd
+File: ufontawesometwo.fd 2016/05/22 Font definitions for U/fontawesometwo.
+)
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OML/mdbch/m/it/10.95'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OMS/mdbch/m/n/10.95'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `OML/mdbch/m/n/10.95'. Switching off
+(microtype)                protrusion for this font on input line 345.
+
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OML/mdbch/b/it' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OMS/mdbch/b/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 10.51207pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 7.68005pt on input line 345.
+LaTeX Font Info:    Font shape `OMX/mdbch/b/n' will be
+(Font)              scaled to size 5.76004pt on input line 345.
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 23.88496pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/m/n' in size <24.88> not available
+(Font)              Font shape `T1/FiraSans-TLF/regular/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/regular/n' will be
+(Font)              scaled to size 24.88pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/b/n' in size <24.88> not available
+(Font)              Font shape `T1/FiraSans-TLF/bold/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/bold/n' will be
+(Font)              scaled to size 24.88pt on input line 345.
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 11.52008pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/m/n' in size <14.4> not available
+(Font)              Font shape `T1/FiraSans-TLF/regular/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/regular/n' will be
+(Font)              scaled to size 14.4pt on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/b/n' in size <14.4> not available
+(Font)              Font shape `T1/FiraSans-TLF/bold/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/bold/n' will be
+(Font)              scaled to size 14.4pt on input line 345.
+
+Overfull \hbox (172.68231pt too wide) detected at line 345
+[] 
+ []
+
+
+Overfull \hbox (56.23262pt too wide) detected at line 345
+ [] |  [] []
+ []
+
+[1
+
+{/Users/justinaight/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/fira/fir_fmuqgy.enc}{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/fontawesome/fontawesometwo.enc} <./monash2.png> <./MBSportrait.jpg> <./AACSB.png> <./EQUIS.png> <./AMBA.png>]
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 13.82408pt on input line 348.
+LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
+(Font)              scaled to size 10.51207pt on input line 363.
+
+LaTeX Warning: Citation 'reia_2022' on page 2 undefined on input line 373.
+
+LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
+(Font)              scaled to size 10.51207pt on input line 373.
+
+LaTeX Warning: Citation 'nsw_treasury_2021' on page 2 undefined on input line 378.
+
+<Report_files/figure-pdf/fig-taxrevenue-1.pdf, id=21, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-taxrevenue-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-taxrevenue-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-taxrevenue-1.pdf  used on input line 392.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-taxrevenue' on page 2 undefined on input line 402.
+
+[2{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc}] [3 <./Report_files/figure-pdf/fig-taxrevenue-1.pdf>]
+
+LaTeX Warning: Reference `fig-crosssec1' on page 4 undefined on input line 479.
+
+<image/cross_sec.png, id=42, 810.02625pt x 773.89125pt>
+File: image/cross_sec.png Graphic file (type png)
+<use image/cross_sec.png>
+Package pdftex.def Info: image/cross_sec.png  used on input line 486.
+(pdftex.def)             Requested size: 295.91049pt x 282.71004pt.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/b/n' in size <10.95> not available
+(Font)              Font shape `T1/FiraSans-TLF/bold/n' tried instead on input line 494.
+LaTeX Font Info:    Font shape `T1/FiraSans-TLF/bold/n' will be
+(Font)              scaled to size 10.95pt on input line 494.
+<Report_files/figure-pdf/fig-trend-1.pdf, id=43, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-trend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-trend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-trend-1.pdf  used on input line 500.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-trend' on page 4 undefined on input line 509.
+
+[4] [5 <./image/cross_sec.png> <./Report_files/figure-pdf/fig-trend-1.pdf>]
+<Report_files/figure-pdf/fig-sspattern-1.pdf, id=62, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-sspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-sspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-sspattern-1.pdf  used on input line 526.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-sspattern' on page 6 undefined on input line 536.
+
+
+LaTeX Warning: Reference `fig-sspattern' on page 6 undefined on input line 542.
+
+<Report_files/figure-pdf/fig-dcmp-1.pdf, id=63, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-dcmp-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-dcmp-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-dcmp-1.pdf  used on input line 549.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+<Report_files/figure-pdf/fig-ssadj-1.pdf, id=64, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-ssadj-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-ssadj-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-ssadj-1.pdf  used on input line 562.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-dcmp' on page 6 undefined on input line 571.
+
+
+LaTeX Warning: Reference `fig-sspattern' on page 6 undefined on input line 573.
+
+
+LaTeX Warning: Reference `fig-dcmp' on page 6 undefined on input line 580.
+
+
+LaTeX Warning: Reference `fig-ssadj' on page 6 undefined on input line 585.
+
+
+LaTeX Warning: Reference `fig-ssadj' on page 6 undefined on input line 588.
+
+[6 <./Report_files/figure-pdf/fig-sspattern-1.pdf>]
+<Report_files/figure-pdf/fig-restrend-1.pdf, id=75, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-restrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-restrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-restrend-1.pdf  used on input line 598.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-restrend' on page 7 undefined on input line 607.
+
+[7 <./Report_files/figure-pdf/fig-dcmp-1.pdf> <./Report_files/figure-pdf/fig-ssadj-1.pdf>]
+<Report_files/figure-pdf/fig-resspattern-1.pdf, id=93, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-resspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-resspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-resspattern-1.pdf  used on input line 623.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-resspattern' on page 8 undefined on input line 634.
+
+<Report_files/figure-pdf/fig-nonrestrend-1.pdf, id=94, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-nonrestrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-nonrestrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-nonrestrend-1.pdf  used on input line 645.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-nonrestrend' on page 8 undefined on input line 654.
+
+<Report_files/figure-pdf/fig-nonresspattern-1.pdf, id=95, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-nonresspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-nonresspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-nonresspattern-1.pdf  used on input line 667.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-nonresspattern' on page 8 undefined on input line 676.
+
+<Report_files/figure-pdf/fig-commtrend-1.pdf, id=96, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-commtrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-commtrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-commtrend-1.pdf  used on input line 688.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+[8 <./Report_files/figure-pdf/fig-restrend-1.pdf>] [9 <./Report_files/figure-pdf/fig-resspattern-1.pdf> <./Report_files/figure-pdf/fig-nonrestrend-1.pdf>]
+
+LaTeX Warning: Reference `fig-commtrend' on page 10 undefined on input line 697.
+
+<Report_files/figure-pdf/fig-commspattern-1.pdf, id=123, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-commspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-commspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-commspattern-1.pdf  used on input line 710.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-commspattern' on page 10 undefined on input line 719.
+
+<Report_files/figure-pdf/fig-indtrend-1.pdf, id=124, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-indtrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-indtrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-indtrend-1.pdf  used on input line 731.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-indtrend' on page 10 undefined on input line 740.
+
+<Report_files/figure-pdf/fig-indspattern-1.pdf, id=125, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-indspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-indspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-indspattern-1.pdf  used on input line 755.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-indspattern' on page 10 undefined on input line 765.
+
+[10 <./Report_files/figure-pdf/fig-nonresspattern-1.pdf>] [11 <./Report_files/figure-pdf/fig-commtrend-1.pdf> <./Report_files/figure-pdf/fig-commspattern-1.pdf>] [12 <./Report_files/figure-pdf/fig-indtrend-1.pdf> <./Report_files/figure-pdf/fig-indspattern-1.pdf>]
+<Report_files/figure-pdf/fig-othertrend-1.pdf, id=169, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-othertrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-othertrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-othertrend-1.pdf  used on input line 775.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-othertrend' on page 13 undefined on input line 784.
+
+<Report_files/figure-pdf/fig-otherspattern-1.pdf, id=170, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-otherspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-otherspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-otherspattern-1.pdf  used on input line 795.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-otherspattern' on page 13 undefined on input line 804.
+
+<Report_files/figure-pdf/fig-salestrend-1.pdf, id=171, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-salestrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-salestrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-salestrend-1.pdf  used on input line 818.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-salestrend' on page 13 undefined on input line 827.
+
+<Report_files/figure-pdf/fig-salessspattern-1.pdf, id=172, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-salessspattern-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-salessspattern-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-salessspattern-1.pdf  used on input line 843.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+[13 <./Report_files/figure-pdf/fig-othertrend-1.pdf>] [14 <./Report_files/figure-pdf/fig-otherspattern-1.pdf> <./Report_files/figure-pdf/fig-salestrend-1.pdf>]
+
+LaTeX Warning: Reference `fig-salessspattern' on page 15 undefined on input line 852.
+
+
+LaTeX Warning: Reference `fig-sspattern' on page 15 undefined on input line 856.
+
+<Report_files/figure-pdf/fig-salesdcmp-1.pdf, id=200, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-salesdcmp-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-salesdcmp-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-salesdcmp-1.pdf  used on input line 865.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+<Report_files/figure-pdf/fig-salesssadj-1.pdf, id=201, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-salesssadj-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-salesssadj-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-salesssadj-1.pdf  used on input line 878.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-salesdcmp' on page 15 undefined on input line 887.
+
+
+LaTeX Warning: Reference `fig-salessspattern' on page 15 undefined on input line 889.
+
+
+LaTeX Warning: Reference `fig-salesdcmp' on page 15 undefined on input line 893.
+
+
+LaTeX Warning: Reference `fig-salesssadj' on page 15 undefined on input line 897.
+
+
+LaTeX Warning: Reference `fig-salesssadj' on page 15 undefined on input line 899.
+
+<Report_files/figure-pdf/fig-hvitrend-1.pdf, id=202, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-hvitrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-hvitrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-hvitrend-1.pdf  used on input line 912.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-hvitrend' on page 15 undefined on input line 921.
+
+[15 <./Report_files/figure-pdf/fig-salessspattern-1.pdf>] [16 <./Report_files/figure-pdf/fig-salesdcmp-1.pdf> <./Report_files/figure-pdf/fig-salesssadj-1.pdf>]
+<Report_files/figure-pdf/fig-lendingtrend-1.pdf, id=229, 325.215pt x 252.945pt>
+File: Report_files/figure-pdf/fig-lendingtrend-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-lendingtrend-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-lendingtrend-1.pdf  used on input line 935.
+(pdftex.def)             Requested size: 325.21916pt x 252.94823pt.
+
+LaTeX Warning: Reference `fig-lendingtrend' on page 17 undefined on input line 944.
+
+[17 <./Report_files/figure-pdf/fig-hvitrend-1.pdf> <./Report_files/figure-pdf/fig-lendingtrend-1.pdf>]
+
+LaTeX Warning: Reference `sec-tsanalysis' on page 18 undefined on input line 949.
+
+
+LaTeX Warning: Reference `fig-trend' on page 18 undefined on input line 962.
+
+
+LaTeX Warning: Reference `tbl-jotest' on page 18 undefined on input line 1002.
+
+LaTeX Font Info:    Trying to load font information for T1+SourceCodePro-TLF on input line 1015.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/sourcecodepro/T1SourceCodePro-TLF.fd
+File: T1SourceCodePro-TLF.fd 2018/02/18 (autoinst) Font definitions for T1/SourceCodePro-TLF.
+)
+LaTeX Font Info:    Font shape `T1/SourceCodePro-TLF/m/n' will be
+(Font)              scaled to size 9.85492pt on input line 1015.
+[18]
+<Report_files/figure-pdf/fig-splot-1.pdf, id=254, 289.08pt x 216.81pt>
+File: Report_files/figure-pdf/fig-splot-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-splot-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-splot-1.pdf  used on input line 1024.
+(pdftex.def)             Requested size: 289.09251pt x 216.81938pt.
+
+LaTeX Warning: Reference `fig-splot' on page 19 undefined on input line 1033.
+
+<Report_files/figure-pdf/unnamed-chunk-30-1.pdf, id=255, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/unnamed-chunk-30-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/unnamed-chunk-30-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/unnamed-chunk-30-1.pdf  used on input line 1037.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+[19{/Users/justinaight/Library/TinyTeX/texmf-dist/fonts/enc/dvips/sourcecodepro/a_lutrty.enc} <./Report_files/figure-pdf/fig-splot-1.pdf> <./Report_files/figure-pdf/unnamed-chunk-30-1.pdf>]
+
+LaTeX Warning: Reference `tbl-adftest' on page 20 undefined on input line 1077.
+
+
+LaTeX Warning: Reference `fig-crosssec' on page 20 undefined on input line 1105.
+
+File: image/cross_sec.png Graphic file (type png)
+<use image/cross_sec.png>
+Package pdftex.def Info: image/cross_sec.png  used on input line 1112.
+(pdftex.def)             Requested size: 295.91049pt x 282.71004pt.
+
+LaTeX Warning: Reference `fig-temp' on page 20 undefined on input line 1126.
+
+[20]
+<image/temp.png, id=280, 1026.83624pt x 368.37625pt>
+File: image/temp.png Graphic file (type png)
+<use image/temp.png>
+Package pdftex.def Info: image/temp.png  used on input line 1133.
+(pdftex.def)             Requested size: 455.24069pt x 163.31703pt.
+
+LaTeX Warning: Citation 'kourentzes2019cross' on page 21 undefined on input line 1142.
+
+
+LaTeX Warning: Reference `fig-crosstemp' on page 21 undefined on input line 1156.
+
+
+LaTeX Warning: Citation 'kourentzes2019cross' on page 21 undefined on input line 1157.
+
+[21 <./image/temp.png>]
+<image/cross-temporal.png, id=288, 835.12pt x 499.8675pt>
+File: image/cross-temporal.png Graphic file (type png)
+<use image/cross-temporal.png>
+Package pdftex.def Info: image/cross-temporal.png  used on input line 1164.
+(pdftex.def)             Requested size: 455.25243pt x 272.49484pt.
+
+LaTeX Warning: Reference `fig-crosssec' on page 22 undefined on input line 1188.
+
+[22 <./image/cross-temporal.png>]
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 1193.
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 1193.
+
+LaTeX Warning: Citation 'hyndman2021forecasting' on page 23 undefined on input line 1238.
+
+[23]
+
+LaTeX Warning: Citation 'gross1990disaggregation' on page 24 undefined on input line 1266.
+
+
+LaTeX Warning: Citation 'wickramasuriya2018optimal' on page 24 undefined on input line 1286.
+
+
+LaTeX Warning: Citation 'wickramasuriya2018optimal' on page 24 undefined on input line 1291.
+
+
+LaTeX Warning: Citation 'wickramasuriya2018optimal' on page 24 undefined on input line 1298.
+
+[24]
+
+LaTeX Warning: Citation 'hyndman2011optimal' on page 25 undefined on input line 1316.
+
+
+LaTeX Warning: Citation 'athanasopoulos2017forecasting' on page 25 undefined on input line 1338.
+
+LaTeX Font Info:    Freeze math alphabet allocation in version normal.
+(Font)              Allocated math groups: 15 (local: 2) on input line 1341.
+LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
+(Font)              scaled to size 7.68005pt on input line 1341.
+LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
+(Font)              scaled to size 5.76004pt on input line 1341.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input line 1341.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1355.
+
+LaTeX Warning: Citation 'hyndman2016fast' on page 25 undefined on input line 1355.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1356.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1356.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1356.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1356.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1357.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1357.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1361.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1361.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1362.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1362.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1362.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input line 1362.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1371.
+
+LaTeX Warning: Citation 'wickramasuriya2018optimal' on page 25 undefined on input line 1371.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1372.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1372.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1373.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1373.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input line 1374.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input line 1374.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1377.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input line 1377.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1384.
+[25]
+
+LaTeX Warning: Citation 'kourentzes2019cross' on page 26 undefined on input line 1394.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1405.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1406.
+
+LaTeX Warning: Reference `fig-crosssec' on page 26 undefined on input line 1408.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1412.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1412.
+
+LaTeX Warning: Citation 'athanasopoulos2017forecasting' on page 26 undefined on input line 1419.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1420.
+
+LaTeX Warning: Citation 'kourentzes2019cross' on page 26 undefined on input line 1429.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1434.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1434.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1434.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1436.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1436.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1439.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1439.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1439.
+
+LaTeX Warning: Reference `sec-coint' on page 26 undefined on input line 1446.
+
+[26]
+LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 1464.
+(/Users/justinaight/Library/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/ts1mdbch.fd
+File: ts1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for TS1/mdbch.
+)
+LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
+(Font)              scaled to size 10.51207pt on input line 1464.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1467.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1467.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1478.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1478.
+
+LaTeX Warning: Citation 'hyndman2021forecasting' on page 27 undefined on input line 1487.
+
+[27]
+
+LaTeX Warning: Reference `sec-tsanalysis' on page 28 undefined on input line 1547.
+
+
+Overfull \hbox (7.07155pt too wide) detected at line 1555
+\OML/mdbch/m/it/10.95 y[] \OT1/mdbch/m/n/10.95 = \OML/mdbch/m/it/10.95 c \OT1/mdbch/m/n/10.95 + \OML/mdbch/m/it/10.95 ^^^[]y[] \OT1/mdbch/m/n/10.95 + [] + \OML/mdbch/m/it/10.95 ^^^[]y[] \OT1/mdbch/m/n/10.95 + \OML/mdbch/m/n/10.95 ^^H[]\OML/mdbch/m/it/10.95 y[] \OT1/mdbch/m/n/10.95 + [] + \OML/mdbch/m/n/10.95 ^^H[]\OML/mdbch/m/it/10.95 y[] \OT1/mdbch/m/n/10.95 + \OML/mdbch/m/it/10.95 ^^R[]"[] \OT1/mdbch/m/n/10.95 + [] + \OML/mdbch/m/it/10.95 ^^R[]"[] \OT1/mdbch/m/n/10.95 + \OML/mdbch/m/n/10.95 ^^B[]\OML/mdbch/m/it/10.95 "[] \OT1/mdbch/m/n/10.95 + [] + \OML/mdbch/m/n/10.95 ^^B[]\OML/mdbch/m/it/10.95 "[] \OT1/mdbch/m/n/10.95 + \OML/mdbch/m/it/10.95 "[];
+ []
+
+[28]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1555.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1562.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1565.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1568.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1571.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1574.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1577.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1579.
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 3 on input line 1598.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1603.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1606.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1607.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1607.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1607.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1608.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1608.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1608.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1609.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1610.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1610.
+[29]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1626.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1626.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1626.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1627.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1628.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1629.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1633.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1633.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1633.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1634.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1635.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1636.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1643.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1643.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1643.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1644.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1644.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1645.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1646.
+
+Overfull \hbox (32.03398pt too wide) detected at line 1647
+[][]\OML/mdbch/m/it/10.95 ;
+ []
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1647.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1647.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1647.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1647.
+
+LaTeX Warning: Reference `sec-coint' on page 30 undefined on input line 1650.
+
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1660.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1660.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1660.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1661.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1661.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1662.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1663.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1664.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1671.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1671.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1671.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1672.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1672.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1672.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1674.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1677.
+[30]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1679.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1681.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1681.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input line 1681.
+
+LaTeX Warning: Citation 'FoReco' on page 31 undefined on input line 1690.
+
+<Report_files/figure-pdf/fig-rmse-1.pdf, id=346, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-rmse-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-rmse-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-rmse-1.pdf  used on input line 1700.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-rmse' on page 31 undefined on input line 1709.
+
+[31 <./Report_files/figure-pdf/fig-rmse-1.pdf>]
+
+LaTeX Warning: Reference `fig-mape' on page 32 undefined on input line 1739.
+
+<Report_files/figure-pdf/fig-mape-1.pdf, id=360, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-mape-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-mape-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-mape-1.pdf  used on input line 1745.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-rmse' on page 32 undefined on input line 1755.
+
+
+LaTeX Warning: Reference `fig-mape' on page 32 undefined on input line 1755.
+
+[32 <./Report_files/figure-pdf/fig-mape-1.pdf>]
+
+LaTeX Warning: Reference `fig-dtfrmse' on page 33 undefined on input line 1780.
+
+<Report_files/figure-pdf/fig-dtfrmse-1.pdf, id=374, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-dtfrmse-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-dtfrmse-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-dtfrmse-1.pdf  used on input line 1791.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+
+LaTeX Warning: Reference `fig-rmseratio' on page 33 undefined on input line 1800.
+
+<Report_files/figure-pdf/fig-rmseratio-1.pdf, id=375, 578.16pt x 361.35pt>
+File: Report_files/figure-pdf/fig-rmseratio-1.pdf Graphic file (type pdf)
+<use Report_files/figure-pdf/fig-rmseratio-1.pdf>
+Package pdftex.def Info: Report_files/figure-pdf/fig-rmseratio-1.pdf  used on input line 1809.
+(pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
+[33 <./Report_files/figure-pdf/fig-dtfrmse-1.pdf>] [34 <./Report_files/figure-pdf/fig-rmseratio-1.pdf>]
+
+LaTeX Warning: Empty bibliography on input line 1897.
+
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+[35] (./Report.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2020/03/25>
+ ***********
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                Report
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'Report.run.xml'.
+\openout1 = `Report.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 29712 strings out of 475953
+ 523017 string characters out of 5789041
+ 1942904 words of memory out of 5000000
+ 50888 multiletter control sequences out of 15000+600000
+ 773904 words of font info for 468 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 77i,17n,93p,1003b,1271s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fira/FiraSans-Bold.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fira/FiraSans-Regular.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/fontawesome/FontAwesome.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/adobe/sourcecodepro/SourceCodePro-Regular.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7m.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb></Users/justinaight/Library/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chri7m.pfb>
+Output written on Report.pdf (35 pages, 1173614 bytes).
+PDF statistics:
+ 605 PDF objects out of 1000 (max. 8388607)
+ 467 compressed objects within 5 object streams
+ 101 named destinations out of 1000 (max. 500000)
+ 113104 words of extra memory for PDF output out of 128383 (max. 10000000)
+

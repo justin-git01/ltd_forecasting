@@ -621,7 +621,7 @@ for (t in 1:folds){
 }
 
 # Add forecasts together
-final_base[1,,1] <- base_vecm_forecast[1,,1] + seasonality[1,,1]
+final_base <- base_vecm_forecast + seasonality
 final_hts <- hts_reconciled_vecm + seasonality
 final_thf <- thf_reconciled_vecm + seasonality
 final_tcs <- reconciled_vecm_tcs[1,,1] + seasonality
@@ -660,7 +660,7 @@ for (i in 1:folds) {
 # Plotting forecasts for one fold
 ## Initialise the fold number we want to plot
 ### Note that there will be missing values in true values from fold 23
-fold_num = 5
+fold_num = 15
 
 ## Plotting
 plot_ct <- df |>

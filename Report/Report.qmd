@@ -93,7 +93,7 @@ dtf_rmse <- read_excel(here("data/final_dtf_rmse.xlsx"), sheet = 4)
 
 # Abstract
 
-Accurate land transfer duty forecasting is essential for effective government market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. Time series data can often be disaggregated by various attributes of interest. Forecasts are frequently needed for both disaggregated and aggregated series, necessitating that the forecasts align accurately with the data’s aggregation structure. The forecast reconciliation methodology addresses this challenge by ensuring coherence across the entire aggregation structure. By employing Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models within cross-sectional, temporal, and cross-temporal hierarchical structures, the methodology significantly enhances forecast accuracy, using the *Department of Treasury and Finance*'s forecasts as a benchmark.
+Accurate land transfer duty forecasting is essential for effective government market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. Time series data can often be disaggregated by various attributes of interest. And forecasts are frequently needed for both disaggregated and aggregated series, necessitating that the forecasts align accurately with the data’s aggregation structure.The forecast reconciliation methodology addresses this challenge by ensuring coherence across the entire aggregation structure. By employing Vector Error Correction Model (VECM) within cross-sectional, temporal, and cross-temporal hierarchical structures, we find that the methodology significantly improves forecast accuracy of Victoria’s land transfer duty, using the *Department of Treasury and Finance*'s forecasts as a benchmark. Moreover, the methodology is broadly applicable when the aggregate variable of interest can be modelled for disaggregated components and/or at different frequencies.
 
 # Introduction and background
 
@@ -124,7 +124,7 @@ This report introduces a new forecasting methodology aimed at improving the accu
 
 Our project employs three forecasting models, including vector error correction model (VECM), vector autoregressive model (VAR) and autoregressive integrated moving average (ARIMA). For the model fitting process, we include three macroeconomic indicators and property market indices, which are sales, home value index and lending provided by the Australian Bureau of Statistics (ABS) and CoreLogic. The rationale for selecting these three explanatory variables is that the best-performing models used by the *Department of Treasury and Finance* also employ them. 
 
-To test forecast performance, we use time series cross-validation to ensure that the corresponding training set consists only of observations that occurred prior to the observation that forms the test set. The length of the first training set contains 108 months of data (equivalent to 9 years) and increase the size of successive training sets by one month. As a result, there will be 10 testing sets with 1 to 12-step-ahead forecasts. We then computed accuracy measures, specifically root mean squared errors (RMSE) and mean absolute percentage errors (MAPE), for all forecasts, and finally averaged them across the 10 sets. 
+To assess the forecast performance, we use time series cross-validation to ensure that the corresponding training set consists only of observations that occurred prior to the observation that forms the test set. The length of the first training set contains 108 months of data (equivalent to 9 years) and increase the size of successive training sets by one month. As a result, there will be 10 testing sets with 1 to 12-step-ahead forecasts. We then computed accuracy measures, specifically root mean squared errors (RMSE) and mean absolute percentage errors (MAPE), for all forecasts, and finally averaged them across the 10 sets. 
 
 Overall, the results suggest that VECM, particularly when using cross-temporal reconciliation, consistently outperforms ARIMA. Temporal hierarchies contribute more to accuracy improvements than cross-sectional hierarchies. The reconciled forecasts from VECM exhibit lower RMSE and MAPE compared to the *Department of Treasury and Finance*'s forecasts, underscoring the efficacy of the proposed approach.
 
@@ -566,6 +566,10 @@ ltd_unit_ts |>
 
 @fig-lendingtrend shows an overall increasing trend over time with clear seasonal pattern for lending.
 
+## Dealing with seasonality
+
+As discussed in @sec-tsanalysis, it is evident that many time series exhibit seasonal patterns. Given the limitations of Vector Error Correction Models (VECM) in adequately modeling these seasonal fluctuations, we propose a methodological adjustment. Specifically, we will decompose the time series into seasonally adjusted components and explicit seasonal factors. This decomposition allows us to apply VECM to the seasonally adjusted data. Subsequently, we will conduct independent forecasts for both the seasonally adjusted data and the seasonal components. The final step involves the reconciliation of these forecasts then integrating them.
+
 ## Cointegration Analysis for modelling {#sec-coint}
 
 Based on the observations from @fig-trend, which illustrates the trend and increasing variance pattern in land transfer duty while other disaggregated levels of land transfer duty exhibit either a trend or seasonal pattern, we can conclude that these series are non-stationary. The same findings apply to the three exploratory variables.
@@ -575,12 +579,181 @@ Furthermore, to justify the use of the Vector Error Correction Model (VECM) by t
 The Johansen procedure with the trace test statistic will be employed to test for cointegration between log transformed of land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
 
 ```{r}
+# Rename ltd unit data
+names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending")
+
+# Convert ltd unit data to tsibble object
+ltd_unit <- ltd_unit %>%
+  mutate(Month = yearmonth(Date)) %>%
+  select(-Date) %>%
+  as_tsibble(index = Month) %>%
+  relocate(Month)
+
+# Filter out lending as it does not require seasonally adjusted
+lend <- ltd_unit |>
+  select(lending) |>
+  relocate(Month)
+
+# Total
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(Total))
+
+## Filter out SA
+total_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Total = season_adjust)
+
+## Filter out seasonality
+total_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(Total = season_year)
+
+# Residential
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(Res))
+
+## Filter out SA
+res_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Res = season_adjust)
+
+## Filter out seasonality
+res_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(Res = season_year)
+
+# NonRes
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(NonRes))
+
+## Filter out SA
+nonres_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(NonRes = season_adjust)
+
+## Filter out seasonality
+nonres_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(NonRes = season_year)
+
+# Comm
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(Comm))
+
+## Filter out SA
+comm_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Comm = season_adjust)
+
+## Filter out seasonality
+comm_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(Comm = season_year)
+
+# Ind
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(Ind))
+
+## Filter out SA
+ind_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Ind = season_adjust)
+
+## Filter out seasonality
+ind_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(Ind = season_year)
+
+# other
+## Decomp
+dcmp <- ltd_unit |> 
+  model(stl = STL(Other))
+
+## Filter out SA
+other_ltd_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Other = season_adjust)
+
+## Filter out seasonality
+other_ltd_s <- components(dcmp) |>
+  select(season_year) |>
+  relocate(Month) |>
+  rename(Other = season_year)
+
+# Sales
+# Decompositions
+dcmp <- ltd_unit |>
+  model(stl = STL(Sales))
+
+# Filter out sales trend
+sales_trend <- components(dcmp) |>
+  select(trend) |>
+  relocate(Month) |>
+  rename(sales_trend = trend)
+
+# Filter out SA sales
+sales_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(Sales = season_adjust)
+
+# HVI
+# Decompositions
+dcmp <- ltd_unit |>
+  model(stl = STL(hvi))
+
+# Filter out SA hvi
+hvi_sa <- components(dcmp) |>
+  select(season_adjust) |>
+  relocate(Month) |>
+  rename(hvi = season_adjust)
+
+
+# Seasonal adjusted data
+sa_data <- total_ltd_sa |>
+  left_join(nonres_ltd_sa, by = c("Month")) |>
+  left_join(comm_ltd_sa, by = "Month") |>
+  left_join(ind_ltd_sa, by = "Month") |>
+  left_join(other_ltd_sa, by = "Month") |>
+  left_join(res_ltd_sa, by = "Month") |>
+  left_join(sales_sa, by = "Month") |>
+  left_join(hvi_sa, by = "Month") |>
+  left_join(lend, by = "Month") |>
+  left_join(sales_trend, by = "Month")
+
+# Seasonal data
+s_data <- total_ltd_s |>
+  left_join(nonres_ltd_s, by = c("Month")) |>
+  left_join(comm_ltd_s, by = "Month") |>
+  left_join(ind_ltd_s, by = "Month") |>
+  left_join(other_ltd_s, by = "Month") |>
+  left_join(res_ltd_s, by = "Month") 
+```
+
+
+```{r}
 #| label: tbl-jotest
 #| tbl-cap: "Johansen test result"
 #| echo: False
 #| message: false
 #| warning: false
-jtest <- ca.jo(log(ltd_unit_ts[,c(2,8,9)]), type="trace", K=3, ecdet="none", spec="longrun")
+jtest <- ca.jo(log(sa_data[,c(2,8,9)]), type="trace", K=3, ecdet="none", spec="longrun")
 
 jtest_sum <- summary(jtest)
 
