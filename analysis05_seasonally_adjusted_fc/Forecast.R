@@ -25,9 +25,35 @@ source("Function/select_optimal_lag.R")
 load(here::here("data/seasonal_dat.RData"))
 load(here::here("data/seasonally_adjusted_dat.RData"))
 
-# Perform cross-validation with 9 years initially
+# Load ltd aggregate date
+ltd_agg <- read_excel("data/LTD_new.xlsx", sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI,
+         lending = LENDING) |>
+  dplyr::select(c(Date, ltd, sales, hvi, lending))
+
+# Load ltd unit data and join with aggregate data
+ltd_unit <- read_excel("data/LTD_new.xlsx", sheet = 2) |>
+  rename(Date = ...1) |>
+  dplyr::select(Date, ltd_total, ltd_nonres, ltd_comm, ltd_ind, ltd_other, ltd_res) |>
+  left_join(ltd_agg, by = c("Date")) |>
+  dplyr::select(-ltd)
+
+# Rename ltd unit data
+names(ltd_unit) <- c("Date", "Total", "NonRes", "Comm", "Ind", "Other", "Res", "Sales", "hvi", "lending")
+
+# Convert ltd unit data to tsibble object
+ltd_unit <- ltd_unit %>%
+  mutate(Month = yearmonth(Date)) %>%
+  select(-Date) %>%
+  as_tsibble(index = Month) %>%
+  relocate(Month)
+
+# Perform cross-validation
 ltd_cv <- sa_data |>
-  stretch_tsibble(.init = 108, .step = 1)
+  stretch_tsibble(.init = nrow(sa_data)-9, .step = 1)
 
 # Number of folds
 folds <- length(unique(ltd_cv$.id))
@@ -42,7 +68,7 @@ rownames(hts_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "R
 rownames(thf_reconciled_vecm) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 rownames(test_set) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
 
-# Run loops for forecasting and reconciiation
+# Run loops for forecasting and reconciliation
 for (t in 1:folds){
   # Filter to fold
   ltd_filtered <- ltd_cv %>% filter(.id == t) %>% dplyr::select(-.id)
@@ -330,9 +356,9 @@ for (t in 1:folds){
 
 ########################### Seasonality data of ltd ###########################
 
-# Perform cross-validation with 9 years initially
+# Perform cross-validation
 ltd_cv <- seasonal_data |>
-  stretch_tsibble(.init = 108, .step = 1)
+  stretch_tsibble(.init = nrow(seasonal_data)-9, .step = 1)
 
 # Define array of data
 seasonality <- array(, dim = c(6, 12, folds))
@@ -370,7 +396,7 @@ for (t in 1:folds){
   # MONTHLY FORECASTS
   base_fc$k1 <- matrix(NA, nrow = 12, ncol = ncol(data$k1))
   for (i in 1:6) {
-    base_fc$k1[, i] <- snaive(data$k1[,i], h = 12)$mean
+    base_fc$k1[, i] <- forecast::snaive(data$k1[,i], h = 12)$mean
   }
   base_fc$k1 <- ts(base_fc$k1, frequency = 12)
   colnames(base_fc$k1) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -378,7 +404,7 @@ for (t in 1:folds){
   # BI-MONTHLY FORECASTS
   base_fc$k2 <- matrix(NA, nrow = 6, ncol = ncol(data$k2))
   for (i in 1:6) {
-    base_fc$k2[, i] <- snaive(data$k2[,i], h = 6)$mean
+    base_fc$k2[, i] <- forecast::snaive(data$k2[,i], h = 6)$mean
   }
   base_fc$k2 <- ts(base_fc$k2, frequency = 6)
   colnames(base_fc$k2) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -386,7 +412,7 @@ for (t in 1:folds){
   # Quarterly
   base_fc$k3 <- matrix(NA, nrow = 4, ncol = ncol(data$k3))
   for (i in 1:6) {
-    base_fc$k3[, i] <- snaive(data$k3[,i], h = 4)$mean
+    base_fc$k3[, i] <- forecast::snaive(data$k3[,i], h = 4)$mean
   }
   base_fc$k3 <- ts(base_fc$k3, frequency = 4)
   colnames(base_fc$k3) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -394,7 +420,7 @@ for (t in 1:folds){
   # Four-monthly
   base_fc$k4 <- matrix(NA, nrow = 3, ncol = ncol(data$k4))
   for (i in 1:6) {
-    base_fc$k4[, i] <- snaive(data$k4[,i], h = 3)$mean
+    base_fc$k4[, i] <- forecast::snaive(data$k4[,i], h = 3)$mean
   }
   base_fc$k4 <- ts(base_fc$k4, frequency = 3)
   colnames(base_fc$k4) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -402,7 +428,7 @@ for (t in 1:folds){
   # Semi-annual
   base_fc$k6 <- matrix(NA, nrow = 2, ncol = ncol(data$k6))
   for (i in 1:6) {
-    base_fc$k6[, i] <- snaive(data$k6[,i], h = 2)$mean
+    base_fc$k6[, i] <- forecast::snaive(data$k6[,i], h = 2)$mean
   }
   base_fc$k6 <- ts(base_fc$k6, frequency = 2)
   colnames(base_fc$k6) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -410,7 +436,7 @@ for (t in 1:folds){
   # Annual
   base_fc$k12 <- matrix(NA, nrow = 1, ncol = ncol(data$k12))
   for (i in 1:6) {
-    base_fc$k12[, i] <- naive(data$k12[,i], h = 1)$mean
+    base_fc$k12[, i] <- forecast::naive(data$k12[,i], h = 1)$mean
   }
   base_fc$k12 <- ts(base_fc$k12, frequency = 1)
   colnames(base_fc$k12) <- c("Total", "NonRes", "Comm", "Ind", "Other", "Res")
@@ -435,6 +461,13 @@ final_base <- base_vecm_forecast + seasonality
 final_hts <- hts_reconciled_vecm + seasonality
 final_thf <- thf_reconciled_vecm + seasonality
 final_tcs <- reconciled_vecm_tcs + seasonality
+
+# Save forecasts in RData file
+save(final_base, file = "data/sa_base.RData")
+save(final_hts, file = "data/sa_hts.RData")
+save(final_thf, file = "data/sa_thf.RData")
+save(final_tcs, file = "data/sa_tcs.RData")
+save(test_set, file = "data/test_set.RData")
 
 # Loop through each .id
 df <- NULL
@@ -464,7 +497,7 @@ for (i in 1:10) {
 }
 
 plot_ct <- df |>
-  filter(id == 10) |>
+  filter(id == 3) |>
   select(-id) |>
   pivot_longer(-Date, names_to = "Approach") |>
   ggplot(aes(x = Date, y = value, col = Approach)) +
@@ -475,7 +508,7 @@ plot_ct <- df |>
 plotly::ggplotly(plot_ct)
 
 score_ct1 <- df |>
-  filter(id == 10) |>
+  filter(id == 9) |>
   select(-id) |>
   pivot_longer(-c(Date, observations), names_to = "Approach") |>
   group_by(Approach) |>

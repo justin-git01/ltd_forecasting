@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,62 +58,10 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
 
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors
 
-Attaching package: 'kableExtra'
-
-
-The following object is masked from 'package:dplyr':
-
-    group_rows
-
-
-
-Attaching package: 'scales'
-
-
-The following object is masked from 'package:purrr':
-
-    discard
-
-
-The following object is masked from 'package:readr':
-
-    col_factor
-
-
-corrplot 0.92 loaded
-
-── Attaching packages ──────────────────────────────────────────── fpp3 0.4.0 ──
-
-✔ tsibble     1.1.1     ✔ feasts      0.2.2
-✔ tsibbledata 0.4.0     ✔ fable       0.3.1
-
-── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──
-✖ lubridate::date()        masks base::date()
-✖ scales::discard()        masks purrr::discard()
-✖ dplyr::filter()          masks stats::filter()
-✖ kableExtra::group_rows() masks dplyr::group_rows()
-✖ tsibble::intersect()     masks base::intersect()
-✖ tsibble::interval()      masks lubridate::interval()
-✖ dplyr::lag()             masks stats::lag()
-✖ tsibble::setdiff()       masks base::setdiff()
-✖ tsibble::union()         masks base::union()</code></pre>
-</div>
-</div>
 <section id="data-wrangling" class="level1">
 <h1>Data wrangling</h1>
 <section id="ltd-data-aggregate" class="level2">
@@ -125,7 +73,6 @@ corrplot 0.92 loaded
 <p>
 Null values for each variable
 </p>
-
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -186,7 +133,6 @@ lending
 </td>
 </tr>
 </tbody>
-
 </table>
 </div>
 </div>
@@ -213,7 +159,6 @@ lending
 <p>
 Null values for each variable
 </p>
-
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -346,7 +291,6 @@ volume_unknown
 </td>
 </tr>
 </tbody>
-
 </table>
 </div>
 </div>
@@ -379,7 +323,6 @@ volume_unknown
 <p>
 Summary statistics of ltd aggregate data features
 </p>
-
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -414,16 +357,16 @@ ltd
 28079889
 </td>
 <td style="text-align:left;">
-66527792
+67219566
 </td>
 <td style="text-align:left;">
-204901815
+208486293
 </td>
 <td style="text-align:left;">
-259837104
+264719200
 </td>
 <td style="text-align:left;">
-389513631
+393845322
 </td>
 <td style="text-align:left;">
 1036043316
@@ -437,16 +380,16 @@ hvi
 22.45
 </td>
 <td style="text-align:left;">
-33.38
+33.43
 </td>
 <td style="text-align:left;">
-70.84
+71.14
 </td>
 <td style="text-align:left;">
-82.95
+84.06
 </td>
 <td style="text-align:left;">
-115.61
+118.00
 </td>
 <td style="text-align:left;">
 192.41
@@ -460,19 +403,19 @@ sales
 3553
 </td>
 <td style="text-align:left;">
-6057
+6078
 </td>
 <td style="text-align:left;">
-7908
+7910
 </td>
 <td style="text-align:left;">
-7879
+7900
 </td>
 <td style="text-align:left;">
-9319
+9332
 </td>
 <td style="text-align:left;">
-15176
+15177
 </td>
 </tr>
 <tr>
@@ -480,22 +423,22 @@ sales
 int_rate
 </td>
 <td style="text-align:left;">
-4.52
+4.520
 </td>
 <td style="text-align:left;">
-5.93
+5.930
 </td>
 <td style="text-align:left;">
-7.30
+7.310
 </td>
 <td style="text-align:left;">
-8.25
+8.256
 </td>
 <td style="text-align:left;">
-9.40
+9.360
 </td>
 <td style="text-align:left;">
-17.00
+17.000
 </td>
 </tr>
 <tr>
@@ -506,23 +449,22 @@ lending
 2173
 </td>
 <td style="text-align:left;">
-3352
+3360
 </td>
 <td style="text-align:left;">
-4465
+4489
 </td>
 <td style="text-align:left;">
-4797
+4838
 </td>
 <td style="text-align:left;">
-5751
+5799
 </td>
 <td style="text-align:left;">
 10594
 </td>
 </tr>
 </tbody>
-
 </table>
 </div>
 </div>
@@ -553,15 +495,19 @@ lending
 <h4 class="anchored" data-anchor-id="ltd-loan-to-deposit">ltd (Loan-to-Deposit)</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxltd" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxltd-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: Boxplot for Loan-to-Deposit variable</figcaption>
+<div id="fig-boxltd" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxltd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxltd-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxltd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Boxplot for Loan-to-Deposit variable
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxltd">Figure&nbsp;1</a> shows that there are a few outliers for <code>ltd</code> at around 1 billion.</p>
+<p><a href="#fig-boxltd" class="quarto-xref">Figure&nbsp;1</a> shows that there are a few outliers for <code>ltd</code> at around 1 billion.</p>
 </section>
 <section id="predictor-variables" class="level4">
 <h4 class="anchored" data-anchor-id="predictor-variables">Predictor variables</h4>
@@ -569,57 +515,73 @@ lending
 <h5 class="anchored" data-anchor-id="home-value-index">Home value index</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxhvi" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxhvi-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: Boxplot for Home Value Index variable</figcaption>
+<div id="fig-boxhvi" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxhvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxhvi-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxhvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Boxplot for Home Value Index variable
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxhvi">Figure&nbsp;2</a> shows that there are no outlier for <code>hvi</code> variable.</p>
+<p><a href="#fig-boxhvi" class="quarto-xref">Figure&nbsp;2</a> shows that there are no outlier for <code>hvi</code> variable.</p>
 </section>
 <section id="sales" class="level5">
 <h5 class="anchored" data-anchor-id="sales">Sales</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxsales" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxsales-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;3: Boxplot for Sales variable</figcaption>
+<div id="fig-boxsales" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxsales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxsales-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxsales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Boxplot for Sales variable
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxsales">Figure&nbsp;3</a> shows that there are 2 outliers for <code>sales</code> variable.</p>
+<p><a href="#fig-boxsales" class="quarto-xref">Figure&nbsp;3</a> shows that there are 2 outliers for <code>sales</code> variable.</p>
 </section>
 <section id="interest-rate" class="level5">
 <h5 class="anchored" data-anchor-id="interest-rate">Interest Rate</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxint" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxint-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;4: Boxplot for Interest rate variable</figcaption>
+<div id="fig-boxint" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxint-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Boxplot for Interest rate variable
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxint">Figure&nbsp;4</a> shows that there are multiple interest outliers at the rate ranged from 15% to 17%.</p>
+<p><a href="#fig-boxint" class="quarto-xref">Figure&nbsp;4</a> shows that there are multiple interest outliers at the rate ranged from 15% to 17%.</p>
 </section>
 <section id="lending" class="level5">
 <h5 class="anchored" data-anchor-id="lending">Lending</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxlend" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxlend-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;5: Boxplot for Lending variable</figcaption>
+<div id="fig-boxlend" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxlend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxlend-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxlend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Boxplot for Lending variable
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxlend">Figure&nbsp;5</a> shows that there are a few <code>lending</code> outliers at around $10 billions</p>
+<p><a href="#fig-boxlend" class="quarto-xref">Figure&nbsp;5</a> shows that there are a few <code>lending</code> outliers at around $10 billions</p>
 </section>
 </section>
 </section>
@@ -632,15 +594,19 @@ lending
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histltd" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histltd-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: Histogram for Loan-to-Deposit</figcaption>
+<div id="fig-histltd" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histltd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histltd-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histltd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Histogram for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As indicated by <a href="#fig-histltd">Figure&nbsp;6</a>, mostly values lie on the right end, which means <code>ltd</code> is right-skewed. Moreover, values for <code>ltd</code> can be separated to different clusters (at $250m, $500m, etc).</p>
+<p>As indicated by <a href="#fig-histltd" class="quarto-xref">Figure&nbsp;6</a>, mostly values lie on the right end, which means <code>ltd</code> is right-skewed. Moreover, values for <code>ltd</code> can be separated to different clusters (at $250m, $500m, etc).</p>
 </section>
 <section id="predictor-variables-1" class="level4">
 <h4 class="anchored" data-anchor-id="predictor-variables-1">Predictor variables</h4>
@@ -651,15 +617,19 @@ lending
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histhvi" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histhvi-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: Histogram for Home Value Index</figcaption>
+<div id="fig-histhvi" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histhvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histhvi-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histhvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Histogram for Home Value Index
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, <a href="#fig-histhvi">Figure&nbsp;7</a> indicates there are clusters formed by <code>hvi</code> value.</p>
+<p>Similarly, <a href="#fig-histhvi" class="quarto-xref">Figure&nbsp;7</a> indicates there are clusters formed by <code>hvi</code> value.</p>
 </section>
 <section id="sales-1" class="level5">
 <h5 class="anchored" data-anchor-id="sales-1">Sales</h5>
@@ -668,15 +638,19 @@ lending
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histsales" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histsales-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: Histogram for Sales</figcaption>
+<div id="fig-histsales" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histsales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histsales-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histsales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Histogram for Sales
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-histsales">Figure&nbsp;8</a> shows that the distribution for sales are fairly symmetrical around 9000, with a few outliers at 15000.</p>
+<p><a href="#fig-histsales" class="quarto-xref">Figure&nbsp;8</a> shows that the distribution for sales are fairly symmetrical around 9000, with a few outliers at 15000.</p>
 </section>
 <section id="interest-rate-1" class="level5">
 <h5 class="anchored" data-anchor-id="interest-rate-1">Interest rate</h5>
@@ -685,15 +659,19 @@ lending
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histint" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histint-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: Histogram for Interest Rate</figcaption>
+<div id="fig-histint" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histint-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Histogram for Interest Rate
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-histint">Figure&nbsp;9</a> shows that the distribution for intert rate does not follow any clear pattern, but mostly clustered on 2 ends.</p>
+<p><a href="#fig-histint" class="quarto-xref">Figure&nbsp;9</a> shows that the distribution for intert rate does not follow any clear pattern, but mostly clustered on 2 ends.</p>
 </section>
 <section id="lending-1" class="level5">
 <h5 class="anchored" data-anchor-id="lending-1">Lending</h5>
@@ -702,15 +680,19 @@ lending
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histlend" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histlend-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: Histogram for Lending</figcaption>
+<div id="fig-histlend" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histlend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histlend-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histlend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Histogram for Lending
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, as indicated by <a href="#fig-histlend">Figure&nbsp;10</a>, we can also see some clusters.</p>
+<p>Similarly, as indicated by <a href="#fig-histlend" class="quarto-xref">Figure&nbsp;10</a>, we can also see some clusters.</p>
 <p>We can see most distributions include clusters, which indicates <strong>multimodal distributions.</strong> A distribution with multiple peaks (or clusters) is referred to as multimodal.</p>
 <p>This could due to a few reasons:</p>
 <ol type="1">
@@ -732,7 +714,6 @@ lending
 <p>
 Summary statistics of ltd unit data features
 </p>
-
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -767,16 +748,16 @@ ltd_total
 286162171
 </td>
 <td style="text-align:left;">
-433394897
+436746679
 </td>
 <td style="text-align:left;">
-500288539
+507020072
 </td>
 <td style="text-align:left;">
-540787875
+546341854
 </td>
 <td style="text-align:left;">
-631266502
+653755886
 </td>
 <td style="text-align:left;">
 1013171645
@@ -790,16 +771,16 @@ ltd_res
 238100812
 </td>
 <td style="text-align:left;">
-346524584
+346973388
 </td>
 <td style="text-align:left;">
-399498470
+413683222
 </td>
 <td style="text-align:left;">
-432240439
+436669910
 </td>
 <td style="text-align:left;">
-487787095
+500825836
 </td>
 <td style="text-align:left;">
 761393438
@@ -813,16 +794,16 @@ ltd_nonres
 42909678
 </td>
 <td style="text-align:left;">
-76598796
+77139548
 </td>
 <td style="text-align:left;">
-96404474
+98168249
 </td>
 <td style="text-align:left;">
-108547435
+109671944
 </td>
 <td style="text-align:left;">
-134113363
+137012692
 </td>
 <td style="text-align:left;">
 357222264
@@ -836,16 +817,16 @@ ltd_comm
 22106375
 </td>
 <td style="text-align:left;">
-41818398
+42163845
 </td>
 <td style="text-align:left;">
-54899348
+55109452
 </td>
 <td style="text-align:left;">
-59463161
+59537163
 </td>
 <td style="text-align:left;">
-70626532
+70582867
 </td>
 <td style="text-align:left;">
 132405000
@@ -859,16 +840,16 @@ ltd_ind
 5229382
 </td>
 <td style="text-align:left;">
-17048499
+17133801
 </td>
 <td style="text-align:left;">
-24505464
+25140324
 </td>
 <td style="text-align:left;">
-31036199
+31597623
 </td>
 <td style="text-align:left;">
-36327600
+38290916
 </td>
 <td style="text-align:left;">
 214372653
@@ -882,16 +863,16 @@ ltd_other
 3325394
 </td>
 <td style="text-align:left;">
-9461797
+9529304
 </td>
 <td style="text-align:left;">
-14691173
+15149780
 </td>
 <td style="text-align:left;">
-17943808
+18436842
 </td>
 <td style="text-align:left;">
-24147179
+24369369
 </td>
 <td style="text-align:left;">
 74469171
@@ -911,10 +892,10 @@ ltd_unknown
 0
 </td>
 <td style="text-align:left;">
-104266
+100317
 </td>
 <td style="text-align:left;">
-13270
+12670
 </td>
 <td style="text-align:left;">
 8585500
@@ -928,16 +909,16 @@ volume_total
 11696
 </td>
 <td style="text-align:left;">
-16359
+16224
 </td>
 <td style="text-align:left;">
-17588
+17552
 </td>
 <td style="text-align:left;">
-17785
+17765
 </td>
 <td style="text-align:left;">
-19034
+19052
 </td>
 <td style="text-align:left;">
 28295
@@ -951,16 +932,16 @@ volume_res
 10899
 </td>
 <td style="text-align:left;">
-15228
+15151
 </td>
 <td style="text-align:left;">
-16403
+16367
 </td>
 <td style="text-align:left;">
-16581
+16559
 </td>
 <td style="text-align:left;">
-17725
+17748
 </td>
 <td style="text-align:left;">
 26137
@@ -974,13 +955,13 @@ volume_nonres
 758
 </td>
 <td style="text-align:left;">
-1034
-</td>
-<td style="text-align:left;">
-1205
+1047
 </td>
 <td style="text-align:left;">
 1204
+</td>
+<td style="text-align:left;">
+1206
 </td>
 <td style="text-align:left;">
 1336
@@ -997,16 +978,16 @@ volume_comm
 230.0
 </td>
 <td style="text-align:left;">
-356.5
+362.8
 </td>
 <td style="text-align:left;">
-428.0
+429.0
 </td>
 <td style="text-align:left;">
-434.3
+435.7
 </td>
 <td style="text-align:left;">
-491.0
+494.5
 </td>
 <td style="text-align:left;">
 771.0
@@ -1020,16 +1001,16 @@ volume_ind
 130.0
 </td>
 <td style="text-align:left;">
-235.5
+238.2
 </td>
 <td style="text-align:left;">
-303.0
+307.0
 </td>
 <td style="text-align:left;">
-308.3
+310.3
 </td>
 <td style="text-align:left;">
-368.0
+367.5
 </td>
 <td style="text-align:left;">
 565.0
@@ -1043,16 +1024,16 @@ volume_other
 289.0
 </td>
 <td style="text-align:left;">
-403.5
+401.5
 </td>
 <td style="text-align:left;">
-444.0
+443.5
 </td>
 <td style="text-align:left;">
-460.0
+458.5
 </td>
 <td style="text-align:left;">
-507.5
+506.2
 </td>
 <td style="text-align:left;">
 835.0
@@ -1072,7 +1053,7 @@ volume_unknown
 0.000
 </td>
 <td style="text-align:left;">
-1.354
+1.303
 </td>
 <td style="text-align:left;">
 1.000
@@ -1082,7 +1063,6 @@ volume_unknown
 </td>
 </tr>
 </tbody>
-
 </table>
 </div>
 </div>
@@ -1140,43 +1120,55 @@ volume_unknown
 <h5 class="anchored" data-anchor-id="ltd_total-loan-to-deposit">ltd_total (Loan-to-Deposit)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxltdtotal" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxltdtotal-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;11: Boxplot for total Loan-to-Deposit</figcaption>
+<div id="fig-boxltdtotal" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxltdtotal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxltdtotal-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxltdtotal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Boxplot for total Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxltdtotal">Figure&nbsp;11</a> shows that there are a few outliers for <code>ltd_total</code> at around 1 billion.</p>
+<p><a href="#fig-boxltdtotal" class="quarto-xref">Figure&nbsp;11</a> shows that there are a few outliers for <code>ltd_total</code> at around 1 billion.</p>
 </section>
 <section id="ltd_res-residential" class="level5">
 <h5 class="anchored" data-anchor-id="ltd_res-residential">ltd_res (Residential)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxltdres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxltdres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;12: Boxplot for residential Loan-to-Deposit</figcaption>
+<div id="fig-boxltdres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxltdres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxltdres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxltdres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Boxplot for residential Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxltdres">Figure&nbsp;12</a> shows that there are a few outliers for <code>ltd_res</code> at above 700m.</p>
+<p><a href="#fig-boxltdres" class="quarto-xref">Figure&nbsp;12</a> shows that there are a few outliers for <code>ltd_res</code> at above 700m.</p>
 </section>
 <section id="ltd_nonres-non-residential" class="level5">
 <h5 class="anchored" data-anchor-id="ltd_nonres-non-residential">ltd_nonres (Non-residential)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxltdnonres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxltdnonres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;13: Boxplot for non-residential Loan-to-Deposit</figcaption>
+<div id="fig-boxltdnonres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxltdnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxltdnonres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxltdnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Boxplot for non-residential Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxltdnonres">Figure&nbsp;13</a> shows that there are a few outliers for <code>ltd_nonres</code> at approximately 380m.</p>
+<p><a href="#fig-boxltdnonres" class="quarto-xref">Figure&nbsp;13</a> shows that there are a few outliers for <code>ltd_nonres</code> at approximately 380m.</p>
 </section>
 </section>
 <section id="loan-to-deposit-volume" class="level4">
@@ -1185,43 +1177,55 @@ volume_unknown
 <h5 class="anchored" data-anchor-id="volume_total-total">volume_total (Total)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxvoltot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxvoltot-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;14: Boxplot for total volume for Loan-to-Deposit</figcaption>
+<div id="fig-boxvoltot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxvoltot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxvoltot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxvoltot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Boxplot for total volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxvoltot">Figure&nbsp;14</a> shows that there are 3 outliers for <code>volume_total</code> variable.</p>
+<p><a href="#fig-boxvoltot" class="quarto-xref">Figure&nbsp;14</a> shows that there are 3 outliers for <code>volume_total</code> variable.</p>
 </section>
 <section id="volume_res-residential" class="level5">
 <h5 class="anchored" data-anchor-id="volume_res-residential">volume_res (Residential)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxvolres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxvolres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;15: Boxplot for residential volume for Loan-to-Deposit</figcaption>
+<div id="fig-boxvolres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxvolres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxvolres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxvolres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Boxplot for residential volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxvolres">Figure&nbsp;15</a> shows that there are 3 outliers for <code>volume_res</code> variable.</p>
+<p><a href="#fig-boxvolres" class="quarto-xref">Figure&nbsp;15</a> shows that there are 3 outliers for <code>volume_res</code> variable.</p>
 </section>
 <section id="volume_nonres-non-esidential" class="level5">
 <h5 class="anchored" data-anchor-id="volume_nonres-non-esidential">volume_nonres (Non-esidential)</h5>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-boxvolnonres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-boxvolnonres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16: Boxplot for residential volume for Loan-to-Deposit</figcaption>
+<div id="fig-boxvolnonres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxvolnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-boxvolnonres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxvolnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Boxplot for residential volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-boxvolnonres">Figure&nbsp;16</a> shows that there is an outlier for <code>volume_nonres</code> variable.</p>
+<p><a href="#fig-boxvolnonres" class="quarto-xref">Figure&nbsp;16</a> shows that there is an outlier for <code>volume_nonres</code> variable.</p>
 </section>
 </section>
 </section>
@@ -1236,15 +1240,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histltdtot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histltdtot-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;17: Histogram for total Loan-to-Deposit</figcaption>
+<div id="fig-histltdtot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histltdtot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histltdtot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histltdtot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Histogram for total Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As indicated by <a href="#fig-histltdtot">Figure&nbsp;17</a>, mostly values lie on the near right end, which means <code>ltd_total</code> is right-skewed. Moreover, values for <code>ltd_total</code> can be separated to different clusters.</p>
+<p>As indicated by <a href="#fig-histltdtot" class="quarto-xref">Figure&nbsp;17</a>, mostly values lie on the near right end, which means <code>ltd_total</code> is right-skewed. Moreover, values for <code>ltd_total</code> can be separated to different clusters.</p>
 </section>
 <section id="ltd_res-residential-1" class="level5">
 <h5 class="anchored" data-anchor-id="ltd_res-residential-1">ltd_res (Residential)</h5>
@@ -1253,15 +1261,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histltdres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histltdres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;18: Histogram for residential Loan-to-Deposit</figcaption>
+<div id="fig-histltdres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histltdres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histltdres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histltdres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Histogram for residential Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, as indicated by <a href="#fig-histltdres">Figure&nbsp;18</a>, the distribution for <code>ltd_res</code> is multimodal.</p>
+<p>Similarly, as indicated by <a href="#fig-histltdres" class="quarto-xref">Figure&nbsp;18</a>, the distribution for <code>ltd_res</code> is multimodal.</p>
 </section>
 <section id="ltd_nonres-non-residential-1" class="level5">
 <h5 class="anchored" data-anchor-id="ltd_nonres-non-residential-1">ltd_nonres (Non-residential)</h5>
@@ -1270,15 +1282,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histltdnonres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histltdnonres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;19: Histogram for residential Loan-to-Deposit</figcaption>
+<div id="fig-histltdnonres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histltdnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histltdnonres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histltdnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19: Histogram for residential Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, as indicated by <a href="#fig-histltdnonres">Figure&nbsp;19</a>, the distribution for <code>ltd_nonres</code> is multimodal but less visible, with one clealy identifiable outlier.</p>
+<p>Similarly, as indicated by <a href="#fig-histltdnonres" class="quarto-xref">Figure&nbsp;19</a>, the distribution for <code>ltd_nonres</code> is multimodal but less visible, with one clealy identifiable outlier.</p>
 </section>
 </section>
 <section id="loan-to-deposit-volume-1" class="level4">
@@ -1290,15 +1306,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histvoltot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histvoltot-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;20: Histogram for total volume for Loan-to-Deposit</figcaption>
+<div id="fig-histvoltot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histvoltot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histvoltot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histvoltot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: Histogram for total volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-histhvi">Figure&nbsp;7</a> indicates the total volume is symmetrical with a few outliers on both ends.</p>
+<p><a href="#fig-histvoltot" class="quarto-xref">Figure&nbsp;20</a> indicates the total volume is symmetrical with a few outliers on both ends.</p>
 </section>
 <section id="volume_res-residential-1" class="level5">
 <h5 class="anchored" data-anchor-id="volume_res-residential-1">volume_res (Residential)</h5>
@@ -1307,15 +1327,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histvolres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histvolres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;21: Histogram for residential volume for Loan-to-Deposit</figcaption>
+<div id="fig-histvolres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histvolres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histvolres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histvolres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21: Histogram for residential volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, <a href="#fig-histvolres">Figure&nbsp;21</a> indicates the distribution is symmetrical.</p>
+<p>Similarly, <a href="#fig-histvolres" class="quarto-xref">Figure&nbsp;21</a> indicates the distribution is symmetrical.</p>
 </section>
 <section id="volume_nonres-non-residential" class="level5">
 <h5 class="anchored" data-anchor-id="volume_nonres-non-residential">volume_nonres (Non-residential)</h5>
@@ -1324,15 +1348,19 @@ volume_unknown
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-histvolnonres" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-histvolnonres-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;22: Histogram for residential volume for Loan-to-Deposit</figcaption>
+<div id="fig-histvolnonres" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histvolnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-histvolnonres-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histvolnonres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22: Histogram for residential volume for Loan-to-Deposit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly, <a href="#fig-histvolnonres">Figure&nbsp;22</a> indicates the distribution is symmetrical, with one visible outlier.</p>
+<p>Similarly, <a href="#fig-histvolnonres" class="quarto-xref">Figure&nbsp;22</a> indicates the distribution is symmetrical, with one visible outlier.</p>
 </section>
 </section>
 </section>
@@ -1346,16 +1374,20 @@ volume_unknown
 <h3 class="anchored" data-anchor-id="correlation">Correlation</h3>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-corr1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-corr1-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;23: Correlation plot for variables in ltd_agg</figcaption>
+<div id="fig-corr1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-corr1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-corr1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;23: Correlation plot for variables in ltd_agg
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-corr1">Figure&nbsp;23</a> indicates that <code>ltd</code> is positively correlated with <code>hvi</code>, <code>sales</code> and <code>lending</code>, while negatively correlated with <code>int_rate</code>.</p>
-<p>The absolute correlation value between <code>ltd</code> and <code>hvi</code> and <code>lending</code> (0.9214787 and 0.93453, respectively) is larger than the other 2 variables (<code>sales</code> and <code>int_rate</code>), which is 0.3278185 and 0.4442227.</p>
+<p><a href="#fig-corr1" class="quarto-xref">Figure&nbsp;23</a> indicates that <code>ltd</code> is positively correlated with <code>hvi</code>, <code>sales</code> and <code>lending</code>, while negatively correlated with <code>int_rate</code>.</p>
+<p>The absolute correlation value between <code>ltd</code> and <code>hvi</code> and <code>lending</code> (0.9242885 and 0.9233093, respectively) is larger than the other 2 variables (<code>sales</code> and <code>int_rate</code>), which is 0.3155413 and 0.3597652.</p>
 <p>We can also see some multicollinearity, e.g.&nbsp;hvi and lending, etc.</p>
 </section>
 <section id="model-fitting" class="level3">
@@ -1370,22 +1402,22 @@ lm(formula = ltd ~ ., data = ltd_agg %&gt;% na.omit())
 
 Residuals:
        Min         1Q     Median         3Q        Max 
--208975809  -31636404   -2945162   30469682  272062300 
+-265607040  -34864802   -1775975   29335717  307778971 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  2.893e+08  8.872e+07   3.260  0.00127 ** 
-Date        -6.102e-01  9.680e-02  -6.304 1.29e-09 ***
-hvi          5.124e+06  5.989e+05   8.555 1.17e-15 ***
-sales       -7.532e+03  2.501e+03  -3.012  0.00286 ** 
-int_rate     1.391e+07  3.334e+06   4.173 4.14e-05 ***
-lending      6.600e+04  6.398e+03  10.317  &lt; 2e-16 ***
+(Intercept)  1.596e+08  9.868e+07   1.617  0.10710    
+Date        -5.830e-01  1.078e-01  -5.410 1.44e-07 ***
+hvi          5.713e+06  6.636e+05   8.609 7.50e-16 ***
+sales        6.146e+03  2.305e+03   2.667  0.00814 ** 
+int_rate     1.421e+07  3.322e+06   4.278 2.66e-05 ***
+lending      4.474e+04  5.921e+03   7.557 7.28e-13 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 56180000 on 252 degrees of freedom
-Multiple R-squared:  0.9196,    Adjusted R-squared:  0.918 
-F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 60740000 on 257 degrees of freedom
+Multiple R-squared:  0.9087,    Adjusted R-squared:  0.907 
+F-statistic: 511.8 on 5 and 257 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
@@ -1395,14 +1427,14 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1416,15 +1448,19 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h3 class="anchored" data-anchor-id="correlation-1">Correlation</h3>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-corr2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/fig-corr2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;24: Correlation plot for variables in ltd_unit</figcaption>
+<div id="fig-corr2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-corr2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ltd_analysis_files/figure-html/fig-corr2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24: Correlation plot for variables in ltd_unit
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-corr2">Figure&nbsp;24</a> shows that all variables are positively correlated with each other, which is reasonable, ignoring <code>ltd_unknown</code> and <code>volume_unknown</code>.</p>
+<p><a href="#fig-corr2" class="quarto-xref">Figure&nbsp;24</a> shows that all variables are positively correlated with each other, which is reasonable, ignoring <code>ltd_unknown</code> and <code>volume_unknown</code>.</p>
 </section>
 <section id="model-fitting-1" class="level3">
 <h3 class="anchored" data-anchor-id="model-fitting-1">Model fitting</h3>
@@ -1432,7 +1468,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1441,21 +1477,21 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-38-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1465,21 +1501,21 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-39-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1489,7 +1525,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1497,29 +1533,29 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The relationship is strongly positive at March (lag3)</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code># A dable: 127 x 7 [1M]
+<pre><code># A dable: 132 x 7 [1M]
 # Key:     .model [1]
 # :        ltd_total = trend + season_year + remainder
    .model    Month  ltd_total      trend season_year  remainder season_adjust
    &lt;chr&gt;     &lt;mth&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;
- 1 stl    2013 Jul 319490654. 315424148.    5620237.  -1553731.    313870417.
- 2 stl    2013 Aug 304910653. 321183186.   -3494771. -12777762.    308405424.
- 3 stl    2013 Sep 301864862. 326942225.  -29515276.   4437913.    331380138.
- 4 stl    2013 Oct 367969177. 332701263.    6562231.  28705683.    361406946.
- 5 stl    2013 Nov 316302613. 338399511.  -12063899. -10032999.    328366512.
- 6 stl    2013 Dec 405630136. 344097759.   90835354. -29302977.    314794782.
- 7 stl    2014 Jan 342061060. 349796007.  -30450108.  22715160.    372511168.
- 8 stl    2014 Feb 373577776. 355343048.   15223854.   3010873.    358353921.
- 9 stl    2014 Mar 320151633. 360890089.   -9928319. -30810137.    330079953.
-10 stl    2014 Apr 299004858. 366437130.  -80575137.  13142865.    379579995.
-# ℹ 117 more rows</code></pre>
+ 1 stl    2013 Jul 319490654. 316381257.    4756792.  -1647395.    314733862.
+ 2 stl    2013 Aug 304910653. 322020988.   -4291701. -12818634.    309202354.
+ 3 stl    2013 Sep 301864862. 327660719.  -30245689.   4449832.    332110551.
+ 4 stl    2013 Oct 367969177. 333300450.    5898276.  28770451.    362070901.
+ 5 stl    2013 Nov 316302613. 338894798.  -12657492.  -9934693.    328960105.
+ 6 stl    2013 Dec 405630136. 344489146.   90312058. -29171068.    315318078.
+ 7 stl    2014 Jan 342061060. 350083493.  -30903106.  22880672.    372964165.
+ 8 stl    2014 Feb 373577776. 355552941.   11472544.   6552291.    362105232.
+ 9 stl    2014 Mar 320151633. 361022388.   -7603218. -33267537.    327754851.
+10 stl    2014 Apr 299004858. 366491835.  -78829735.  11342758.    377834594.
+# ℹ 122 more rows</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1528,7 +1564,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1537,7 +1573,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1547,7 +1583,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1556,7 +1592,7 @@ F-statistic: 576.7 on 5 and 252 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ltd_analysis_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1646,10 +1682,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1659,8 +1712,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1672,7 +1734,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1716,6 +1901,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1741,6 +1927,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1801,6 +2013,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

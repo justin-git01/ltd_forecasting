@@ -624,7 +624,7 @@ for (t in 1:folds){
 final_base <- base_vecm_forecast + seasonality
 final_hts <- hts_reconciled_vecm + seasonality
 final_thf <- thf_reconciled_vecm + seasonality
-final_tcs <- reconciled_vecm_tcs[1,,1] + seasonality
+final_tcs <- reconciled_vecm_tcs + seasonality
 
 
 # Loop through each .id to create forecasts dataframe for each folds

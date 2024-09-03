@@ -8,7 +8,7 @@ editor: visual
 knitr::opts_chunk$set(echo = FALSE, messages=FALSE, warning=FALSE, fig.align = 'center')
 ```
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning = F}
 library(tidyverse)
 library(readxl)
 library(kableExtra)
@@ -19,9 +19,18 @@ library(stats)
 library(fpp3)
 ```
 
-```{r}
-ltd_agg <- read_excel(here::here("data/LTD data aggregate.xlsx"))
-ltd_unit <- read_excel(here::here("data/LTD unit records summary.xlsx"))
+```{r, message=FALSE, warning = F}
+ltd_agg <- read_excel(here::here("data/LTD_new.xlsx"), sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI,
+         lending = LENDING,
+         int_rate = RM) |>
+  dplyr::select(c(Date, ltd, hvi,sales, int_rate, lending))
+
+ltd_unit <- read_excel(here::here("data/LTD_new.xlsx"), sheet = 2) |>
+  rename(dd = ...1)
 ```
 
 ```{r}
@@ -148,7 +157,7 @@ Also the @fig-ssadj shows that there is not much difference between seasonally a
 
 ### Box-Cox transformation
 
-```{r, eval = F}
+```{r}
 lambda <- ltd_agg_ts |>
   features(ltd, features = guerrero) |>
   pull(lambda_guerrero)
@@ -163,7 +172,7 @@ ltd_agg_ts |>
 
 ## ltd unit data
 
-### Loan to Deposit
+### Land transfer duty
 
 ```{r}
 # Unit root test for stationary
@@ -460,121 +469,5 @@ data.frame(fc |>
            ) |>
   group_by(.model) |>
   summarise(mase = mean(mase), sspc = mean(ss) * 100)) %>%
-  rename("Model" = .model)
-```
-
-# Convert data into time series (temporal hierarchical time series)
-
-```{r}
-# Assuming ltd_unit_ts is your dataset
-ltd_unit_ts_mod <- ltd_unit_ts %>%
-  mutate(
-    # Extract the month value from the 'month' column
-    Month = month(month, label = TRUE, abbr = T),
-    # Create a 'semi-annual' column based on the month
-    Semi_annual = case_when(
-      month(month) >= 1 & month(month) <= 6 ~ "semi-annual 1",
-      TRUE ~ "semi-annual 2"
-    ),
-    # Create a 'quarter' column based on the month
-    Quarter = case_when(
-      month(month) >= 1 & month(month) <= 3 ~ "quarter 1",
-      month(month) >= 4 & month(month) <= 6 ~ "quarter 2",
-      month(month) >= 7 & month(month) <= 9 ~ "quarter 3",
-      TRUE ~ "quarter 4"
-    )
-  )
-
-```
-
-## Create temporal hierarchical time series
-
-### ltd
-
-```{r}
-ltd_tem <- ltd_unit_ts_mod %>%
-  aggregate_key(Semi_annual / Quarter / Month, ltd = sum(ltd))
-```
-
-#### Trend
-
-```{r}
-ltd_tem %>%
-  filter(is_aggregated(Quarter)) |>
-  autoplot(ltd) +
-  labs(y = "Land Transfer Duty",
-       title = "Land Transfer Duty in Victoria: Annually, Semi annually") +
-  facet_wrap(vars(Semi_annual), scales = "free_y", ncol = 3) +
-  theme(legend.position = "none")
-```
-
-```{r}
-#| fig-width: 11
-#| fig-height: 6
-ltd_tem |>
-  filter(!is_aggregated(Quarter)) |>
-  mutate(Quarter = as.character(Quarter)) |>
-  ggplot(aes(x = month, y = ltd
-             ,group = Quarter, colour = Quarter
-             )) +
-  stat_summary(fun = sum, geom = "line") +
-  labs(x = "Month",
-       y = "Land Transfer Duty",
-       title = "Land Transfer Duty in Victoria: Semi-annually, sub-quarterly") +
-  facet_wrap(~as.character(Semi_annual), scales = "free_y", ncol = 2) 
-```
-
-```{r}
-#| fig-width: 11
-#| fig-height: 6
-ltd_tem |>
-  filter(!is_aggregated(Month), !is_aggregated(Quarter)) |>
-  mutate(Month = as.character(Month)) |>
-  ggplot(aes(x = month, y = ltd
-             ,group = Month, colour = Month
-             )) +
-  stat_summary(fun = sum, geom = "line") +
-  labs(x = "Month",
-       y = "Land Transfer Duty",
-       title = "Land Transfer Duty in Victoria: Quarterly, monthly") +
-  facet_wrap(~as.character(Quarter), scales = "free_y", ncol = 2) 
-```
-
-```{r}
-#| fig-width: 11
-#| fig-height: 6
-ltd_tem |>
-  filter(!is_aggregated(Month), !is_aggregated(Quarter)) |>
-  mutate(Month = as.character(Month)) |>
-  ggplot(aes(x = month, y = ltd
-             ,group = Month, colour = Month
-             )) +
-  stat_summary(fun = sum, geom = "line") +
-  labs(x = "Month",
-       y = "Land Transfer Duty",
-       title = "Land Transfer Duty in Victoria: Semi-annually, monthly") +
-  facet_wrap(~as.character(Semi_annual), scales = "free_y", ncol = 2) 
-```
-
-## Forecasting
-
-```{r}
-
-fit <- ltd_hts |>
-  filter(year(month) <= 2021) |>
-  model(base = ETS(ltd),
-        arima = ARIMA(ltd)) 
-
-fc <- fit %>% forecast (h = "2 years")
-
-data.frame(fc |>
-  accuracy(data = ltd_hts,
-           measures = list(mase = MASE,
-                           rmse = RMSE,
-                           ss = skill_score(CRPS)
-                           )
-           ) |>
-  group_by(.model) |>
-  summarise(mase = mean(mase),rmse = mean(rmse), sspc = mean(ss) * 100)) %>%
   rename("Model" = .model)
 ```

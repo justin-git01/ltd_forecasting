@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,7 +58,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <section id="convert-both-data-into-time-series-cross-sectional-hierarchical-time-series" class="level1">
 <h1>Convert both data into time series (cross-sectional hierarchical time series)</h1>
@@ -71,121 +73,195 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="trend">Trend</h3>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-trendagg" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-trendagg-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: Trend of Land Transfer Duty in Victoria over time</figcaption>
+<div id="fig-trendagg" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trendagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-trendagg-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trendagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Trend of Land Transfer Duty in Victoria over time
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As spotted by <a href="#fig-trendagg">Figure&nbsp;1</a>, the <code>ltd</code> increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal or cyclic pattern.</p>
+<p>As spotted by <a href="#fig-trendagg" class="quarto-xref">Figure&nbsp;1</a>, the <code>ltd</code> increases over time with some significant drops at 08-09s (GFC) and 2020-2021 (Covid-19). There is no clear sign of seasonal or cyclic pattern.</p>
 </section>
 <section id="seasonal-pattern" class="level3">
 <h3 class="anchored" data-anchor-id="seasonal-pattern">Seasonal Pattern</h3>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ssagg" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-ssagg-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: Seasonal trend of Land Transfer Duty in Victoria</figcaption>
+<div id="fig-ssagg" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-ssagg-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Seasonal trend of Land Transfer Duty in Victoria
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Apart from there is a small hint of drop at the start of each quarter, <a href="#fig-ssagg">Figure&nbsp;2</a> shows that there is no clear sign for seasonal pattern</p>
+<p>Apart from there is a small hint of drop at the start of each quarter, <a href="#fig-ssagg" class="quarto-xref">Figure&nbsp;2</a> shows that there is no clear sign for seasonal pattern</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-subagg" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-subagg-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;3: Subseries plot of Land Transfer Duty in Victoria over time</figcaption>
+<div id="fig-subagg" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-subagg-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subagg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Subseries plot of Land Transfer Duty in Victoria over time
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>However, in the <a href="#fig-subagg">Figure&nbsp;3</a>, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from <a href="#fig-trendagg">Figure&nbsp;1</a>.</p>
+<p>However, in the <a href="#fig-subagg" class="quarto-xref">Figure&nbsp;3</a>, the blue lines, indicating the means for each month, disagree with the sign of seasonal pattern spotted from <a href="#fig-trendagg" class="quarto-xref">Figure&nbsp;1</a>.</p>
 </section>
 <section id="decomposition" class="level3">
 <h3 class="anchored" data-anchor-id="decomposition">Decomposition</h3>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-dcmp" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-dcmp-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;4: Decomposition of Land Transfer Duty in Victoria</figcaption>
+<div id="fig-dcmp" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dcmp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-dcmp-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dcmp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Decomposition of Land Transfer Duty in Victoria
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ssadj" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-ssadj-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;5: Seasonal adjusted Land Transfer Duty in Victoria</figcaption>
+<div id="fig-ssadj" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssadj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-ssadj-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssadj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Seasonal adjusted Land Transfer Duty in Victoria
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-dcmp">Figure&nbsp;4</a> shows that there is no seasonal pattern for <code>ltd</code> and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.</p>
-<p>Moreover, <a href="#fig-dcmp">Figure&nbsp;4</a> also shows that there is a sign of heterogeneity in <code>ltd</code> and thus transformation may needed before model fitting.</p>
-<p>Also the <a href="#fig-ssadj">Figure&nbsp;5</a> shows that there is not much difference between seasonally adjusted <code>ltd</code> and the original <code>ltd</code>, which confirms the lack of seasonal pattern.</p>
+<p><a href="#fig-dcmp" class="quarto-xref">Figure&nbsp;4</a> shows that there is no seasonal pattern for <code>ltd</code> and the large grey bar in the seasonal panel shows that the variation in the seasonal component is smallest compared to the variation in the data.</p>
+<p>Moreover, <a href="#fig-dcmp" class="quarto-xref">Figure&nbsp;4</a> also shows that there is a sign of heterogeneity in <code>ltd</code> and thus transformation may needed before model fitting.</p>
+<p>Also the <a href="#fig-ssadj" class="quarto-xref">Figure&nbsp;5</a> shows that there is not much difference between seasonally adjusted <code>ltd</code> and the original <code>ltd</code>, which confirms the lack of seasonal pattern.</p>
 </section>
 <section id="box-cox-transformation" class="level3">
 <h3 class="anchored" data-anchor-id="box-cox-transformation">Box-Cox transformation</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="ltd-unit-data" class="level2">
 <h2 class="anchored" data-anchor-id="ltd-unit-data">ltd unit data</h2>
-<section id="loan-to-deposit" class="level3">
-<h3 class="anchored" data-anchor-id="loan-to-deposit">Loan to Deposit</h3>
+<section id="land-transfer-duty" class="level3">
+<h3 class="anchored" data-anchor-id="land-transfer-duty">Land transfer duty</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  category sub_category kpss_stat kpss_pvalue
+  &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+1 nonres   comm             0.673      0.0160
+2 nonres   ind              2.05       0.01  
+3 nonres   other            2.37       0.01  
+4 res      res              1.71       0.01  </code></pre>
+</div>
+</div>
+<p>Value of 0.01 indicates the <code>ltd</code> from this data is stationary and thus require differencing the data.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  category sub_category ndiffs
+  &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt;
+1 nonres   comm              1
+2 nonres   ind               1
+3 nonres   other             1
+4 res      res               1</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  category sub_category nsdiffs
+  &lt;chr&gt;    &lt;chr&gt;          &lt;int&gt;
+1 nonres   comm               0
+2 nonres   ind                0
+3 nonres   other              0
+4 res      res                0</code></pre>
+</div>
+</div>
+<p>KPSS tests results determine one difference required</p>
 <section id="trend-1" class="level4">
 <h4 class="anchored" data-anchor-id="trend-1">Trend</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-trendut" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-trendut-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: Trend of Land Transfer Duty in Victoria among category over time</figcaption>
+<div id="fig-trendut" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trendut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-trendut-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trendut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Trend of Land Transfer Duty in Victoria among category over time
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-trendut">Figure&nbsp;6</a> shows the fairly same pattern for both categories and to the total of <code>ltd</code>.</p>
+<p><a href="#fig-trendut" class="quarto-xref">Figure&nbsp;6</a> shows the fairly same pattern for both categories and to the total of <code>ltd</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ssut" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-ssut-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: Seasonal trend of Land Transfer Duty among category in Victoria</figcaption>
+<div id="fig-ssut" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-ssut-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Seasonal trend of Land Transfer Duty among category in Victoria
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-ssut">Figure&nbsp;7</a> shows that for residential property, there is a fluctuation during the year and reach its peak at the June and December, while for non-residential property, <code>ltd</code> has a high peak in March only.</p>
+<p><a href="#fig-ssut" class="quarto-xref">Figure&nbsp;7</a> shows that for residential property, there is a fluctuation during the year and reach its peak at the June and December, while for non-residential property, <code>ltd</code> has a high peak in March only.</p>
 <p>This pattern shows there is a difference in consumer behaviour for each category of property</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-catnsub" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-catnsub-1.png" class="img-fluid figure-img" width="1056"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: Land Transfer Duty by category and sub-category</figcaption>
+<div id="fig-catnsub" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-catnsub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-catnsub-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-catnsub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Land Transfer Duty by category and sub-category
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-catnsub">Figure&nbsp;8</a></p>
+<p><a href="#fig-catnsub" class="quarto-xref">Figure&nbsp;8</a></p>
 </section>
-</section>
-</section>
-<section id="forecasting" class="level2">
-<h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
+<section id="forecasting" class="level4">
+<h4 class="anchored" data-anchor-id="forecasting">Forecasting</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -194,67 +270,106 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>    Model     mase      sspc
-1    base 1.127837 21.759480
-2      bu 1.439886  9.640909
-3    mint 1.384555 12.723077
-4 wls_var 1.386028  8.089547</code></pre>
+<pre><code>          Model      mase     sspc
+1         arima 0.8012273 24.84805
+2      bu_arima 0.8799201 19.23369
+3        bu_ets 0.9316937 13.83575
+4           ets 0.7069087 32.43945
+5    mint_arima 0.8466438 22.40871
+6      mint_ets 0.7169396 32.64188
+7 wls_var_arima 0.8504893 16.22140
+8   wls_var_ets 0.7622142 25.53659</code></pre>
 </div>
 </div>
-<section id="volume" class="level3">
-<h3 class="anchored" data-anchor-id="volume">Volume</h3>
+</section>
+</section>
+<section id="average-ltd-per-transaction" class="level3">
+<h3 class="anchored" data-anchor-id="average-ltd-per-transaction">Average LTD per transaction</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  category sub_category kpss_stat kpss_pvalue
+  &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+1 nonres   comm             0.117        0.1 
+2 nonres   ind              1.51         0.01
+3 nonres   other            2.49         0.01
+4 res      res              2.16         0.01</code></pre>
+</div>
+</div>
+<p>Value of 0.01 indicates the <code>ltd</code> from this data is stationary and thus require differencing the data.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  category sub_category ndiffs
+  &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt;
+1 nonres   comm              0
+2 nonres   ind               1
+3 nonres   other             1
+4 res      res               1</code></pre>
+</div>
+</div>
 <section id="trend-2" class="level4">
 <h4 class="anchored" data-anchor-id="trend-2">Trend</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-trendut1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-trendut1-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: Trend of Land Transfer Duty volume in Victoria among category over time</figcaption>
+<div id="fig-trendut1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trendut1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-trendut1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trendut1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Trend of Land Transfer Duty volume in Victoria among category over time
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-trendut1">Figure&nbsp;9</a> shows the fairly same pattern for both categories and to the total of <code>volume</code>.</p>
+<p><a href="#fig-trendut1" class="quarto-xref">Figure&nbsp;9</a> shows the fairly same pattern for both categories and to the total of <code>volume</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ssut1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-ssut1-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: Seasonal trend of Land Transfer Duty volume among category in Victoria</figcaption>
+<div id="fig-ssut1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssut1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-ssut1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssut1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Seasonal trend of Land Transfer Duty volume among category in Victoria
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-ssut1">Figure&nbsp;10</a></p>
+<p><a href="#fig-ssut1" class="quarto-xref">Figure&nbsp;10</a></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-catnsub1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/fig-catnsub1-1.png" class="img-fluid figure-img" width="1056"></p>
-<figcaption class="figure-caption">Figure&nbsp;11: Land Transfer Duty volume by category and sub-category</figcaption>
+<div id="fig-catnsub1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-catnsub1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ts_analysis_files/figure-html/fig-catnsub1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-catnsub1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Land Transfer Duty volume by category and sub-category
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-catnsub1">Figure&nbsp;11</a></p>
+<p><a href="#fig-catnsub1" class="quarto-xref">Figure&nbsp;11</a></p>
 </section>
-</section>
-</section>
-<section id="forecasting-1" class="level2">
-<h2 class="anchored" data-anchor-id="forecasting-1">Forecasting</h2>
+<section id="forecasting-1" class="level4">
+<h4 class="anchored" data-anchor-id="forecasting-1">Forecasting</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -263,7 +378,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ts_analysis_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -271,71 +386,18 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code>    Model     mase     sspc
-1    base 1.179217 25.19968
-2      bu 1.289211 19.22221
-3    mint 1.264364 20.48836
-4 wls_var 1.246513 14.16869</code></pre>
+1    base 1.309664 27.60712
+2      bu 1.094640 40.25843
+3    mint 1.100656 39.42412
+4 wls_var 1.151537 31.05062</code></pre>
 </div>
 </div>
+</section>
+</section>
 </section>
 </section>
 <section id="convert-data-into-time-series-temporal-hierarchical-time-series" class="level1">
 <h1>Convert data into time series (temporal hierarchical time series)</h1>
-<section id="create-temporal-hierarchical-time-series" class="level2">
-<h2 class="anchored" data-anchor-id="create-temporal-hierarchical-time-series">Create temporal hierarchical time series</h2>
-<section id="ltd" class="level3">
-<h3 class="anchored" data-anchor-id="ltd">ltd</h3>
-<section id="trend-3" class="level4">
-<h4 class="anchored" data-anchor-id="trend-3">Trend</h4>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="ts_analysis_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="forecasting-2" class="level2">
-<h2 class="anchored" data-anchor-id="forecasting-2">Forecasting</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stdout">
-<pre><code>  Model     mase      rmse      sspc
-1 arima 2.614068 162750754 -78.34921
-2  base 1.493855  72610269  12.22364</code></pre>
-</div>
-</div>
-</section>
 </section>
 
 </main>
@@ -419,10 +481,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -432,8 +511,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -445,7 +533,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -489,6 +700,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -514,6 +726,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -574,6 +812,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

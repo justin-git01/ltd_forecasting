@@ -35,23 +35,15 @@ library(ggplot2)
 library(kableExtra)
 
 # Load rmse RDA file
-load(here::here("data/rmse_base_arima.RData"))
 load(here::here("data/rmse_base_vecm.RData"))
-load(here::here("data/rmse_cross_temp_arima.RData"))
 load(here::here("data/rmse_cross_temp_vecm.RData"))
-load(here::here("data/rmse_temp_arima.RData"))
 load(here::here("data/rmse_temp_vecm.RData"))
-load(here::here("data/rmse_cross_sec_arima.RData"))
 load(here::here("data/rmse_cross_sec_vecm.RData"))
 
 # Load mape RDA file
-load(here::here("data/mape_base_arima.RData"))
 load(here::here("data/mape_base_vecm.RData"))
-load(here::here("data/mape_cross_temp_arima.RData"))
 load(here::here("data/mape_cross_temp_vecm.RData"))
-load(here::here("data/mape_temp_arima.RData"))
 load(here::here("data/mape_temp_vecm.RData"))
-load(here::here("data/mape_cross_sec_arima.RData"))
 load(here::here("data/mape_cross_sec_vecm.RData"))
 
 ```
@@ -89,15 +81,16 @@ tax_rev <- read_excel(here::here("data/tax_rev.xlsx"), sheet = 2) |>
 
 ```{r}
 dtf_rmse <- read_excel(here("data/final_dtf_rmse.xlsx"), sheet = 4)
+dtf_mape <- read_excel(here("data/final_dtf_rmse.xlsx"), sheet = 5)
 ```
 
 # Abstract
 
-Accurate land transfer duty forecasting is essential for effective government market monitoring and policy implementation. This report presents a novel forecasting methodology for land transfer duty (LTD) in Victoria, emphasizing the application of forecast reconciliation techniques. Time series data can often be disaggregated by various attributes of interest. And forecasts are frequently needed for both disaggregated and aggregated series, necessitating that the forecasts align accurately with the data’s aggregation structure.The forecast reconciliation methodology addresses this challenge by ensuring coherence across the entire aggregation structure. By employing Vector Error Correction Model (VECM) within cross-sectional, temporal, and cross-temporal hierarchical structures, we find that the methodology significantly improves forecast accuracy of Victoria’s land transfer duty, using the *Department of Treasury and Finance*'s forecasts as a benchmark. Moreover, the methodology is broadly applicable when the aggregate variable of interest can be modelled for disaggregated components and/or at different frequencies.
+Accurate land transfer duty (LTD) forecasting is essential for effective government market monitoring and policy implementation. In this paper, we present a novel forecasting methodology for LTD in Victoria, with a particular focus on forecast reconciliation techniques. Given that time series data can often be disaggregated by various attributes of interest, and that forecasts are needed for both disaggregated and aggregated series, it is crucial that the forecasts align accurately with the data’s aggregation structure. Our methodology addresses this challenge by ensuring coherence across the entire aggregation hierarchy. Utilizing the Vector Error Correction Model (VECM) within cross-sectional, temporal, and cross-temporal hierarchical structures, we demonstrate that our approach significantly improves the forecast accuracy of Victoria’s LTD, using the *Department of Treasury and Finance*’s forecasts as a benchmark. Furthermore, this methodology is broadly applicable to other aggregate variables that can be modeled from disaggregated components and/or at different frequencies.
 
 # Introduction and background
 
-The property sector plays a pivotal role in Australia's economy, accounting for 1 in 4 jobs indirectly and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion as stated in @reia_2022. Land transfer duty, previously known as stamp duty, significantly impacts property transactions and the sector as a whole. A study published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (@nsw_treasury_2021).
+The property sector plays a pivotal role in Australia's economy, indirectly accounting for 1 in 4 jobs and contributing around 13% of Gross Domestic Product (GDP). In the 2021 financial year, property sales totaled approximately $350 billion, as reported by the @reia_2022. Land transfer duty, previously known as stamp duty, has a significant impact on property transactions and the sector as a whole. A study published by the New South Wales Treasury found that a 100 basis point (1%) cut in land transfer duty could boost property transactions by 10% (@nsw_treasury_2021).
 
 Land transfer duty is a tax applied to the "dutiable value" of a property being purchased or acquired, whether it is a first home or an investment property. The dutiable value is determined as either the property's purchase price or its market value, whichever is greater. Several factors influence the amount of duty paid, including the buyer's intended use of the property, foreign purchaser status, and eligibility for exemptions.
 
@@ -116,23 +109,23 @@ autoplot(tax_rev, reliance, color = "blue") +
   theme_bw()
 ```
 
-Additionally, Victoria’s tax revenue heavily relies on land transfer duty. As shown in @fig-taxrevenue, over the past 20 years, on average, land transfer duty accounts for **27%** of Victoria's tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty is removed, the government will need to introduce one or more new taxes to generate equivalent revenue.
+Furthermore, Victoria’s tax revenue heavily relies on land transfer duty. As illustrated in @fig-taxrevenue, over the past 20 years, on average, land transfer duty has accounted for an average of **27%** of Victoria's tax revenue. Despite its perceived inequity and various exemptions designed to aid homebuyers, abolishing this duty remains challenging due to the need for equivalent revenue replacement. If this duty were removed, the government would need to introduce one or more new taxes to generate equivalent revenue.
 
-To balance the need for sufficient tax income without discouraging property transactions, *the Department of Treasury and Finance* (**DTF**) has been  supporting the provision of better advice to the government on policy adjustments, subsidies, exemptions, and restrictions by delivering evidence-based insights. Accurate forecasts of land transfer duty, both short-term (*1 to 3 months*) and long-term (*12 months*), are essential for these decisions. 
+To balance the need for sufficient tax income without discouraging property transactions, *the Department of Treasury and Finance* (**DTF**) supports the provision of better advice to the government on policy adjustments, subsidies, exemptions, and restrictions by delivering evidence-based insights. Accurate forecasts of land transfer duty, both short-term (*1 to 3 months*) and long-term (*12 months*), are essential for these decisions. 
 
-This report introduces a new forecasting methodology aimed at improving the accuracy of these predictions. By employing forecast reconciliation and combining cross-sectional and temporal hierarchies, we aim to provide the *Department of Treasury and Finance* with more reliable forecasts to inform policy-making. The primary advantage of this methodology is that it produces forecasts at various aggregation levels within both cross-sectional and temporal hierarchies, allowing for the inclusion of unique characteristics of different nodes. Our results use monthly land transfer duty data, covering the period from July 2013 to March 2024.
+In response, this paper introduces a new forecasting methodology aimed at improving the accuracy of these predictions. By employing forecast reconciliation and combining cross-sectional and temporal hierarchies, we aim to provide the *DTF* with more reliable forecasts to inform policy-making. The primary advantage of this methodology lies in its ability to produce forecasts at various aggregation levels within both cross-sectional and temporal hierarchies, thus accommodating the unique characteristics of different nodes. Our results use monthly land transfer duty data, covering the period from July 2013 to June 2024.
 
-Our project employs three forecasting models, including vector error correction model (VECM), vector autoregressive model (VAR) and autoregressive integrated moving average (ARIMA). For the model fitting process, we include three macroeconomic indicators and property market indices, which are sales, home value index and lending provided by the Australian Bureau of Statistics (ABS) and CoreLogic. The rationale for selecting these three explanatory variables is that the best-performing models used by the *Department of Treasury and Finance* also employ them. 
+We employ three forecasting models, namely vector error correction model (VECM), vector autoregressive model (VAR) and seasonal naïve (Snaïve). For the model fitting process, we incorporate three macroeconomic indicators and property market indices, which are sales, home value index and lending sourced from the Australian Bureau of Statistics (ABS) and CoreLogic. The rationale for selecting these three explanatory variables is that they are also employed by the best-performing models used by the *DTF*.
 
-To assess the forecast performance, we use time series cross-validation to ensure that the corresponding training set consists only of observations that occurred prior to the observation that forms the test set. The length of the first training set contains 108 months of data (equivalent to 9 years) and increase the size of successive training sets by one month. As a result, there will be 10 testing sets with 1 to 12-step-ahead forecasts. We then computed accuracy measures, specifically root mean squared errors (RMSE) and mean absolute percentage errors (MAPE), for all forecasts, and finally averaged them across the 10 sets. 
+To evaluate forecast performance, we use time series cross-validation, ensuring that the corresponding training set consists only of observations that occurred before the observation that forms the test set. The initial training set contains 111 months of data and is subsequently increased by one month for each successive training set. Consequently, there will be 10 testing sets with a 1 to 12-step-ahead forecast. We then compute accuracy measures, specifically root mean squared errors (RMSE) and mean absolute percentage errors (MAPE), for all forecasts, which are then averaged across the 10 sets.
 
-Overall, the results suggest that VECM, particularly when using cross-temporal reconciliation, consistently outperforms ARIMA. Temporal hierarchies contribute more to accuracy improvements than cross-sectional hierarchies. The reconciled forecasts from VECM exhibit lower RMSE and MAPE compared to the *Department of Treasury and Finance*'s forecasts, underscoring the efficacy of the proposed approach.
+Overall, the results suggest that reconciled forecasts, particularly when using cross-temporal reconciliation, consistently outperform base forecasts. Among the hierarchical structures, temporal hierarchies contribute more to accuracy improvements than cross-sectional hierarchies. The reconciled forecasts from VECM exhibit lower RMSE and MAPE compared to the *DTF*’s forecasts, highlighting the effectiveness of the proposed approach.
 
-The rest of the paper is organized as follows. Section 3 includes exploratory data analysis (EDA). Section 4 explores the forecasting methods covered in detail. Section 5 discusses the detailed time series cross-validation process adopted for this project. Section 6 presents the main results and their implementation. Section 7 concludes the study and offers recommendations.
+The remainder of the paper is organized as follows: Section 3 includes exploratory data analysis (EDA). Section 4 covers the forecasting methods in detail. Section 5 discusses the detailed time series cross-validation process adopted for this study. Section 6 presents the main results. Section 7 interprets the results and discusses limitations, and Section 8 concludes the study.
 
 # Exploratory Data Analysis (EDA)
 
-In this section, we conduct a detailed Exploratory Data Analysis (EDA) for the total land transfer duty and all its disaggregated levels, as well as for other included exploratory variables. Each of the three exploratory variables serves as a measure of property market performance and will have interrelations with land transfer duty.
+In this section, we conduct a detailed Exploratory Data Analysis (EDA) for the total land transfer duty and all its disaggregated levels, as well as for other included exploratory variables. Each of the three exploratory variables serves as a measure of property market performance and is expected to have interrelations with land transfer duty.
 
 ## Time series analysis {#sec-tsanalysis} 
 
@@ -150,7 +143,7 @@ ltd_unit_ts <- ltd_unit %>%
   relocate(Month)
 ```
 
-For this project, the total land transfer duty is divided into residential and non-residential categories. The non-residential land transfer duty is further disaggregated into commercial, industrial, and other categories. @fig-crosssec1 provides an overview of the cross-sectional hierarchical structure.
+For this study, the total land transfer duty is divided into residential and non-residential categories. The non-residential land transfer duty is further disaggregated into commercial, industrial, and other categories. @fig-crosssec1 provides an overview of the cross-sectional hierarchical structure.
 
 ![Cross-sectional hierarchy](image/cross_sec.png){#fig-crosssec1 fig-alt="Cross-sectional hierarchy" fig-align="center" width=65%} 
 
@@ -174,7 +167,7 @@ autoplot(ltd_tot_inM, color = "red") +
   theme_bw()
 ```
 
-@fig-trend demonstrates an upward, non-linear trend, showing that the value of land transfer duty has generally increased over the ten-year period. Note that, due to the outbreak of Covid-19, total land transfer duty experienced a significant decline, reaching a low of 286.2 million in June 2020. Subsequently, it rebounded to an unprecedented peak of 1.013 billion in March 2022. This trend can be attributed to multiple rate cuts by the Reserve Bank of Australia, which initially aimed to stabilize the real estate sector and subsequently stimulated demand. Additionally, there is a noticeable increase in variability, particularly in recent years, indicating more pronounced fluctuations in the values. This increasing volatility suggests that a transformation of the data may be necessary to better analyze and model these trends.
+@fig-trend demonstrates an upward, non-linear trend, showing that the value of land transfer duty has generally increased over the ten-year period. However, due to the outbreak of Covid-19, total land transfer duty experienced a significant decline, reaching a low of 286.2 million in June 2020. Subsequently, it rebounded to an unprecedented peak of 1.013 billion in March 2022. This trend can be attributed to multiple rate cuts by the Reserve Bank of Australia, which initially aimed to stabilize the real estate sector and subsequently stimulated demand. Additionally, there is a noticeable increase in variability, particularly in recent years, indicating more pronounced fluctuations in the values. This increasing volatility suggests that a transformation of the data may be necessary to better analyze and model these trends.
 
 ```{r}
 #| message: False
@@ -232,7 +225,7 @@ components(dcmp) |>
   theme_bw()
 ```
 
-@fig-dcmp shows that there is a seasonal pattern for log transformed land transfer duty, which agrees with what indicated from @fig-sspattern. The grey bars positioned to the left of each panel illustrate the relative scales of the components. Although each grey bar represents an same length, their sizes differ due to the distinct scales of the plots. The prominent grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
+@fig-dcmp shows that there is a seasonal pattern for log transformed land transfer duty, which agrees with what indicated from @fig-sspattern. The grey bars positioned to the left of each panel illustrate the relative scales of the components. The prominent grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
 
 Moreover, @fig-dcmp demonstrates that after applying a log transformation, the variability becomes more consistent. However, the relatively small grey bar to the left of the remainder panel indicates that some heterogeneity persists.
 
@@ -353,7 +346,7 @@ ltd_unit_ts |>
   theme_bw()
 ```
 
-@fig-commspattern demonstrates various increases throughout the year, in March, May, June and December, highlighting significant fluctuations throughout the year. Moreover, while some years display consistent seasonal patterns, others show irregular fluctuations.
+@fig-commspattern demonstrates various increases throughout the year, in March, May, June and December, highlighting significant fluctuations. Moreover, while some years display consistent seasonal patterns, others exhibit irregular fluctuations.
 
 ### Industrial property land transfer duty
 ```{r}
@@ -374,7 +367,7 @@ autoplot(ltd_ind_inM, color = "red") +
 
 ```
 
-@fig-indtrend shows a more stable variability compared to residential or total land transfer duty, with less pronounced fluctuations, apart from notable peaks observed in mid-2018 and March 2022. Overall, the trend is non-increasing, indicating a lack of long-term growth. The industrial sector has collected land transfer duty between 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods. These characteristics suggest that while industrial property transactions exhibit periodic spikes, they generally maintain a steady pattern without significant upward or downward trends.
+@fig-indtrend shows a more stable variability compared to residential or total land transfer duty, with less pronounced fluctuations, except for notable peaks observed in mid-2018 and March 2022. Overall, the trend is non-increasing, indicating a lack of long-term growth. The industrial sector has collected land transfer duty ranging from 5.2 million and 214.4 million, highlighting some large-scale industrial transactions or developments during certain periods. These observations suggest that while industrial property transactions exhibit periodic spikes, they generally maintain a steady pattern without significant upward or downward trends.
 
 ```{r}
 #| message: False
@@ -392,7 +385,7 @@ ltd_unit_ts |>
   theme_bw()
 ```
 
-Apart from slight increases in August and December each year, @fig-indspattern shows that there is no clear indication of seasonal pattern.
+Apart from slight increases in August and December each year, @fig-indspattern shows no clear indication of a seasonal pattern.
 
 ### Other property land transfer duty
 ```{r}
@@ -413,7 +406,7 @@ autoplot(ltd_other_inM, color = "red") +
 
 ```
 
-@fig-othertrend shows a non-linear increasing trend in other type property land transfer duty, including agricultural with different variability over time and irregular peaks. Contributions from these sectors range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.
+@fig-othertrend shows a non-linear increasing trend in other types of property land transfer duty, including agricultural properties, with varying levels of variability over time and irregular peaks. Contributions from these sectors range from 3.3 million to 74.5 million, indicating sporadic activity that may correspond with specific market or economic conditions.
 
 ```{r}
 #| message: False
@@ -431,7 +424,7 @@ ltd_unit_ts |>
   theme_bw()
 ```
 
-As shown in @fig-otherspattern, the seasonal pattern is quite irregular across all years, but there is a consistent increase observed in December for the past several years from 2020.
+As shown in @fig-otherspattern, the seasonal pattern is quite irregular across all years, but a consistent increase is observed in December for the past several years, starting from 2020.
 
 ### Sales
 
@@ -452,7 +445,7 @@ ltd_unit_ts |>
   theme_bw()
 ```
 
-@fig-salestrend shows a non-linear trend, and strong fluctuations in sales units over the ten-year period from January 2014 to January 2024. The plot exhibits considerable variability with both high and low peaks scattered throughout the timeline. The values range from approximately 5000 to over 15000, indicating significant changes in sales units.
+@fig-salestrend shows a non-linear trend with strong fluctuations in sales units over the ten-year period from January 2014 to January 2024. The plot exhibits considerable variability, with both high and low peaks scattered throughout the timeline. The values range from approximately 5,000 to over 15,000, indicating significant changes in sales units.
 
 In recent years, there is a noticeable increase in variability, particularly around 2020 and onwards. This increasing volatility indicates that a transformation of the data may be necessary to better analyze and model these trends.
 
@@ -517,11 +510,11 @@ components(dcmp) |>
   theme_bw()
 ```
 
-@fig-salesdcmp indicates a seasonal pattern for log-transformed sales, which agrees with @fig-salessspattern. However, the large grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
+@fig-salesdcmp indicates a seasonal pattern for log-transformed sales, which aligns with @fig-salessspattern. However, the large grey bar in the seasonal panel indicates that the variation in the seasonal component is the smallest when compared to the overall variation in the data.
 
 Moreover, @fig-salesdcmp demonstrates that after applying a log transformation, the variability becomes more consistent, although some heterogeneity still remains.
 
-The grey line in @fig-salesssadj represents the original log-transformed sales, while the blue line represents the seasonally adjusted log-transformed sales. @fig-salesssadj suggests that there is a huge difference between seasonally adjusted sales and original sales, especially in periodic drops.
+The grey line in @fig-salesssadj represents the original log-transformed sales, while the blue line represents the seasonally adjusted log-transformed sales. @fig-salesssadj suggests that there is a significant difference between seasonally adjusted sales and original sales, especially in periodic drops.
 
 
 ### Home Value Index
@@ -566,9 +559,9 @@ ltd_unit_ts |>
 
 @fig-lendingtrend shows an overall increasing trend over time with clear seasonal pattern for lending.
 
-## Dealing with seasonality
+## Dealing with seasonality {#sec-deal}
 
-As discussed in @sec-tsanalysis, it is evident that many time series exhibit seasonal patterns. Given the limitations of Vector Error Correction Models (VECM) in adequately modeling these seasonal fluctuations, we propose a methodological adjustment. Specifically, we will decompose the time series into seasonally adjusted components and explicit seasonal factors. This decomposition allows us to apply VECM to the seasonally adjusted data. Subsequently, we will conduct independent forecasts for both the seasonally adjusted data and the seasonal components. The final step involves the reconciliation of these forecasts then integrating them.
+As discussed in @sec-tsanalysis, many time series clearly exhibit seasonal patterns. Given the limitations of Vector Error Correction Models (VECM) in adequately modeling these seasonal fluctuations, we propose an adjustment. Specifically, we will decompose the time series into seasonally adjusted components and explicit seasonal factors. This approach allows us to apply VECM to the seasonally adjusted data. Subsequently, we will conduct independent forecasts for both the seasonally adjusted data and the seasonal components. The final step involves reconciling these forecasts and then integrating them.
 
 ## Cointegration Analysis for modelling {#sec-coint}
 
@@ -576,7 +569,7 @@ Based on the observations from @fig-trend, which illustrates the trend and incre
 
 Furthermore, to justify the use of the Vector Error Correction Model (VECM) by the *Department of Treasury and Finance*, it is essential to test for the presence of cointegration patterns (or long-term equilibrium relationships) among these three series.
 
-The Johansen procedure with the trace test statistic will be employed to test for cointegration between log transformed of land transfer duty, sales, and the home value index series. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
+The Johansen procedure with the trace test statistic will be employed to test for cointegration between log transformed of land transfer duty, lending, and sales trend. This procedure tests the null hypothesis that no cointegration relationship exists among the series.
 
 ```{r}
 # Rename ltd unit data
@@ -746,14 +739,13 @@ s_data <- total_ltd_s |>
   left_join(res_ltd_s, by = "Month") 
 ```
 
-
 ```{r}
 #| label: tbl-jotest
 #| tbl-cap: "Johansen test result"
 #| echo: False
 #| message: false
 #| warning: false
-jtest <- ca.jo(log(sa_data[,c(2,8,9)]), type="trace", K=3, ecdet="none", spec="longrun")
+jtest <- ca.jo(log(sa_data[,c(2,10,11)]), type="trace", K=4, ecdet="none", spec="longrun")
 
 jtest_sum <- summary(jtest)
 
@@ -809,11 +801,9 @@ kable(test_stats_table, col.names = c("Rank", "Test Statistic", "10%", "5%", "1%
 
 ```
 
-The test results, as shown in @tbl-jotest, using 3 lags as chosen by the DTF, allow us to reject the null hypothesis that $r \leq 1$, yet we fail to reject the null hypothesis that $r \leq 2$ at 5% level of significance. This suggests that among the three variables, the rank of the matrix exceeds 2, indicating the presence of at least two cointegration relationships.
+The test results, as shown in @tbl-jotest, using four lags as chosen by the DTF, allow us to reject the null hypothesis that $r = 1$, yet we fail to reject the null hypothesis that $r \leq 1$ at 5% level of significance. This suggests that among the three variables, the rank of the matrix equals to 1, indicating the presence of one cointegration relationships.
 
-Furthermore, a rank of 2 implies that we need a combination of at least two time series to form a stationary series.
-
-To create such a linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r round(jtest_sum@lambda[1],2)`. This corresponds to the eigenvectors components of `ltd_total`, which is approximately equal to (`r round(jtest_sum@V[,1],2)`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
+We will now construct a linear combination to re-verify if there is cointegration relationship between these 3 variables or confirm the validity of the use of VECM. To create this linear combination, we can utilize the components of the eigenvector associated with the largest eigenvalue. According to the Johansen test summary, the largest eigenvalue is approximately `r round(jtest_sum@lambda[1],2)`. This corresponds to the eigenvectors components of `ltd_total`, which is approximately equal to (`r round(jtest_sum@V[,1],2)`). By forming a linear combination of the series using these eigenvector components, we can achieve a stationary series.
 
 ```{r}
 #| message: False
@@ -827,10 +817,10 @@ To create such a linear combination, we can utilize the components of the eigenv
 
 eigenvectors <- as.numeric(jtest_sum@V[,1])
 
-s <- ltd_unit_ts |>
-mutate(log_ltd = log(ltd_total), 
-       log_sales = log(sales),
-       log_hvi = log(hvi)) |> 
+s <- sa_data |>
+mutate(log_ltd = log(Total), 
+       log_sales = log(lending),
+       log_hvi = log(sales_trend)) |> 
 dplyr::select(c(log_ltd, log_sales, log_hvi)) |> 
 summarise(s1 = log_ltd*eigenvectors[1] + eigenvectors[2]*log_sales + eigenvectors[3]*log_hvi) 
 
@@ -839,24 +829,11 @@ df <- data.frame(Date = s$Month, Value = as.numeric(unlist(s[,2])))
 ggplot(df, aes(x = Date, y = Value)) + 
   geom_line(color = "red") + 
   labs(y = "Value", x = "Date", title = " ") +
-theme_minimal()
+theme_bw()
 
 ```
 
 As shown in @fig-splot, the linear combination appears to be more stationary, although there remains a slight indication of varying variances over time.
-
-```{r}
-s_ts <- df |>
-  mutate(Month = yearmonth(Date)) |>
-  select(-Date) |>
-  as_tsibble(index = Month) |>
-  relocate(Month)
-
-s_ts |>
-  ACF(Value) |>
-  autoplot()
-```
-
 
 ```{r}
 #| echo: False
@@ -884,8 +861,7 @@ adf_table <- data.frame(
 
 ```
 
-
-Additionally, the p-value of `r p_value` from the Augmented Dickey-Fuller (ADF) test indicates that we can reject the null hypothesis of a unit root, providing evidence of a stationary series formed from the linear combination at the 10% level of significance. Therefore, we can conclude that it is appropriate to fit a Vector Error Correction Model (VECM) to these three time series.
+However, the p-value of `r p_value` from the Augmented Dickey-Fuller (ADF) test indicates that we cannot reject the null hypothesis of a unit root, providing evidence of a non-stationary series formed from the linear combination, which disproves the validity of the use of VECM.
 
 Since we will fit VECM to all the variables in the hierarchy, including residential, non-residential, commercial, property and other, we will perform the same procedure of cointegration analysis as above.
 
@@ -897,21 +873,21 @@ Since we will fit VECM to all the variables in the hierarchy, including resident
 #| warning: false
 #| 
 # Assuming the data is already loaded in ltd_unit_ts
-variables <- c("ltd_res", "ltd_nonres", "ltd_comm", "ltd_ind", "ltd_other")
+variables <- c("Res", "NonRes", "Comm", "Ind", "Other")
 p_values <- data.frame(Variable = character(), Johansen_p_value = numeric(), ADF_p_value = numeric(), stringsAsFactors = FALSE)
 
 for (var in variables) {
   # Johansen Test
-  jtest <- ca.jo(log(ltd_unit_ts[,c(var, "sales", "hvi")]), type="trace", K=3, ecdet="none", spec="longrun")
+  jtest <- ca.jo(log(sa_data[,c(var, "lending", "sales_trend")]), type="trace", K=4, ecdet="none", spec="longrun")
   jtest_sum <- summary(jtest)
   johansen_p_value <- sum(jtest_sum@teststat > jtest_sum@cval[,2])
 
   eigenvectors <- as.numeric(jtest_sum@V[,1])
 
-  s <- ltd_unit_ts |>
+  s <- sa_data |>
   mutate(log_ltd = log(!!sym(var)), 
-         log_sales = log(sales),
-         log_hvi = log(hvi)) |> 
+         log_sales = log(lending),
+         log_hvi = log(sales_trend)) |> 
   dplyr::select(c(log_ltd, log_sales, log_hvi)) |> 
   summarise(s1 = log_ltd*eigenvectors[1] + 
               eigenvectors[2]*log_sales + 
@@ -927,19 +903,23 @@ for (var in variables) {
 }
 
 # Display the results in a table
-kable(p_values, col.names = c("Variable", "Johansen p-value", "ADF p-value")) %>%
+kable(p_values, col.names = c("Variable", "Number of cointegrating relationship", "ADF p-value")) %>%
   kable_styling()
 
 ```
 
-As shown in @tbl-adftest, the null hypothesis that the linear combination is non-stationary cannot be rejected for the variables `ltd_nonres`, `ltd_comm`, `ltd_ind`, and `ltd_other`. This finding suggests that alternative variables may be required to appropriately fit the Vector Error Correction Model (VECM) for these specific property categories in land transfer duty.
+As presented in @tbl-adftest, the ADF test results indicate that the null hypothesis of non-stationarity for the linear combination cannot be rejected for residential LTD, whereas the linear combination for other types of LTD is stationary.
+
+Given that the null hypothesis of non-stationarity cannot be rejected for both total LTD and residential LTD, we opted to fit the model using sales and HVI instead. Following the same procedure, the ADF test results show that the null hypothesis can be rejected at the 10% significance level for residential LTD but not for total LTD. Consequently, we decided to proceed with fitting the VECM model for residential LTD using sales and HVI.
+
+For total LTD, despite the ADF test indicating non-stationarity in the linear combination for both model, we decide to proceed with the VECM model because the Johansen test still identifies a cointegrating relationship. This suggests that, while the linear combination may be non-stationary, the VECM can still effectively model the underlying long-term equilibrium and adjust the forecasts accordingly, making it a suitable choice for this analysis.
 
 # Methodology
 ## Cross-sectional, temporal and cross-temporal hierarchies
 
-Upon analyzing the data characteristics and the disaggregation of LTD, it becomes evident that a three-level hierarchical structure can be established. There is utility in generating forecasts at various levels of aggregation, driven by diverse reasons and objectives. For example, each level of aggregation may exhibit distinct characteristics; for instance, transactions involving residential properties might vary from those involving non-residential properties due to differences in market dynamics or market size for each property type.
+Upon analyzing the data characteristics and the disaggregation of LTD, it becomes evident that a three-level hierarchical structure can be established. Generating forecasts at various levels of aggregation is valuable, driven by diverse reasons and objectives. For example, each level of aggregation may exhibit distinct characteristics; for instance, transactions involving residential properties might vary from those involving non-residential properties due to differences in market dynamics or market size for each property type.
 
-In this context, total land transfer duty is divided into two categories: residential and non-residential properties. Non-residential properties are further disaggregated into three sub-categories: commercial, industrial, and other, which predominantly includes agricultural properties. In addition to the total land transfer duty for all property types, the government and the *Department of Treasury and Finance* may also be interested in forecasts for each category and sub-category. @fig-crosssec illustrates the cross-sectional hierarchical structure of land transfer duty as discussed.
+In this context, total land transfer duty is divided into two categories: residential and non-residential properties. Non-residential properties are further disaggregated into three sub-categories: commercial, industrial, and other, which predominantly includes agricultural properties. @fig-crosssec illustrates the cross-sectional hierarchical structure of land transfer duty as discussed.
 
 ![Cross-sectional hierarchy](image/cross_sec.png){#fig-crosssec fig-alt="Cross-sectional hierarchy" fig-align="center" width=65%} 
 
@@ -947,13 +927,13 @@ Given that this is a straightforward cross-sectional hierarchical structure, we 
 
 ![Temporal hierarchy](image/temp.png){#fig-temp fig-align="center"}
 
-Although forecasts using cross-sectional and temporal hierarchies have demonstrated substantial improvements (@kourentzes2019cross), these approaches have typically been used separately. By combining cross-sectional hierarchies and temporal hierarchies, referred to as cross-temporal hierarchies, forecast accuracy can be further improved. Moveover, another advantage of cross-temporal reconciled forecasts is that it provides aligned short-term and long-term decision. If cross-sectionally or temporally coherent forecasts are used disjointedly, some outputs may not be directly useful, such as very long-term forecasts at very disaggregate level, which is 2 years of forecasts at other type of property land transfer duty level. Therefore, one would have to post-process the forecasts further, for example combining together multiple long-term disaggregate bottom level forecasts (commerical, industrial, other) to produce long-term total land transfer duty forecasts, which would then break the desired coherence across all levels and time periods. @fig-crosstemp from @kourentzes2019cross shows an example of a cross-temporal hierarchical structure.
+Although forecasts using cross-sectional and temporal hierarchies have demonstrated substantial improvements (@kourentzes2019cross), these approaches have typically been used separately. By combining cross-sectional hierarchies and temporal hierarchies, referred to as cross-temporal hierarchies, forecast accuracy can be further improved. Moveover, another advantage of cross-temporal reconciled forecasts is that it provides aligned short-term and long-term decision. If cross-sectional or temporal forecasts are used independently, some outputs, such as very long-term forecasts at a very disaggregated level—for instance, two years of forecasts for commercial property land transfer duty—may not be directly useful. Therefore, one would have to post-process the forecasts further, for example combining together multiple long-term disaggregate bottom level forecasts (commerical, industrial, other) to produce long-term total land transfer duty forecasts, which would then break the desired coherence across all levels and time periods. @fig-crosstemp from @kourentzes2019cross shows an example of a cross-temporal hierarchical structure.
 
 ![Cross-temporal hierarchy](image/cross-temporal.png){#fig-crosstemp fig-align="center"}
 
 ## Forecast reconciliation
 
-From the cross-temporal hierarchies, forecasts can be produced at all levels for every nodes. And in an ideal scenario, forecasts from different levels of aggregation could seamlessly sum up to the top level. However, practical implementation often reveals incoherent among independently produced forecasts. Each independently produced forecast is subject to different errors, and the summation of these errors from different nodes results in aggregated forecasts that differ from the independently produced forecast at the top level. Consequently, it becomes vital for forecasts to align and aggregate according to the hierarchical structure organizing the array of time series. As a solution to this challenge, forecast reconciliation emerges as one of the most effective methodologies employed to date.
+From the cross-temporal hierarchies, forecasts can be produced at all levels for every nodes. In an ideal scenario, forecasts from various levels of aggregation would sum up to match the top-level forecast. However, practical implementation often reveals incoherent among independently produced forecasts. Each independently produced forecast is subject to different errors, and the summation of these errors from different nodes can result in aggregated forecasts that deviate from the independently produced top-level forecast. Consequently, aligning forecasts and ensuring they aggregate correctly according to the hierarchical structure becomes critical. Forecast reconciliation has emerged as one of the most effective methodologies to address this challenge to date.
 
 We first consider cross-sectional forecast reconciliation. Recall from @fig-crosssec, we can construct this hierarchical structure for LTD in a matrix form like this:
 
@@ -1032,11 +1012,11 @@ Lastly, the *middle-out* approach is a combination of both the bottom-up and top
 
 However, the traditional single level approaches may have their limitations since only base forecast at one level is used. In response to this, @wickramasuriya2018optimal introduced the *MinT* (Minimum Trace) optimal reconciliation methodology, which is based on the finding of a **G** matrix that minimises the total forecast variance within the set of coherent forecasts.
 
-@wickramasuriya2018optimal show that the variance-covariance of the h-step-ahead coherent forecast errors is given by:
+@wickramasuriya2018optimal show that the variance-covariance of the h-step-ahead *coherent forecast errors* is given by:
 $$
 \textbf{V}_{h} = Var[\textbf{y}_{T+h} - \bf{\tilde{y}}_\text{h}] = \textbf{SG}\textbf{W}_{h}\textbf{G'S'} ,
 $$
-where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding base forecast errors.
+where $\textbf{W}_{h} = Var[\textbf{y}_{T+h} - \bf{\hat{y}}_{h}]$ is the variance-covariance matrix of the corresponding *base forecast errors*.
 
 @wickramasuriya2018optimal also show that: 
 $$
@@ -1055,13 +1035,11 @@ Now, a challenge with G is that it requires an estimation of $\textbf{W}_{h}$, t
 1. **OLS** (@hyndman2011optimal): 
     $\mathbf{W}_{h} = \text{k}_{h}\mathbf{I}$ for all h, where $\text{k}_{h} > 0$.
 
-This is the most simplifying assumption to make, and means that $\bf{G}$ is independent of the data, providing substantial computational savings. The disadvantage, however, is that this specification does not account for the differences in scale between the levels of the structure, or for relationships between series.
-
 This is the simplest assumption to adopt, implying that $\bf{G}$ is independent of the data, which significantly reduces computational costs. However, this approach does not account for the varying scales across different levels of the structure or for the relationships between series.
 
 2. $\bf{WLS}_{S}$  (@athanasopoulos2017forecasting):
     $\mathbf{W}_{h} = \text{k}_{h}\mathbf{\Lambda}$ for all h, where $\text{k}_{h} > 0$, $\mathbf{\Lambda} = diag(\textbf{S1})$, and $\bf{1}$ is  unit vector of dimension $\it{m}$ (the number of bottom-level series).
-
+    
 Applying structural scaling is particularly useful in cases where residuals are not available, and so the variance scaling cannot be applied; for example, in cases where the base forecasts are generated by judgemental forecasting.
     
 3. $\bf{WLS}_{V}$ (@hyndman2016fast): 
@@ -1085,7 +1063,7 @@ For cross-sectional reconciliation, there are two main challenges, as stated by 
 1. the size of the cross-sectional dimension of the hierarchy; and 
 2. the heterogeneity of the series across, but also within levels. 
 
-The size relates directly with estimation of $\mathbf{W}_{h}$, and therefore very large hierarchies, estimation of $\mathbf{W}_{h}$ can be computationally expensive. However, this is not the case for this hierarchical structure in @fig-crosssec. On the other hand, it is expected that there will be heterogeneity between each cross-sectional levels. Therefore, in this case, we choose not to apply structural scaling since it assumes that each of the bottom-level base forecasts has errors with equal variance $\text{k}_{h}$. 
+The size relates directly with estimation of $\mathbf{W}_{h}$, and therefore very large hierarchies, estimation of $\mathbf{W}_{h}$ can be computationally expensive. However, this is not the case for this hierarchical structure in @fig-crosssec. On the other hand, given that the time series across each level can represent very different entities, it is expected that there will be  heterogeneity between them. Therefore, in this case, we choose not to apply structural scaling since it assumes that each of the bottom-level base forecasts has errors with equal variance $\text{k}_{h}$. 
 
 ### Temporal reconciliation
 
@@ -1095,13 +1073,15 @@ On the other hand, for temporal hierarchies, forecasts across all levels are for
 
 The cross-temporal reconciliation methodology used in this context is heuristic first-temporal-then-cross-sectional reconciliation, proposed by @kourentzes2019cross. It is a 2-step approach, where step 1 includes reconciliation through temporal hierarchies for each single variable to achieve temporally coherence forecast (**THieFs**). Then for step 2, from previously **THieFs**, we generate k cross-sectional reconciliations, setting $\textbf{W}_{h} = \bf{\hat{W}}_{h,\ell}$, where $\ell = 1,2,..,k$, and k denotes the number of temporal aggregation levels. This results in reconciliation matrix $\textbf{SG}_{\ell}$ for each temporal aggregation level. And by averaging across these, we compose a consesus reconciliation matrix **SG**, where $\textbf{G} = \frac{1}{k}\sum_{\ell=1}^{k}\textbf{G}_{\ell}$, capturing the reconciliation consesus across all *k* temporal aggregation levels. The outcome are cross-temporally reconciled forecasts, which are coherent across both dimensions, at all scales. 
 
-## Model Selection
+## Model Selection {#sec-model}
 
-As discussed in @sec-coint, it highlights the pertinence of employing VECM to adequately model these relationships.
+As discussed in @sec-deal and @sec-coint, the relevance of employing VECM to adequately model the seasonally adjusted time series is evident.
 
-One limitation of these models is their reliance on ample data to produce reliable parameters. Monthly data spanning over a decade for LTD has been found to be sufficient. Nevertheless, the subsequent section on cross-validation will elaborate on the precise sizing of the training dataset required to ensure compatibility with the VAR and VECM models.
+One limitation of this model is its requirement for a sufficiently large data size. Monthly data spanning over a decade for LTD has been found to be sufficient. However, since the sample size of annually aggregated frequencies is only 10, which is insufficient for using VECM, we will instead fit a VAR model for the annual frequency aggregated time series. Nevertheless, the subsequent section on cross-validation will elaborate on the precise sizing of the training dataset required to ensure compatibility with the VAR and VECM models.
 
-In addition to VAR and VECM, the Autoregressive Integrated Moving Average (ARIMA) model has also been employed, primarily for purposes of comparison and validation of improvements. The efficacy of this comparison will be assessed through time series cross-validation, utilizing various accuracy metrics such as:
+On the other hand, for the seasonal components with repetitive patterns, we will use the seasonal naïve (Snaïve) method, which sets each forecast equal to the last observed value from the same season (e.g., the same month of the previous year).
+
+Finally, the efficacy of this methodology will be assessed through time series cross-validation, utilizing two accuracy metrics:
 
 * *Root Mean Square Error (RMSE)*, 
 where the RMSE is computed as:
@@ -1111,7 +1091,9 @@ $\text{RMSE} = \sqrt{\frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2}$; and
 * *Mean Absolute Percentage Error (MAPE)*,
 where the MAPE is computed by defining the percentage error, to overcome scale-dependency of RMSE as:
 
-$\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| 100 \times \frac{y_t - \hat{y}_t}{y_t} \right|$.
+$\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| 100 \times \frac{y_t - \hat{y}_t}{y_t} \right|$
+
+where $n$ represents the total number of observations.
 
 # Time Series Cross-Validation
 
@@ -1119,9 +1101,9 @@ $\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| 100 \times \frac{y_t - \hat{y}_
 
 Time series cross-validation represents a sophisticated adaptation of the conventional training/test set approach for model selection, as stated by @hyndman2021forecasting. This methodology is particularly well-suited to time series data because it exclusively includes observations from periods prior to those being forecasted, distinguishing it from traditional cross-validation techniques. 
 
-In the scope of this project, time series cross-validation is employed to rigorously evaluate whether the VAR/VECM or ARIMA models yield more accurate forecasts for this dataset across forecasting horizons ranging from 1 to 12 steps ahead. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the base forecasts. Time series cross-validation facilitates the generation of a series of 1 to 12-step-ahead forecasts across various rolling periods. For instance, a 12-step-ahead forecast can be produced starting from January 2022, followed by another 12-step-ahead forecast from February 2022, and so forth. This is essential for the *Department of Treasury and Finance* to analyze the effects of market dynamics or policy changes on land transfer duty. 
+In this study, time series cross-validation is employed to evaluate whether applying VAR/VECM with hierarchical forecasts yields more accurate results for this dataset across forecasting horizons ranging from 1 to 12 steps ahead, compared to the original forecast by the *DTF*. Additionally, this approach is used to gauge the extent of improvement introduced by the reconciliation process in comparison to the base forecasts. Time series cross-validation facilitates the generation of a series of 1 to 12-step-ahead forecasts across various rolling periods. For instance, a 12-step-ahead forecast can be generated starting from January 2022, followed by another 12-step-ahead forecast from February 2022, and so forth. This is essential for the *Department of Treasury and Finance* to analyze the effects of market dynamics or policy changes on land transfer duty. 
 
-The initial training set will start with 108 monthly observations, equating to 9 years of data, and will roll forward by 1 month for each subsequent step. This process will generate 10 folds of training sets, and thus there will be 10 sets of 12-step-ahead forecasts with equivalent test set for forecasting accuracy evaluation . While the number of observations in the initial training set can be lower, 108 months were chosen for code efficiency.
+The initial training set will start with 111 monthly observations and will roll forward by 1 month for each subsequent step. This process will generate 10 folds of training sets, and thus there will be 10 sets of 12-step-ahead forecasts with equivalent test set for forecasting accuracy evaluation. While the number of observations in the initial training set can be lower, 111 months were chosen for code efficiency.
 
 ## Generating forecast
 
@@ -1133,50 +1115,16 @@ Models are fitted at each cross-sectional level across these varying temporal fr
 
 This structured approach facilitates the fitting of different models tailored to each temporal frequency, allowing for adjustments in argument values as necessary. Moreover, if a distinct model is required for various cross-sectional levels, an `if` condition is employed within each temporal frequency loop to ensure this customization. The forecasts and residuals are then allocated to `base` and `res` data structures, respectively.
 
-### ARIMA
+### Seasonal naïve method
 
-The ARIMA model will be implemented across all levels of the temporal hierarchical structure and at every cross-sectional level. Since as discussed in @sec-tsanalysis, there is seasonal pattern for some nodes, such as total land transfer duty, residential property land transfer duty or sales. And thus we will pay more attention on seasonal ARIMA model. It is a combination of differencing with autoregression and a moving average model. The full model can be written as:
-
-$$
-y'_t = c + \phi_1 y'_{t-1} + \cdots + \phi_p y'_{t-p} + \Phi_1 y'_{t-m} + \cdots + \Phi_P y'_{t-mP} + \theta_1 \varepsilon_{t-1} + \cdots + \theta_q \varepsilon_{t-q} + \Theta_1 \varepsilon_{t-m} + \cdots + \Theta_Q \varepsilon_{t-mQ} + \varepsilon_t,
-$$
-
-where:
-
-- $y'_t$ is the differenced series, considering both non-seasonal and seasonal differencing.
-- $\phi_i$ are the coefficients for the non-seasonal autoregressive (AR) terms.
-- $\theta_j$ are the coefficients for the non-seasonal moving average (MA) terms.
-- $\Phi_k$ are the coefficients for the seasonal autoregressive (SAR) terms.
-- $\Theta_l$ are the coefficients for the seasonal moving average (SMA) terms.
-- $\varepsilon_t$ is the white noise error term.
-- $m$ is the seasonal period.
-
-The parameters are defined as follows:
-
-|  Parameter  |  Description  |
-|------:|:-----|
-|  \( p \)  | order of the non-seasonal autoregressive part;  |
-|  \( d \)  | degree of non-seasonal differencing involved; |
-|  \( q \)  | order of the non-seasonal moving average part; |
-|  \( P \)  | order of the seasonal autoregressive part; |
-|  \( D \)  | degree of seasonal differencing involved; |
-|  \( Q \)  | order of the seasonal moving average part; |
-|  \( m \)  | number of periods in each season. |
-
-Or it can be written as:
+As mentioned in @sec-model, we will use seasonal naïve method (Snaïve) for the seasonal components. Formally, the forecast for time $T + h$ is written as:
 
 $$
-\text{ARIMA} \quad 
-\begin{array}{c}
-(p, d, q) \quad (P, D, Q)_m \\
-\underbrace{\phantom{(p, d, q)}} \quad \underbrace{\phantom{(P, D, Q)_m}} \\
-\text{Non-seasonal part} \quad \text{Seasonal part} \\
-\text{of the model} \quad \text{of the model}
-\end{array},
+\begin{aligned}
+\hat{y}_{T+h|T} = y_{T+h-m(k+1)},
+\end{aligned}
 $$
-where $m$ is the seasonal period (e.g., number of observations per year)
-
-To implement this, we can use the `auto.arima()` function from the `forecast` package. This function efficiently determines the optimal parameters for the autoregressive lag, differencing, and moving average components of the model by automatically adjusting them for the error terms.
+where $m$ = the seasonal period, and $k$ is the integer part of $(h-1)/m$ (i.e., the number of complete years in the forecast period prior to time $T+h$). For example, with monthly data, the forecast for all future February values is equal to the last observed February value.
 
 ### VAR/VECM
 
@@ -1208,7 +1156,7 @@ z_t &= \beta_{30} + \beta_{31} y_{t-1} + \beta_{32} x_{t-1} + \beta_{33} z_{t-1}
 $$
 where $y_t$, $x_t$ and $z_t$ represent land transfer duty, sales and home value index.
 
-However, as discussed in @sec-coint, given the existence of at least two cointegration relationships among the three time series, which are different type of property land transfer duty against sales and home value index, fitting a VECM is more appropriate. The VECM is formulated by incorporating the error correction term into the VAR model in first differences. For the three time series \( y_t \), \( x_t \), and \( z_t \), the VECM(3) can be expressed as:
+However, as discussed in @sec-coint, given the existence of cointegration relationship among the three time series, which are different type of property land transfer duty against sales and home value index, fitting a VECM is more appropriate. The VECM is formulated by incorporating the error correction term into the VAR model in first differences. For the three time series  $y_t$, $x_t$, and $z_t$, the VECM(3) can be expressed as:
 
 $$
 \begin{aligned}
@@ -1228,7 +1176,7 @@ where:
 
 The VECM framework thus captures both the short-term dynamics through the differenced terms and the long-term equilibrium relationships through the error correction terms.
 
-Finally, the reconciliation procedure can be implemented using the `FoReco` package @FoReco.
+Finally, the reconciliation procedure can be implemented using the `FoReco` package (@FoReco).
 
 # Results
 ## RMSE
@@ -1238,21 +1186,18 @@ Finally, the reconciliation procedure can be implemented using the `FoReco` pack
 #| warning: False
 #| echo: False
 #| label: fig-rmse
-#| fig-cap: "Monthly total LTD base and reconciled forecast RMSE by model"
+#| fig-cap: "Monthly total LTD base and reconciled forecast RMSE by method"
 #| fig-align: 'center'
 
 i = 1
 ## Create a data frame for plotting
 rmse_base_data <- data.frame(
   h_step = 1:12,
-  RMSE_ARIMA_base = RMSE_arima_h_base[i,],
   RMSE_VECM_base = RMSE_vecm_h_base[i,],
-  rmse_ARIMA_rec = RMSE_arima_h_rec[i,],
   rmse_VECM_rec = RMSE_vecm_h_tcs_rec[i,],
-  rmse_ARIMA_temp = RMSE_arima_h_temp_rec[i,],
   rmse_VECM_temp = RMSE_vecm_h_thf_rec[i,],
-  rmse_ARIMA_cross_sec = RMSE_arima_h_cross_rec[i,],
-  rmse_VECM_cross_sec = RMSE_vecm_h_hts_rec[i,]
+  rmse_VECM_cross_sec = RMSE_vecm_h_hts_rec[i,],
+  rmse_DTF = dtf_rmse$rmse
 )
 
 ## Convert to long format
@@ -1263,42 +1208,42 @@ rmse_data_long <- rmse_base_data %>%
 rmse_data_long <- rmse_data_long %>%
   mutate(
     LineType = case_when(
-      grepl("rec", Method) ~ "Cross-temporally Reconciled",
-      grepl("temp", Method) ~ "Temporally Reconciled",
-      grepl("cross_sec", Method) ~ "Cross-sectionally Reconciled",
+      grepl("rec", Method) ~ "Cross-temporal",
+      grepl("temp", Method) ~ "Temporal",
+      grepl("cross_sec", Method) ~ "Cross-sectional",
       TRUE ~ "Base"
     ),
     MethodGroup = case_when(
-      grepl("ARIMA", Method) ~ "ARIMA",
-      grepl("VECM", Method) ~ "VECM"
+      grepl("DTF", Method) ~ "DTF",
+      grepl("VECM", Method) ~ "Forecast Reconciliation"
     )
   )
 
 ## Create the plot with specified colors, line types, and markers
 ggplot_rmse <- ggplot(rmse_data_long, aes(x = h_step, y = RMSE, colour = MethodGroup, linetype = LineType, shape = LineType)) +
   geom_line(aes(group = Method), linewidth = 1.2) +
-  geom_point(data = subset(rmse_data_long, LineType == "Temporally Reconciled"), size = 2) +
+  geom_point(data = subset(rmse_data_long, LineType == "Temporal"), size = 2) +
   scale_color_manual(values = c(
-    "ARIMA" = "blue",
-    "VECM" = "red"
+    "DTF" = "blue",
+    "Forecast Reconciliation" = "red"
   )) +
   scale_linetype_manual(values = c(
     "Base" = "solid",
-    "Cross-temporally Reconciled" = "dashed",
-    "Temporally Reconciled" = "solid",
-    "Cross-sectionally Reconciled" = "dotted"
+    "Cross-temporal" = "dashed",
+    "Temporal" = "solid",
+    "Cross-sectional" = "dotted"
   )) +
   scale_shape_manual(values = c(
     "Base" = NA,
-    "Cross-temporally Reconciled" = NA,
-    "Temporally Reconciled" = 16,
-    "Cross-sectionally Reconciled" = NA
+    "Cross-temporal" = NA,
+    "Temporal" = 16,
+    "Cross-sectional" = NA
   )) +
   labs(x = "h-step Forecast", y = "RMSE Value", title = " ") +
   scale_x_continuous(breaks = 1:12) +
-  theme_minimal() +
+  theme_bw() +
   guides(
-    colour = guide_legend(title = "Model", order = 1),
+    colour = guide_legend(title = "Method", order = 1),
     linetype = guide_legend(title = "Reconciliation Type", order = 2),
     shape = guide_legend(title = "Reconciliation Type", order = 2)
   ) +
@@ -1314,15 +1259,17 @@ ggplot_rmse
 ```
 
 
-@fig-rmse illustrates the Root Mean Square Error (RMSE) of reconciled forecasts in comparison to base forecasts for both VECM and ARIMA models. The blue lines denote the ARIMA model, while the red lines represent the VECM. The line types are differentiated as follows: solid lines for base forecasts, solid lines with circle markers for temporally reconciled forecasts, dotted lines for cross-sectionally reconciled forecasts, and dashed lines for cross-temporally reconciled forecasts.
+@fig-rmse illustrates the Root Mean Square Error (RMSE) of reconciled forecasts and base forecasts compared against the RMSE of DTF forecasts. The blue line denotes the DTF forecast, while the red lines represent hierarchical reconciled forecasts. The line types are differentiated as follows: solid lines for base forecasts, solid lines with circle markers for temporally reconciled forecasts, dotted lines for cross-sectionally reconciled forecasts, and dashed lines for cross-temporally reconciled forecasts.
 
-Upon initial examination, it is evident that the VECM model consistently produces more accurate forecasts compared to the ARIMA model, aligning with the model selection by the *Department of Treasury and Finance*. Furthermore, the significant disparity between reconciled forecasts and base forecasts, particularly from the four-step-ahead forecasts onwards for both models, suggests that forecast reconciliation markedly enhances forecast accuracy. Notably, for both models, the RMSE lines of temporally reconciled forecasts are closer to those of cross-temporally reconciled forecasts, compared to the RMSE lines of cross-sectionally reconciled forecasts. This indicates that temporal hierarchies play a more substantial role in improving forecast accuracy compared to cross-sectional hierarchies.
+It is clear that the significant disparity between reconciled forecasts and base forecasts, particularly from the four-step-ahead forecasts onwards, suggests that forecast reconciliation markedly enhances forecast accuracy. Notably, the RMSE line of temporally reconciled forecasts is closer to the cross-temporally reconciled forecasts compared to the cross-sectionally reconciled forecasts. This indicates that temporal hierarchies play a more substantial role in improving forecast accuracy compared to cross-sectional hierarchies.
 
-It is also noteworthy that for one to three-step-ahead forecasts, the base forecasts already exhibit high performance, hence the improvements from applying forecast reconciliation are not evident.
+Moreover, when comparing reconciled forecasts to DTF forecasts, it is evident that reconciled forecasts, especially cross-temporally, perform significantly better.
+
+It is also noteworthy that for one to three-step-ahead forecasts, the base forecasts already exhibit high performance, hence the improvement from applying forecast reconciliation is not as evident.
 
 ## MAPE 
 
-Using the Mean Absolute Percentage Error (MAPE), we anticipate results consistent with those obtained from the Root Mean Square Error (RMSE), which is indeed the case as demonstrated in Figure @fig-mape.
+Using the Mean Absolute Percentage Error (MAPE), we anticipate results consistent with those obtained from the Root Mean Square Error (RMSE), which is the case as demonstrated in @fig-mape.
 
 ```{r}
 #| message: False
@@ -1337,14 +1284,11 @@ i = 1
 ## Create a data frame for plotting
 mape_base_data <- data.frame(
   h_step = 1:12,
-  mape_arima_base = mape_arima_base[i,],
   mape_vecm_base = mape_vecm_base[i,],
-  mape_arima_rec = mape_arima_cross_temp[i,],
   mape_vecm_rec = mape_vecm_cross_temp[i,],
-  mape_arima_temp = mape_arima_temp[i,],
   mape_vecm_temp = mape_vecm_temp[i,],
-  mape_arima_cross_sec = mape_arima_cross_sec[i,],
-  mape_vecm_cross_sec = mape_vecm_cross_sec[i,]
+  mape_vecm_cross_sec = mape_vecm_cross_sec[i,],
+  mape_dtf = dtf_mape$mape
 )
 
 ## Convert to long format
@@ -1355,42 +1299,42 @@ mape_data_long <- mape_base_data %>%
 mape_data_long <- mape_data_long %>%
   mutate(
     LineType = case_when(
-      grepl("rec", Method) ~ "Cross-temporally Reconciled",
-      grepl("temp", Method) ~ "Temporally Reconciled",
-      grepl("cross_sec", Method) ~ "Cross-sectionally Reconciled",
+      grepl("rec", Method) ~ "Cross-temporal",
+      grepl("temp", Method) ~ "Temporal",
+      grepl("cross_sec", Method) ~ "Cross-sectional",
       TRUE ~ "Base"
     ),
     MethodGroup = case_when(
-      grepl("arima", Method) ~ "ARIMA",
-      grepl("vecm", Method) ~ "VECM"
+      grepl("dtf", Method) ~ "DTF",
+      grepl("vecm", Method) ~ "Forecast Reconciliation"
     )
   )
 
 ## Create the plot with specified colors, line types, and markers
 ggplot_mape <- ggplot(mape_data_long, aes(x = h_step, y = MAPE, colour = MethodGroup, linetype = LineType, shape = LineType)) +
   geom_line(aes(group = Method), linewidth = 1.2) +
-  geom_point(data = subset(mape_data_long, LineType == "Temporally Reconciled"), size = 2) +
+  geom_point(data = subset(mape_data_long, LineType == "Temporal"), size = 2) +
   scale_color_manual(values = c(
-    "ARIMA" = "blue",
-    "VECM" = "red"
+    "DTF" = "blue",
+    "Forecast Reconciliation" = "red"
   )) +
   scale_linetype_manual(values = c(
     "Base" = "solid",
-    "Cross-temporally Reconciled" = "dashed",
-    "Temporally Reconciled" = "solid",
-    "Cross-sectionally Reconciled" = "dotted"
+    "Cross-temporal" = "dashed",
+    "Temporal" = "solid",
+    "Cross-sectional" = "dotted"
   )) +
   scale_shape_manual(values = c(
     "Base" = NA,
-    "Cross-temporally Reconciled" = NA,
-    "Temporally Reconciled" = 16,
-    "Cross-sectionally Reconciled" = NA
+    "Cross-temporal" = NA,
+    "Temporal" = 16,
+    "Cross-sectional" = NA
   )) +
   labs(x = "h-step Forecast", y = "MAPE Value", title = " ") +
   scale_x_continuous(breaks = 1:12) +
-  theme_minimal() +
+  theme_bw() +
   guides(
-    colour = guide_legend(title = "Model", order = 1),
+    colour = guide_legend(title = "Method", order = 1),
     linetype = guide_legend(title = "Reconciliation Type", order = 2),
     shape = guide_legend(title = "Reconciliation Type", order = 2)
   ) +
@@ -1404,82 +1348,25 @@ ggplot_mape <- ggplot(mape_data_long, aes(x = h_step, y = MAPE, colour = MethodG
 ggplot_mape
 ```
 
-In conclusion, four key insights can be derived from @fig-rmse and @fig-mape:
-
-1. The VECM model is more suitable than the ARIMA model.
-2. Forecast reconciliation significantly enhances forecast accuracy, with cross-temporally reconciled forecasts exhibiting the best performance.
-3. The majority of the improvement is attributable to incorporating temporal hierarchies.
-4. Forecast reconciliation is particularly effective in improving forecasts that initially perform poorly.
-
-## Comparing against DTF forecast
-
-The Root Mean Squared Errors (RMSE) of the *Department of Treasury and Finance* (DTF) forecast were computed utilizing the same time-series cross-validation procedure as previously described, with the original scale of land transfer duty serving as a benchmark. As shown in @fig-dtfrmse, the RMSE varies between 110 million and 130 million, with a significant reduction observed at the 12-step-ahead forecasts. This reduction may be attributed to a strong seasonal pattern at step 12, which is overlooked when using the original scale of land transfer duty. Overall, the RMSE derived from the DTF forecast is not superior to the RMSE of the reconciled forecasts.
-
-```{r}
-#| message: False
-#| warning: False
-#| echo: False
-#| label: fig-dtfrmse
-#| fig-cap: "RMSE of DTF forecast"
-#| fig-align: 'center'
-
-## Create the plot
-dtf_rmse_plot <- ggplot(dtf_rmse, aes(x = h, y = rmse)) +
-  geom_line(linewidth = 1.1, color = "red") +
-  labs(x = "h-step Forecast", y = "RMSE Value", title = " ") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-dtf_rmse_plot
-```
-
-When extending the comparison to cross-temporally reconciled forecasts against DTF forecasts, as illustrated in @fig-rmseratio, where the red line represents the ratio of MAPE of reconciled forecasts to DTF forecasts, it is evident that cross-temporally reconciled forecasts perform significantly better.
-
-```{r}
-#| message: False
-#| warning: False
-#| echo: False
-#| label: fig-rmseratio
-#| fig-cap: "Ratio of RMSE of cross-temporally reconciled forecast to DTF forecast"
-#| fig-align: 'center'
-
-ratio_vecm_dtf <- data.frame(
-  h_step = c(1:12),
-  rec_to_dtf = as.numeric(RMSE_vecm_h_tcs_rec[1,])/as.numeric(dtf_rmse$rmse)
-)
-
-# Create the plot
-ggplot_ratio_vecm_dtf <- ggplot(ratio_vecm_dtf, aes(x = h_step, y = rec_to_dtf)) +
-  geom_line(linewidth = 1.1, color = "red") +
-  geom_hline(yintercept = 1) +
-  labs(x = "h-step Forecast", y = "Ratio", title = " ") +
-  scale_x_continuous(breaks = 1:12) +
-  theme_minimal()
-
-ggplot_ratio_vecm_dtf
-```
-
 # Discussion
 ## Interpretation of Results
 
-The empirical analysis reveals that the VECM model provides more accurate forecasts for LTD compared to the ARIMA model, particularly when forecast reconciliation techniques are applied. The incorporation of cross-sectional and temporal hierarchies into a unified cross-temporal reconciliation framework markedly improves forecast accuracy. This indicates that the proposed methodology effectively captures both short-term dynamics and long-term trends in the property market.
+@fig-rmse and @fig-mape reveals three key insights that underscore the effectiveness of forecast reconciliation in improving accuracy:
 
-Temporal reconciliation emerges as more impactful than cross-sectional reconciliation in enhancing forecast accuracy, underscoring the importance of temporal aggregation in the forecasting process.
+1. **Enhanced Forecast Accuracy**: The integration of both cross-sectional and temporal hierarchies within a unified cross-temporal reconciliation framework significantly improves forecast accuracy compared to the DTF forecasts. Among the reconciled forecasts, those that incorporate cross-temporal reconciliation exhibit the best performance, consistently achieving lower RMSE values.
 
-The comparative analysis with the DTF's forecasts further validates the proposed methodology, demonstrating that cross-temporally reconciled forecasts consistently outperform the DTF's forecasts, as evidenced by lower RMSE values.
+2. **Impact of Temporal Hierarchies**: The primary driver of the improved accuracy is the incorporation of temporal hierarchies. Temporal reconciliation proves to be more influential than cross-sectional reconciliation.
+
+3. **Improvement of Poor-Performing Forecasts**: The reconciliation process is particularly effective in improving forecasts that initially performed poorly.
 
 ## Limitations
 
-- **Seasonal Adjustment**: Although there is a discernible seasonal pattern in land transfer duty (LTD), residential LTD (`ltd_res`), and sales, we did not apply seasonal adjustments. Ignoring seasonal adjustments might have affected the model's ability to accurately capture seasonal variations, potentially impacting the forecast accuracy. Future research could incorporate seasonal adjustment methods to address this limitation.
+When fitting the VECM with variables such as sales and the Home Value Index (HVI) or lending and sales trends relative to total LTD, an inconsistency emerged: the Augmented Dickey-Fuller (ADF) test on the linear combination of these series, derived from the eigenvector components in the Johansen test, indicated non-stationarity. This result conflicts with the Johansen test, which suggests the existence of a cointegrating relationship. As a result, further research is recommended to investigate this issue by delving deeper into its underlying causes, such as model specification, the presence of structural breaks, or the need for alternative testing methods.
 
-- **Non-Stationarity in Cointegration Analysis**: When fitting the VECM with sales and Home Value Index (HVI) to LTD for non-residential, commercial, industrial, and other property types, the Augmented Dickey-Fuller (ADF) test on the linear combination of these series, based on the eigenvalues from the Johansen test, indicated non-stationarity. Non-stationary time series can lead to unreliable model estimates and forecasts. To improve stationarity, alternative variables could be explored to replace sales and HVI. 
+# Conclusion
 
-- **Lag Selection for Johansen Test**: The lag length for the Johansen test during the 10-fold cross-validation was selected via a manual trial-and-error procedure, aiming to achieve the lowest RMSE. This manual approach may not identify the optimal lag length consistently. Future improvements could involve using cross-validation or other automated procedures to systematically determine the optimal lag length, enhancing the robustness and reliability of the model selection process.
+This paper introduces a novel approach to forecasting land transfer duty (LTD) in Victoria, utilizing forecast reconciliation techniques within cross-sectional, temporal, and cross-temporal hierarchies. Our results show that this methodology significantly improves forecast accuracy, particularly when compared to the Department of Treasury and Finance (DTF) benchmarks.
 
-# Conclusion and Recommendations
+The findings emphasize the importance of temporal hierarchies in driving these improvements and demonstrate the method's effectiveness in enhancing forecasts that initially perform poorly. Despite the observed conflict in cointegration analysis, the proposed approach offers valuable insights for improving LTD forecasts.
 
-This study introduced an advanced forecasting methodology for land transfer duty (LTD) in Victoria, leveraging Vector Error Correction Model (VECM) and Autoregressive Integrated Moving Average (ARIMA) models, enhanced by cross-sectional, temporal, and cross-temporal hierarchies. The findings underscore the superiority of VECM, especially when coupled with forecast reconciliation techniques, in producing more accurate forecasts compared to ARIMA. Temporal hierarchies were found to be more influential than cross-sectional hierarchies in improving forecast accuracy. The reconciled forecasts consistently outperformed those of the *Department of Treasury and Finance*, as evidenced by lower RMSE values. Despite some limitations, such as the lack of seasonal adjustment and manual lag selection for the Johansen test, the methodology demonstrates significant potential for enhancing LTD forecasting accuracy. Future work should focus on addressing these limitations to further refine the approach and improve its applicability.
-
-# GitHub repo
-
-Here is the [link](https://github.com/justin-git01/ltd_forecasting) to the GitHub repo of this project.
+In summary, while the methodology shows strong potential for accurate forecasting, further research is recommended to address the identified limitations and refine the approach for even better results.

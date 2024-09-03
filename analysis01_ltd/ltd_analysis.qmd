@@ -8,7 +8,8 @@ editor: visual
 knitr::opts_chunk$set(echo = FALSE, messages=FALSE, warning=FALSE, fig.align = 'center')
 ```
 
-```{r}
+```{r, message=FALSE, warning = F}
+library(here)
 library(tidyverse)
 library(readxl)
 library(kableExtra)
@@ -19,9 +20,18 @@ library(stats)
 library(fpp3)
 ```
 
-```{r}
-ltd_agg <- read_excel("data/LTD data aggregate.xlsx")
-ltd_unit <- read_excel("data/LTD unit records summary.xlsx")
+```{r, message=FALSE, warning = F}
+ltd_agg <- read_excel(here::here("data/LTD_new.xlsx"), sheet = 1) |>
+  rename(Date = ...1,
+         ltd = LTD,
+         sales = SALES,
+         hvi = HVI,
+         lending = LENDING,
+         int_rate = RM) |>
+  dplyr::select(c(Date, ltd, hvi,sales, int_rate, lending))
+
+ltd_unit <- read_excel(here::here("data/LTD_new.xlsx"), sheet = 2) |>
+  rename(dd = ...1)
 ```
 
 # Data wrangling
@@ -165,8 +175,8 @@ cat(html_numerical_output)
 
 Based on the summary statistics, these are some insights:
 
-1.  **Loan to Deposit Ratio**:
-    -   A broad range of the LTD ratio, from approximately 28 million to over 1 billion, suggests significant variability in the funding practices of banks or financial institutions. A higher LTD ratio can indicate that a bank is lending more than it has in deposits, which could be riskier. However, the context of these numbers would need to be clearer since the LTD ratio is typically expressed as a percentage rather than in monetary values. The mention of such large numbers could imply these are aggregated or scaled values rather than direct ratios.
+1.  **Land Transfer Duty**:
+    -   A broad range of the LTD, from approximately 28 million to over 1 billion, suggests significant variability in the funding practices of banks or financial institutions. A higher LTD ratio can indicate that a bank is lending more than it has in deposits, which could be riskier. However, the context of these numbers would need to be clearer since the LTD ratio is typically expressed as a percentage rather than in monetary values. The mention of such large numbers could imply these are aggregated or scaled values rather than direct ratios.
 2.  **Predictor variable**:
     -   **HVI (Home Value Index)**: Reflects the price movement of residential properties. It ranges from 22.45 to 192.41, indicating a wide variation in home values over time or across different areas within Victoria. The median value is significantly lower than the mean, suggesting a right-skewed distribution with higher values pulling the mean up.
     -   **Sales**: Represents the volume of sales at the contract date. Similar to HVI, sales volume has a broad range (3,553 to 15,176), indicating periods or areas of low and high activity. The median is closer to the mean, suggesting a more symmetrical distribution compared to HVI.
@@ -504,7 +514,7 @@ ltd_unit %>%
 
 @fig-boxvolres shows that there are 3 outliers for `volume_res` variable.
 
-##### volume_nonres (Non-esidential)
+##### volume_nonres (Non-residential)
 
 ```{r}
 #| label: fig-boxvolnonres
